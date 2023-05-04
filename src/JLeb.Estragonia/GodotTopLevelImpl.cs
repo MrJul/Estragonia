@@ -11,7 +11,7 @@ using Avalonia.Threading;
 
 namespace JLeb.Estragonia;
 
-/// <summary>Implentation of Avalonia's <see cref="ITopLevelImpl"/> for a Godot viewport.</summary>
+/// <summary>Implementation of Avalonia <see cref="ITopLevelImpl"/> for a Godot viewport.</summary>
 internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	private readonly GodotVkPlatformGraphics _platformGraphics;

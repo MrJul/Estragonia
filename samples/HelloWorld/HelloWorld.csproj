@@ -1,0 +1,25 @@
+<Project Sdk="Godot.NET.Sdk/4.0.2">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.999-cibuild0033013-beta" />
+		<PackageReference Include="Avalonia.Win32" Version="11.0.999-cibuild0033013-beta" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="../../src/JLeb.Estragonia/JLeb.Estragonia.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Properties/launchSettings.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AvaloniaResource Include="Avalonia.png" />
+	</ItemGroup>
+
+</Project>
