@@ -17,6 +17,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	private readonly Compositor _compositor;
 
 	private GodotSkiaSurface? _surface;
+	private WindowTransparencyLevel _transparencyLevel = WindowTransparencyLevel.Transparent;
 	private Size _clientSize;
 	private IInputRoot? _inputRoot;
 	private bool _isDisposed;
@@ -68,11 +69,13 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Action? Closed { get; set; }
 
+	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
+
 	IEnumerable<object> ITopLevelImpl.Surfaces
 		=> GetSurfaces();
 
 	WindowTransparencyLevel ITopLevelImpl.TransparencyLevel
-		=> WindowTransparencyLevel.Transparent;
+		=> _transparencyLevel;
 
 	AcrylicPlatformCompensationLevels ITopLevelImpl.AcrylicCompensationLevels
 		=> new(1.0, 1.0, 1.0);
@@ -85,8 +88,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	Action<Rect>? ITopLevelImpl.Paint { get; set; }
 
 	Action<double>? ITopLevelImpl.ScalingChanged { get; set; }
-
-	Action<WindowTransparencyLevel>? ITopLevelImpl.TransparencyLevelChanged { get;set; }
 
 	Action? ITopLevelImpl.LostFocus { get;set; }
 
@@ -118,6 +119,14 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		=> null;
 
 	void ITopLevelImpl.SetTransparencyLevelHint(WindowTransparencyLevel transparencyLevel) {
+		transparencyLevel = transparencyLevel == WindowTransparencyLevel.Transparent
+			? WindowTransparencyLevel.Transparent
+			: WindowTransparencyLevel.None;
+
+		if (transparencyLevel != _transparencyLevel) {
+			_transparencyLevel = transparencyLevel;
+			TransparencyLevelChanged?.Invoke(transparencyLevel);
+		}
 	}
 
 	void ITopLevelImpl.SetFrameThemeVariant(PlatformThemeVariant themeVariant) {

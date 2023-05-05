@@ -22,7 +22,6 @@ internal sealed class GodotSkiaGpuRenderSession : ISkiaGpuRenderSession {
 	public GodotSkiaGpuRenderSession(GodotSkiaSurface surface, GRContext grContext) {
 		Surface = surface;
 		GrContext = grContext;
-		surface.SkSurface.Canvas.Clear();
 	}
 
 	public void Dispose()

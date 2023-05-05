@@ -1,5 +1,6 @@
 ﻿using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Platform;
 using Godot;
 using Godot.NativeInterop;
@@ -8,7 +9,7 @@ using GdControl = Godot.Control;
 
 namespace JLeb.Estragonia;
 
-public class AvaloniaContainer : Control {
+public class AvaloniaContainer : GdControl {
 
 	private AvControl? _control;
 	private GodotTopLevel? _topLevel;
@@ -57,7 +58,7 @@ public class AvaloniaContainer : Control {
 	public override void _Ready() {
 		base._Ready();
 
-		if (GetViewport() is not SubViewport) {
+		if (GetViewport() is not SubViewport viewport) {
 			GD.PrintErr($"The {nameof(AvaloniaContainer)} must be contained inside a {nameof(SubViewport)}");
 			return;
 		}
@@ -71,7 +72,9 @@ public class AvaloniaContainer : Control {
 		}
 
 		_topLevel = new GodotTopLevel(new GodotTopLevelImpl(graphics));
+		_topLevel.Background = null;
 		_topLevel.Content = Control;
+		_topLevel.TransparencyLevelHint = viewport.TransparentBg ? WindowTransparencyLevel.Transparent : WindowTransparencyLevel.None;
 		UpdateSurface();
 		_topLevel.Prepare();
 		_topLevel.Renderer.Start();

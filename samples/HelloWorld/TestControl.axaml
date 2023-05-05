@@ -24,9 +24,9 @@
 
 	</UserControl.Styles>
 
-	<Border Classes="anim" Background="#80FF0000">
+	<StackPanel Orientation="Vertical">
 
-		<StackPanel Orientation="Vertical">
+		<Border CornerRadius="16" Classes="anim">
 
 			<TextBlock
 				Text="Hello from Avalonia in Godot!"
@@ -36,14 +36,14 @@
 				FontSize="48"
 				Foreground="Orange" />
 
-			<Image Source="Avalonia.png" Width="64" Height="64" Margin="16" />
+		</Border>
 
-			<Button Margin="16" Content="Click me!" />
+		<Image Source="Avalonia.png" Width="64" Height="64" Margin="16" />
 
-			<TextBlock Text="{Binding ElementName=Root, Path=Bounds}" />
+		<Button Margin="16" Content="Click me!" />
 
-		</StackPanel>
+		<TextBlock Text="{Binding ElementName=Root, Path=Bounds}" />
 
-	</Border>
+	</StackPanel>
 
 </UserControl>
