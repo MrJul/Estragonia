@@ -1,4 +1,3 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 
@@ -10,11 +9,5 @@ public partial class TestControl : UserControl {
 		_ = new SolidColorBrush(); // force animator to be registered; TODO: investigate and remove
 		InitializeComponent();
 	}
-
-	protected override Size MeasureCore(Size availableSize)
-		=> base.MeasureCore(availableSize);
-
-	protected override Size MeasureOverride(Size availableSize)
-		=> base.MeasureOverride(availableSize);
 
 }

@@ -40,7 +40,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		IntPtr GetVkProcAddress(string name, IntPtr instance, IntPtr device) {
 			Span<byte> utf8Name = stackalloc byte[128];
 
-			// The stackalloc'd buffer should always be sufficient for proc names
+			// The stackalloc buffer should always be sufficient for proc names
 			if (Utf8.FromUtf16(name, utf8Name[..^1], out _, out var bytesWritten) != OperationStatus.Done)
 				throw new InvalidOperationException($"Invalid proc name {name}");
 
@@ -80,18 +80,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 			? new GodotSkiaRenderTarget(surface, _grContext)
 			: null;
 
-	public GodotSkiaSurface CreateSurface(PixelSize size) {
-		size = new PixelSize(Math.Max(size.Width, 1), Math.Max(size.Height, 1));
-
-		var gdViewport = new SubViewport {
-			RenderTargetClearMode = SubViewport.ClearMode.Never,
-			TransparentBg = true,
-			RenderTargetUpdateMode = SubViewport.UpdateMode.Disabled,
-			Size = new Vector2I(size.Width, size.Height)
-		};
-
-		var gdTexture = gdViewport.GetTexture();
-
+	public GodotSkiaSurface CreateSurfaceFromTexture(Texture2D gdTexture) {
 		var gdRdTexture = RenderingServer.TextureGetRdTexture(gdTexture.GetRid());
 		if (!gdRdTexture.IsValid)
 			throw new InvalidOperationException("Couldn't get Godot rendering device texture");
@@ -128,7 +117,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 
 		var skSurface = SKSurface.Create(
 			_grContext,
-			new GRBackendRenderTarget(size.Width, size.Height, 1, grVkImageInfo),
+			new GRBackendRenderTarget(gdTexture.GetWidth(), gdTexture.GetHeight(), 1, grVkImageInfo),
 			GRSurfaceOrigin.TopLeft,
 			SKColorType.Rgba8888,
 			new SKSurfaceProperties(SKPixelGeometry.RgbHorizontal)
@@ -140,8 +129,18 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		return new GodotSkiaSurface(skSurface, gdTexture);
 	}
 
-	ISkiaSurface ISkiaGpu.TryCreateSurface(PixelSize size, ISkiaGpuRenderSession? session)
-		=> CreateSurface(size);
+	ISkiaSurface ISkiaGpu.TryCreateSurface(PixelSize size, ISkiaGpuRenderSession? session) {
+		size = new PixelSize(Math.Max(size.Width, 1), Math.Max(size.Height, 1));
+
+		var viewport = new SubViewport {
+			RenderTargetClearMode = SubViewport.ClearMode.Never,
+			TransparentBg = true,
+			RenderTargetUpdateMode = SubViewport.UpdateMode.Disabled,
+			Size = new Vector2I(size.Width, size.Height)
+		};
+
+		return CreateSurfaceFromTexture(viewport.GetTexture());
+	}
 
 	public void Dispose()
 		=> _grContext.Dispose();
