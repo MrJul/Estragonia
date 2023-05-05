@@ -3,7 +3,7 @@ using JLeb.Estragonia;
 
 namespace HelloWorld;
 
-public partial class HelloContainer : AvaloniaContainer {
+public partial class HelloAvalonia : AvaloniaControl {
 
 	public override void _Ready() {
 		AppBuilder.Configure<App>()

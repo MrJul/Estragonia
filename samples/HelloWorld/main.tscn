@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cpbtafkboh7wa"]
 
-[ext_resource type="Script" path="res://HelloContainer.cs" id="1_0xlul"]
+[ext_resource type="Script" path="res://HelloAvalonia.cs" id="1_fyecm"]
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -10,44 +10,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+[node name="AvaloniaContainer" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(1280, 720)
-render_target_clear_mode = 1
-render_target_update_mode = 0
-
-[node name="AvaloniaContainer" type="Control" parent="SubViewportContainer/SubViewport"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_0xlul")
-
-[node name="Button" type="Button" parent="SubViewportContainer/SubViewport"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -90.0
-offset_top = -15.5
-offset_right = 90.0
-offset_bottom = 15.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "button in subviewport"
+script = ExtResource("1_fyecm")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1

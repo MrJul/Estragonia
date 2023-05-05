@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
@@ -9,7 +10,7 @@ using GdControl = Godot.Control;
 
 namespace JLeb.Estragonia;
 
-public class AvaloniaContainer : GdControl {
+public class AvaloniaControl : GdControl {
 
 	private AvControl? _control;
 	private GodotTopLevel? _topLevel;
@@ -58,11 +59,6 @@ public class AvaloniaContainer : GdControl {
 	public override void _Ready() {
 		base._Ready();
 
-		if (GetViewport() is not SubViewport viewport) {
-			GD.PrintErr($"The {nameof(AvaloniaContainer)} must be contained inside a {nameof(SubViewport)}");
-			return;
-		}
-
 		if (Engine.IsEditorHint())
 			return;
 
@@ -71,30 +67,24 @@ public class AvaloniaContainer : GdControl {
 			return;
 		}
 
-		_topLevel = new GodotTopLevel(new GodotTopLevelImpl(graphics));
-		_topLevel.Background = null;
-		_topLevel.Content = Control;
-		_topLevel.TransparencyLevelHint = viewport.TransparentBg ? WindowTransparencyLevel.Transparent : WindowTransparencyLevel.None;
-		UpdateSurface();
+		var topLevelImpl = new GodotTopLevelImpl(graphics) {
+			ClientSize = GetAvaloniaSize()
+		};
+
+		_topLevel = new GodotTopLevel(topLevelImpl) {
+			Background = null,
+			Content = Control,
+			TransparencyLevelHint = WindowTransparencyLevel.Transparent
+		};
+
 		_topLevel.Prepare();
 		_topLevel.Renderer.Start();
+
+		Resized += OnSizeChanged;
 	}
 
-	private void UpdateSurface() {
-		var texture = GetViewport().GetTexture();
-		_topLevel!.Impl.Surface = _topLevel.Impl.PlatformGraphics.GetSharedContext().CreateSurfaceFromTexture(texture);
-	}
-
-	public override void _Process(double delta) {
-		if (_topLevel is null)
-			return;
-
-		var size = GetAvaloniaSize();
-		if (_topLevel.ClientSize != size)
-			OnSizeChanged();
-
-		_topLevel.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
-	}
+	public override void _Process(double delta)
+		=> _topLevel?.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
 
 	private Size GetAvaloniaSize() {
 		var size = Size;
@@ -105,15 +95,19 @@ public class AvaloniaContainer : GdControl {
 		if (_topLevel is null)
 			return;
 
-		UpdateSurface();
-
 		var size = GetAvaloniaSize();
+		_topLevel.Impl.ClientSize = size;
 		_topLevel.Measure(size);
 		_topLevel.Arrange(new Rect(size));
 	}
 
-	public override void _Draw()
-		=> _topLevel?.Renderer.Paint(new Rect(GetAvaloniaSize()));
+	public override void _Draw() {
+		if (_topLevel is null)
+			return;
+
+		_topLevel.Renderer.Paint(new Rect(GetAvaloniaSize()));
+		DrawTexture(_topLevel.Impl.Surface.GdTexture, Vector2.Zero);
+	}
 
 	protected override void Dispose(bool disposing) {
 		if (disposing) {

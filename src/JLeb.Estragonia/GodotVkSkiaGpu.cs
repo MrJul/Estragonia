@@ -80,7 +80,18 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 			? new GodotSkiaRenderTarget(surface, _grContext)
 			: null;
 
-	public GodotSkiaSurface CreateSurfaceFromTexture(Texture2D gdTexture) {
+	public GodotSkiaSurface CreateSurface(PixelSize size) {
+		size = new PixelSize(Math.Max(size.Width, 1), Math.Max(size.Height, 1));
+
+		var gdViewport = new SubViewport {
+			RenderTargetClearMode = SubViewport.ClearMode.Never,
+			TransparentBg = true,
+			RenderTargetUpdateMode = SubViewport.UpdateMode.Disabled,
+			Size = new Vector2I(size.Width, size.Height)
+		};
+
+		var gdTexture = gdViewport.GetTexture();
+
 		var gdRdTexture = RenderingServer.TextureGetRdTexture(gdTexture.GetRid());
 		if (!gdRdTexture.IsValid)
 			throw new InvalidOperationException("Couldn't get Godot rendering device texture");
@@ -117,7 +128,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 
 		var skSurface = SKSurface.Create(
 			_grContext,
-			new GRBackendRenderTarget(gdTexture.GetWidth(), gdTexture.GetHeight(), 1, grVkImageInfo),
+			new GRBackendRenderTarget(size.Width, size.Height, 1, grVkImageInfo),
 			GRSurfaceOrigin.TopLeft,
 			SKColorType.Rgba8888,
 			new SKSurfaceProperties(SKPixelGeometry.RgbHorizontal)
@@ -129,18 +140,8 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		return new GodotSkiaSurface(skSurface, gdTexture);
 	}
 
-	ISkiaSurface ISkiaGpu.TryCreateSurface(PixelSize size, ISkiaGpuRenderSession? session) {
-		size = new PixelSize(Math.Max(size.Width, 1), Math.Max(size.Height, 1));
-
-		var viewport = new SubViewport {
-			RenderTargetClearMode = SubViewport.ClearMode.Never,
-			TransparentBg = true,
-			RenderTargetUpdateMode = SubViewport.UpdateMode.Disabled,
-			Size = new Vector2I(size.Width, size.Height)
-		};
-
-		return CreateSurfaceFromTexture(viewport.GetTexture());
-	}
+	ISkiaSurface ISkiaGpu.TryCreateSurface(PixelSize size, ISkiaGpuRenderSession? session)
+		=> CreateSurface(size);
 
 	public void Dispose()
 		=> _grContext.Dispose();

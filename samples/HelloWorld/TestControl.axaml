@@ -30,8 +30,9 @@
 
 			<TextBlock
 				Text="Hello from Avalonia in Godot!"
-				HorizontalAlignment="Center"
+				TextAlignment="Center"
 				VerticalAlignment="Center"
+				TextTrimming="{x:Static TextTrimming.CharacterEllipsis}"
 				Margin="16"
 				FontSize="48"
 				Foreground="Orange" />

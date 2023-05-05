@@ -29,47 +29,33 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	public double RenderScaling
 		=> 1.0;
 
-	public GodotSkiaSurface Surface {
-		get {
-			ThrowIfDisposed();
-			return _surface ?? throw new InvalidOperationException($"{nameof(Surface)} must be set");
-		}
-		set {
-			var oldValue = _surface;
-			if (oldValue == value)
-				return;
-
-			ThrowIfDisposed();
-
-			if (oldValue is not null)
-				oldValue.IsValid = false;
-
-			_surface = value;
-			ClientSize = new Size(value.GdTexture.GetWidth(), value.GdTexture.GetHeight());
-		}
-	}
-
-	private void ThrowIfDisposed() {
-		if (_isDisposed)
-			throw new ObjectDisposedException(nameof(GodotTopLevelImpl));
-	}
-
 	public Size ClientSize {
 		get => _clientSize;
-		private set {
-			if (_clientSize == value)
+		set {
+			if (_clientSize.Equals(value))
 				return;
 
 			_clientSize = value;
-			Resized?.Invoke(value, PlatformResizeReason.Layout);
+
+			if (_surface is not null) {
+				_surface.IsValid = false;
+				_surface = null;
+			}
+
+			if (_isDisposed)
+				return;
+
+			_surface = CreateSurface();
+			Resized?.Invoke(value, PlatformResizeReason.Unspecified);
 		}
 	}
+
+	public GodotSkiaSurface Surface
+		=> _surface ??= CreateSurface();
 
 	public Action<Size, PlatformResizeReason>? Resized { get;set; }
 
 	public Action? Closed { get; set; }
-
-	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
 
 	IEnumerable<object> ITopLevelImpl.Surfaces
 		=> GetSurfaces();
@@ -89,6 +75,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	Action<double>? ITopLevelImpl.ScalingChanged { get; set; }
 
+	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
+
 	Action? ITopLevelImpl.LostFocus { get;set; }
 
 	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics) {
@@ -96,6 +84,11 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		RenderTimer = new ManualRenderTimer();
 		_compositor = new Compositor(new RenderLoop(RenderTimer, Dispatcher.UIThread), platformGraphics);
 	}
+
+	private GodotSkiaSurface CreateSurface()
+		=> _isDisposed
+			? throw new ObjectDisposedException(nameof(GodotTopLevelImpl))
+			: PlatformGraphics.GetSharedContext().CreateSurface(PixelSize.FromSize(_clientSize, RenderScaling));
 
 	private IEnumerable<object> GetSurfaces()
 		=> new object[] { Surface };
