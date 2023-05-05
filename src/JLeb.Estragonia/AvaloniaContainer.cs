@@ -57,13 +57,17 @@ public class AvaloniaContainer : Control {
 	public override void _Ready() {
 		base._Ready();
 
+		if (GetViewport() is not SubViewport) {
+			GD.PrintErr($"The {nameof(AvaloniaContainer)} must be contained inside a {nameof(SubViewport)}");
+			return;
+		}
+
 		if (Engine.IsEditorHint())
 			return;
 
 		if (AvaloniaLocator.Current.GetService<IPlatformGraphics>() is not GodotVkPlatformGraphics graphics) {
-			throw new InvalidOperationException(
-				"No Godot platform graphics found, did you forget to register your Avalonia app with UseGodot()?"
-			);
+			GD.PrintErr("No Godot platform graphics found, did you forget to register your Avalonia app with UseGodot()?");
+			return;
 		}
 
 		_topLevel = new GodotTopLevel(new GodotTopLevelImpl(graphics));
