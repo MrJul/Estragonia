@@ -8,7 +8,6 @@ public partial class HelloAvalonia : AvaloniaControl {
 	public override void _Ready() {
 		AppBuilder.Configure<App>()
 			.UseWin32() // TODO: remove this, implement all needed services
-			.UseSkia()
 			.UseGodot()
 			.SetupWithoutStarting();
 
