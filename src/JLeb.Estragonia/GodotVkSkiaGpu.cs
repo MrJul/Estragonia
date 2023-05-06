@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.Unicode;
+using System.Threading;
 using Avalonia;
 using Avalonia.Platform;
 using Avalonia.Skia;
@@ -15,6 +17,8 @@ namespace JLeb.Estragonia;
 
 /// <summary>Bridges the Godot Vulkan renderer with a Skia context used by Avalonia.</summary>
 internal sealed class GodotVkSkiaGpu : ISkiaGpu {
+
+	private static int _createdSurfaceCount;
 
 	private readonly GRContext _grContext;
 	private readonly uint _queueFamilyIndex;
@@ -82,12 +86,14 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 
 	public GodotSkiaSurface CreateSurface(PixelSize size) {
 		size = new PixelSize(Math.Max(size.Width, 1), Math.Max(size.Height, 1));
+		var number = Interlocked.Increment(ref _createdSurfaceCount);
 
 		var gdViewport = new SubViewport {
 			RenderTargetClearMode = SubViewport.ClearMode.Never,
 			TransparentBg = true,
 			RenderTargetUpdateMode = SubViewport.UpdateMode.Disabled,
-			Size = new Vector2I(size.Width, size.Height)
+			Size = new Vector2I(size.Width, size.Height),
+			Name = String.Create(CultureInfo.InvariantCulture, $"EstragoniaSurface_{number}")
 		};
 
 		var gdTexture = gdViewport.GetTexture();
@@ -137,7 +143,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		if (skSurface is null)
 			throw new InvalidOperationException("Couldn't create Skia surface from Vulkan image");
 
-		return new GodotSkiaSurface(skSurface, gdTexture);
+		return new GodotSkiaSurface(skSurface, gdTexture, gdViewport);
 	}
 
 	ISkiaSurface ISkiaGpu.TryCreateSurface(PixelSize size, ISkiaGpuRenderSession? session)

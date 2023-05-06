@@ -12,7 +12,9 @@ internal sealed class GodotSkiaSurface : ISkiaSurface {
 
 	public Texture2D GdTexture { get; }
 
-	public bool IsValid { get; set; }
+	public GodotObject GdTextureOwner { get; }
+
+	public bool IsDisposed { get; private set; }
 
 	SKSurface ISkiaSurface.Surface
 		=> SkSurface;
@@ -20,18 +22,25 @@ internal sealed class GodotSkiaSurface : ISkiaSurface {
 	bool ISkiaSurface.CanBlit
 		=> false;
 
-	public GodotSkiaSurface(SKSurface skSurface, Texture2D gdTexture) {
+	public GodotSkiaSurface(SKSurface skSurface, Texture2D gdTexture, GodotObject gdTextureOwner) {
 		SkSurface = skSurface;
 		GdTexture = gdTexture;
-		IsValid = true;
+		GdTextureOwner = gdTextureOwner;
+		IsDisposed = false;
 	}
 
 	void ISkiaSurface.Blit(SKCanvas canvas)
 		=> throw new NotSupportedException();
 
 	public void Dispose() {
+		if (IsDisposed)
+			return;
+
+		IsDisposed = true;
 		SkSurface.Dispose();
 		GdTexture.Dispose();
+		GdTextureOwner.Free();
+		GdTextureOwner.Dispose();
 	}
 
 }

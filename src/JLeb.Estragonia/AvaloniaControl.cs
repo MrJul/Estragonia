@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using Godot;
 using Godot.NativeInterop;
 using AvControl = Avalonia.Controls.Control;
+using AvDispatcher = Avalonia.Threading.Dispatcher;
 using GdControl = Godot.Control;
 
 namespace JLeb.Estragonia;
@@ -27,6 +27,11 @@ public class AvaloniaControl : GdControl {
 				_topLevel.Content = _control;
 		}
 	}
+
+	public Texture2D GetTexture()
+		=> _topLevel is null
+			? throw new InvalidOperationException($"The {nameof(AvaloniaControl)} isn't initialized")
+			: _topLevel.Impl.GetTexture();
 
 	protected override bool InvokeGodotClassMethod(in godot_string_name method, NativeVariantPtrArgs args, out godot_variant ret) {
 		if (method == Node.MethodName._Ready && args.Count == 0) {
@@ -106,12 +111,17 @@ public class AvaloniaControl : GdControl {
 			return;
 
 		_topLevel.Renderer.Paint(new Rect(GetAvaloniaSize()));
-		DrawTexture(_topLevel.Impl.Surface.GdTexture, Vector2.Zero);
+		DrawTexture(_topLevel.Impl.GetTexture(), Vector2.Zero);
 	}
 
 	protected override void Dispose(bool disposing) {
-		if (disposing) {
-			_topLevel?.Dispose();
+		if (disposing && _topLevel is not null) {
+			_topLevel.Dispose();
+
+			// ensure the underlying Avalonia compositor render target is disposed
+			AvDispatcher.UIThread.RunJobs();
+			_topLevel.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
+
 			_topLevel = null;
 		}
 

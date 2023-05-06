@@ -18,7 +18,7 @@ internal sealed class GodotSkiaRenderTarget : ISkiaGpuRenderTarget {
 		=> new GodotSkiaGpuRenderSession(_surface, _grContext);
 
 	public bool IsCorrupted
-		=> !_surface.IsValid || _grContext.IsAbandoned;
+		=> _surface.IsDisposed || _grContext.IsAbandoned;
 
 	public void Dispose() {
 	}

@@ -7,11 +7,12 @@ using Avalonia.Input.Raw;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Rendering.Composition;
-using Dispatcher = Avalonia.Threading.Dispatcher;
+using Godot;
+using AvDispatcher = Avalonia.Threading.Dispatcher;
 
 namespace JLeb.Estragonia;
 
-/// <summary>Implementation of Avalonia <see cref="ITopLevelImpl"/> for a Godot viewport.</summary>
+/// <summary>Implementation of Avalonia <see cref="ITopLevelImpl"/> that renders to a Godot texture.</summary>
 internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	private readonly Compositor _compositor;
@@ -38,7 +39,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 			_clientSize = value;
 
 			if (_surface is not null) {
-				_surface.IsValid = false;
+				_surface.Dispose();
 				_surface = null;
 			}
 
@@ -50,15 +51,12 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		}
 	}
 
-	public GodotSkiaSurface Surface
-		=> _surface ??= CreateSurface();
-
 	public Action<Size, PlatformResizeReason>? Resized { get;set; }
 
 	public Action? Closed { get; set; }
 
 	IEnumerable<object> ITopLevelImpl.Surfaces
-		=> GetSurfaces();
+		=> GetOrCreateSurfaces();
 
 	WindowTransparencyLevel ITopLevelImpl.TransparencyLevel
 		=> _transparencyLevel;
@@ -82,7 +80,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics) {
 		PlatformGraphics = platformGraphics;
 		RenderTimer = new ManualRenderTimer();
-		_compositor = new Compositor(new RenderLoop(RenderTimer, Dispatcher.UIThread), platformGraphics);
+		_compositor = new Compositor(new RenderLoop(RenderTimer, AvDispatcher.UIThread), platformGraphics);
 	}
 
 	private GodotSkiaSurface CreateSurface()
@@ -90,11 +88,17 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 			? throw new ObjectDisposedException(nameof(GodotTopLevelImpl))
 			: PlatformGraphics.GetSharedContext().CreateSurface(PixelSize.FromSize(_clientSize, RenderScaling));
 
-	private IEnumerable<object> GetSurfaces()
-		=> new object[] { Surface };
+	private GodotSkiaSurface GetOrCreateSurface()
+		=> _surface ??= CreateSurface();
+
+	private IEnumerable<object> GetOrCreateSurfaces()
+		=> new object[] { GetOrCreateSurface() };
+
+	public Texture2D GetTexture()
+		=> GetOrCreateSurface().GdTexture;
 
 	IRenderer ITopLevelImpl.CreateRenderer(IRenderRoot root)
-		=> new CompositingRenderer(root, _compositor, GetSurfaces);
+		=> new CompositingRenderer(root, _compositor, GetOrCreateSurfaces);
 
 	void ITopLevelImpl.SetInputRoot(IInputRoot inputRoot)
 		=> _inputRoot = inputRoot;
@@ -135,7 +139,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		_isDisposed = true;
 
 		if (_surface is not null) {
-			_surface.IsValid = false;
+			_surface.Dispose();
 			_surface = null;
 		}
 
