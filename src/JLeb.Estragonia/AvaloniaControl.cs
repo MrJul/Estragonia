@@ -52,6 +52,12 @@ public class AvaloniaControl : GdControl {
 			return true;
 		}
 
+		if (method == MethodName._GuiInput && args.Count == 1) {
+			_GuiInput(VariantUtils.ConvertTo<InputEvent>(args[0]));
+			ret = default;
+			return true;
+		}
+
 		return base.InvokeGodotClassMethod(method, args, out ret);
 	}
 
@@ -62,8 +68,6 @@ public class AvaloniaControl : GdControl {
 			|| base.HasGodotClassMethod(method);
 
 	public override void _Ready() {
-		base._Ready();
-
 		if (Engine.IsEditorHint())
 			return;
 
@@ -73,7 +77,7 @@ public class AvaloniaControl : GdControl {
 		}
 
 		var topLevelImpl = new GodotTopLevelImpl(graphics) {
-			ClientSize = GetAvaloniaSize()
+			ClientSize = Size.ToAvaloniaSize()
 		};
 
 		_topLevel = new GodotTopLevel(topLevelImpl) {
@@ -91,16 +95,11 @@ public class AvaloniaControl : GdControl {
 	public override void _Process(double delta)
 		=> _topLevel?.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
 
-	private Size GetAvaloniaSize() {
-		var size = Size;
-		return new Size(size.X, size.Y);
-	}
-
 	private void OnSizeChanged() {
 		if (_topLevel is null)
 			return;
 
-		var size = GetAvaloniaSize();
+		var size = Size.ToAvaloniaSize();
 		_topLevel.Impl.ClientSize = size;
 		_topLevel.Measure(size);
 		_topLevel.Arrange(new Rect(size));
@@ -110,15 +109,31 @@ public class AvaloniaControl : GdControl {
 		if (_topLevel is null)
 			return;
 
-		_topLevel.Renderer.Paint(new Rect(GetAvaloniaSize()));
+		_topLevel.Renderer.Paint(new Rect(Size.ToAvaloniaSize()));
 		DrawTexture(_topLevel.Impl.GetTexture(), Vector2.Zero);
 	}
+
+	public override void _GuiInput(InputEvent @event) {
+		if (_topLevel is null)
+			return;
+
+		if (TryHandleInput(_topLevel.Impl, @event))
+			GetViewport().SetInputAsHandled();
+	}
+
+	private static bool TryHandleInput(GodotTopLevelImpl impl, InputEvent inputEvent)
+		=> inputEvent switch {
+			InputEventMouseMotion mouseMotion => impl.OnMouseMotion(mouseMotion, Time.GetTicksMsec()),
+			InputEventMouseButton mouseButton => impl.OnMouseButton(mouseButton, Time.GetTicksMsec()),
+			_ => false
+		};
 
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {
 			_topLevel.Dispose();
 
 			// ensure the underlying Avalonia compositor render target is disposed
+			// shouldn't be needed anymore if https://github.com/AvaloniaUI/Avalonia/pull/11262/ is merged
 			AvDispatcher.UIThread.RunJobs();
 			_topLevel.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
 

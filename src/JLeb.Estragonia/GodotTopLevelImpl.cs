@@ -9,6 +9,7 @@ using Avalonia.Rendering;
 using Avalonia.Rendering.Composition;
 using Godot;
 using AvDispatcher = Avalonia.Threading.Dispatcher;
+using GdMouseButton = Godot.MouseButton;
 
 namespace JLeb.Estragonia;
 
@@ -16,6 +17,7 @@ namespace JLeb.Estragonia;
 internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	private readonly Compositor _compositor;
+	private readonly MouseDevice _mouseDevice = new();
 
 	private GodotSkiaSurface? _surface;
 	private WindowTransparencyLevel _transparencyLevel = WindowTransparencyLevel.Transparent;
@@ -55,6 +57,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Action? Closed { get; set; }
 
+	public Action<RawInputEventArgs>? Input { get; set; }
+
 	IEnumerable<object> ITopLevelImpl.Surfaces
 		=> GetOrCreateSurfaces();
 
@@ -66,8 +70,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	Size? ITopLevelImpl.FrameSize
 		=> null;
-
-	Action<RawInputEventArgs>? ITopLevelImpl.Input { get; set; }
 
 	Action<Rect>? ITopLevelImpl.Paint { get; set; }
 
@@ -96,6 +98,99 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Texture2D GetTexture()
 		=> GetOrCreateSurface().GdTexture;
+
+	public bool OnMouseMotion(InputEventMouseMotion inputEvent, ulong timestamp) {
+		if (_inputRoot is null || Input is not { } input)
+			return false;
+
+		var tilt = inputEvent.Tilt;
+		var modifiers = GetRawInputModifiers(inputEvent);
+
+		if (inputEvent.PenInverted)
+			modifiers |= RawInputModifiers.PenInverted;
+
+		var args = new RawPointerEventArgs(
+			_mouseDevice,
+			timestamp,
+			_inputRoot,
+			RawPointerEventType.Move,
+			new RawPointerPoint {
+				Position = inputEvent.Position.ToAvaloniaPoint(),
+				Twist = 0.0f,
+				Pressure = inputEvent.Pressure,
+				XTilt = tilt.X * 90.0f,
+				YTilt = tilt.Y * 90.0f
+			},
+			modifiers
+		);
+
+		input(args);
+
+		return args.Handled;
+	}
+
+	public bool OnMouseButton(InputEventMouseButton inputEvent, ulong timestamp) {
+		if (_inputRoot is null || Input is not { } input)
+			return false;
+
+		RawPointerEventArgs CreateButtonArgs(RawPointerEventType type)
+			=> new(_mouseDevice, timestamp, _inputRoot, type, inputEvent.Position.ToAvaloniaPoint(), GetRawInputModifiers(inputEvent));
+
+		RawMouseWheelEventArgs CreateWheelArgs(Vector delta)
+			=> new(_mouseDevice, timestamp, _inputRoot, inputEvent.Position.ToAvaloniaPoint(), delta, GetRawInputModifiers(inputEvent));
+
+		var args = (inputEvent.ButtonIndex, inputEvent.Pressed) switch {
+			(GdMouseButton.Left, true) => CreateButtonArgs(RawPointerEventType.LeftButtonDown),
+			(GdMouseButton.Left, false) => CreateButtonArgs(RawPointerEventType.LeftButtonUp),
+			(GdMouseButton.Right, true) => CreateButtonArgs(RawPointerEventType.RightButtonDown),
+			(GdMouseButton.Right, false) => CreateButtonArgs(RawPointerEventType.RightButtonUp),
+			(GdMouseButton.Middle, true) => CreateButtonArgs(RawPointerEventType.MiddleButtonDown),
+			(GdMouseButton.Middle, false) => CreateButtonArgs(RawPointerEventType.MiddleButtonUp),
+			(GdMouseButton.Xbutton1, true) => CreateButtonArgs(RawPointerEventType.XButton1Down),
+			(GdMouseButton.Xbutton1, false) => CreateButtonArgs(RawPointerEventType.XButton1Up),
+			(GdMouseButton.Xbutton2, true) => CreateButtonArgs(RawPointerEventType.XButton2Down),
+			(GdMouseButton.Xbutton2, false) => CreateButtonArgs(RawPointerEventType.XButton2Up),
+			(GdMouseButton.WheelUp, _) => CreateWheelArgs(new Vector(0.0, inputEvent.Factor)),
+			(GdMouseButton.WheelDown, _) => CreateWheelArgs(new Vector(0.0, -inputEvent.Factor)),
+			(GdMouseButton.WheelLeft, _) => CreateWheelArgs(new Vector(inputEvent.Factor, 0.0)),
+			(GdMouseButton.WheelRight, _) => CreateWheelArgs(new Vector(-inputEvent.Factor, 0.0)),
+			_ => null
+		};
+
+		if (args is null)
+			return false;
+
+		input(args);
+
+		return args.Handled;
+	}
+
+	private static RawInputModifiers GetRawInputModifiers(InputEventMouse inputEvent) {
+		var inputModifiers = RawInputModifiers.None;
+
+		if (inputEvent.AltPressed)
+			inputModifiers |= RawInputModifiers.Alt;
+		if (inputEvent.CtrlPressed)
+			inputModifiers |= RawInputModifiers.Control;
+		if (inputEvent.ShiftPressed)
+			inputModifiers |= RawInputModifiers.Shift;
+		if (inputEvent.MetaPressed)
+			inputModifiers |= RawInputModifiers.Meta;
+
+		var buttonMask = inputEvent.ButtonMask;
+		if ((buttonMask & MouseButtonMask.Left) != 0)
+			inputModifiers |= RawInputModifiers.LeftMouseButton;
+		if ((buttonMask & MouseButtonMask.Right) != 0)
+			inputModifiers |= RawInputModifiers.RightMouseButton;
+		if ((buttonMask & MouseButtonMask.Middle) != 0)
+			inputModifiers |= RawInputModifiers.MiddleMouseButton;
+		if ((buttonMask & MouseButtonMask.MbXbutton1) != 0)
+			inputModifiers |= RawInputModifiers.XButton1MouseButton;
+		if ((buttonMask & MouseButtonMask.MbXbutton2) != 0)
+			inputModifiers |= RawInputModifiers.XButton2MouseButton;
+
+		return inputModifiers;
+	}
 
 	IRenderer ITopLevelImpl.CreateRenderer(IRenderRoot root)
 		=> new CompositingRenderer(root, _compositor, GetOrCreateSurfaces);

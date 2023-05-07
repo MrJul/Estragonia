@@ -22,6 +22,14 @@
 			</Style.Animations>
 		</Style>
 
+		<Style Selector="Border.foo">
+			<Setter Property="Background" Value="Red" />
+		</Style>
+
+		<Style Selector="Border.foo:pointerover">
+			<Setter Property="Background" Value="Green" />
+		</Style>
+
 	</UserControl.Styles>
 
 	<StackPanel Orientation="Vertical">
@@ -41,7 +49,18 @@
 
 		<Image Source="Avalonia.png" Width="64" Height="64" Margin="16" />
 
-		<Button Margin="16" Content="Click me!" />
+		<Border Width="100" Height="40" Classes="foo" />
+
+		<Border Background="Chocolate" Margin="8">
+			<Button Margin="16" Content="Click me!" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_OnClick" />
+		</Border>
+
+		<TextBox
+			Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+			TextWrapping="Wrap"
+			Height="100"
+			Width="200"
+			Margin="8" />
 
 		<TextBlock Text="{Binding ElementName=Root, Path=Bounds}" />
 

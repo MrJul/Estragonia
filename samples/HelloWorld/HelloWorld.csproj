@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<Nullable>enable</Nullable>
 		<LangVersion>11.0</LangVersion>
 	</PropertyGroup>
 
