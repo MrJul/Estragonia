@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Platform;
 using Godot;
 using Godot.NativeInterop;
@@ -71,12 +72,17 @@ public class AvaloniaControl : GdControl {
 		if (Engine.IsEditorHint())
 			return;
 
-		if (AvaloniaLocator.Current.GetService<IPlatformGraphics>() is not GodotVkPlatformGraphics graphics) {
+		var locator = AvaloniaLocator.Current;
+
+		if (locator.GetService<IPlatformGraphics>() is not GodotVkPlatformGraphics graphics) {
 			GD.PrintErr("No Godot platform graphics found, did you forget to register your Avalonia app with UseGodot()?");
 			return;
 		}
 
-		var topLevelImpl = new GodotTopLevelImpl(graphics) {
+		var keyboardDevice = locator.GetRequiredService<IKeyboardDevice>();
+		var mouseDevice = locator.GetRequiredService<IMouseDevice>();
+
+		var topLevelImpl = new GodotTopLevelImpl(graphics, keyboardDevice, mouseDevice) {
 			ClientSize = Size.ToAvaloniaSize()
 		};
 
@@ -125,6 +131,7 @@ public class AvaloniaControl : GdControl {
 		=> inputEvent switch {
 			InputEventMouseMotion mouseMotion => impl.OnMouseMotion(mouseMotion, Time.GetTicksMsec()),
 			InputEventMouseButton mouseButton => impl.OnMouseButton(mouseButton, Time.GetTicksMsec()),
+			InputEventKey key => impl.OnKey(key, Time.GetTicksMsec()),
 			_ => false
 		};
 

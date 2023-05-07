@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Input;
 using Avalonia.Platform;
 
 namespace JLeb.Estragonia;
@@ -11,8 +12,10 @@ public static class AppBuilderExtensions {
 			.UseSkia()
 			.AfterPlatformServicesSetup(
 				_ => {
-					var platformGraphics = new GodotVkPlatformGraphics();
-					AvaloniaLocator.CurrentMutable.Bind<IPlatformGraphics>().ToConstant(platformGraphics);
+					var locator = AvaloniaLocator.CurrentMutable;
+					locator.Bind<IKeyboardDevice>().ToConstant(new KeyboardDevice());
+					locator.Bind<IMouseDevice>().ToConstant(new MouseDevice());
+					locator.Bind<IPlatformGraphics>().ToConstant(new GodotVkPlatformGraphics());
 				}
 			);
 

@@ -1,11 +1,18 @@
 ﻿{
 	"$schema": "http://json.schemastore.org/launchsettings.json",
 	"profiles": {
-		"HelloWorld": {
+		"Player": {
 			"commandName": "Executable",
 			"executablePath": "Godot",
 			"workingDirectory": "$(ProjectDir)",
 			"commandLineArgs": "--path $(ProjectDir)",
+			"nativeDebugging": true
+		},
+		"Editor": {
+			"commandName": "Executable",
+			"executablePath": "Godot",
+			"workingDirectory": "$(ProjectDir)",
+			"commandLineArgs": "--editor --path $(ProjectDir)",
 			"nativeDebugging": true
 		}
 	}

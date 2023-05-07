@@ -9,6 +9,7 @@ using Avalonia.Rendering;
 using Avalonia.Rendering.Composition;
 using Godot;
 using AvDispatcher = Avalonia.Threading.Dispatcher;
+using AvKey = Avalonia.Input.Key;
 using GdMouseButton = Godot.MouseButton;
 
 namespace JLeb.Estragonia;
@@ -16,16 +17,16 @@ namespace JLeb.Estragonia;
 /// <summary>Implementation of Avalonia <see cref="ITopLevelImpl"/> that renders to a Godot texture.</summary>
 internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
+	private readonly GodotVkPlatformGraphics _platformGraphics;
+	private readonly IKeyboardDevice _keyboardDevice;
+	private readonly IMouseDevice _mouseDevice;
 	private readonly Compositor _compositor;
-	private readonly MouseDevice _mouseDevice = new();
 
 	private GodotSkiaSurface? _surface;
 	private WindowTransparencyLevel _transparencyLevel = WindowTransparencyLevel.Transparent;
 	private Size _clientSize;
 	private IInputRoot? _inputRoot;
 	private bool _isDisposed;
-
-	public GodotVkPlatformGraphics PlatformGraphics { get; }
 
 	public ManualRenderTimer RenderTimer { get; }
 
@@ -79,8 +80,10 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	Action? ITopLevelImpl.LostFocus { get;set; }
 
-	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics) {
-		PlatformGraphics = platformGraphics;
+	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics, IKeyboardDevice keyboardDevice, IMouseDevice mouseDevice) {
+		_platformGraphics = platformGraphics;
+		_keyboardDevice = keyboardDevice;
+		_mouseDevice = mouseDevice;
 		RenderTimer = new ManualRenderTimer();
 		_compositor = new Compositor(new RenderLoop(RenderTimer, AvDispatcher.UIThread), platformGraphics);
 	}
@@ -88,7 +91,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	private GodotSkiaSurface CreateSurface()
 		=> _isDisposed
 			? throw new ObjectDisposedException(nameof(GodotTopLevelImpl))
-			: PlatformGraphics.GetSharedContext().CreateSurface(PixelSize.FromSize(_clientSize, RenderScaling));
+			: _platformGraphics.GetSharedContext().CreateSurface(PixelSize.FromSize(_clientSize, RenderScaling));
 
 	private GodotSkiaSurface GetOrCreateSurface()
 		=> _surface ??= CreateSurface();
@@ -104,10 +107,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 			return false;
 
 		var tilt = inputEvent.Tilt;
-		var modifiers = GetRawInputModifiers(inputEvent);
-
-		if (inputEvent.PenInverted)
-			modifiers |= RawInputModifiers.PenInverted;
 
 		var args = new RawPointerEventArgs(
 			_mouseDevice,
@@ -121,7 +120,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 				XTilt = tilt.X * 90.0f,
 				YTilt = tilt.Y * 90.0f
 			},
-			modifiers
+			GetRawInputModifiers(inputEvent)
 		);
 
 		input(args);
@@ -165,7 +164,38 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		return args.Handled;
 	}
 
-	private static RawInputModifiers GetRawInputModifiers(InputEventMouse inputEvent) {
+	public bool OnKey(InputEventKey inputEvent, ulong timestamp) {
+		if (_inputRoot is null || Input is not { } input)
+			return false;
+
+		var keyCode = inputEvent.Keycode;
+		var pressed = inputEvent.Pressed;
+
+		var key = keyCode.ToAvaloniaKey();
+		if (key != AvKey.None) {
+			var type = pressed ? RawKeyEventType.KeyDown : RawKeyEventType.KeyUp;
+			var args = new RawKeyEventArgs(_keyboardDevice, timestamp, _inputRoot, type, key, GetRawInputModifiers(inputEvent));
+
+			input(args);
+
+			if (args.Handled)
+				return true;
+		}
+
+		if (pressed && OS.IsKeycodeUnicode((long) keyCode)) {
+			var text = Char.ConvertFromUtf32((int) inputEvent.Unicode);
+			var args = new RawTextInputEventArgs(_keyboardDevice, timestamp, _inputRoot, text);
+
+			input(args);
+
+			if (args.Handled)
+				return true;
+		}
+
+		return false;
+	}
+
+	private static RawInputModifiers GetRawInputModifiers(InputEventWithModifiers inputEvent) {
 		var inputModifiers = RawInputModifiers.None;
 
 		if (inputEvent.AltPressed)
@@ -177,17 +207,22 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		if (inputEvent.MetaPressed)
 			inputModifiers |= RawInputModifiers.Meta;
 
-		var buttonMask = inputEvent.ButtonMask;
-		if ((buttonMask & MouseButtonMask.Left) != 0)
-			inputModifiers |= RawInputModifiers.LeftMouseButton;
-		if ((buttonMask & MouseButtonMask.Right) != 0)
-			inputModifiers |= RawInputModifiers.RightMouseButton;
-		if ((buttonMask & MouseButtonMask.Middle) != 0)
-			inputModifiers |= RawInputModifiers.MiddleMouseButton;
-		if ((buttonMask & MouseButtonMask.MbXbutton1) != 0)
-			inputModifiers |= RawInputModifiers.XButton1MouseButton;
-		if ((buttonMask & MouseButtonMask.MbXbutton2) != 0)
-			inputModifiers |= RawInputModifiers.XButton2MouseButton;
+		if (inputEvent is InputEventMouse inputEventMouse) {
+			var buttonMask = inputEventMouse.ButtonMask;
+			if ((buttonMask & MouseButtonMask.Left) != 0)
+				inputModifiers |= RawInputModifiers.LeftMouseButton;
+			if ((buttonMask & MouseButtonMask.Right) != 0)
+				inputModifiers |= RawInputModifiers.RightMouseButton;
+			if ((buttonMask & MouseButtonMask.Middle) != 0)
+				inputModifiers |= RawInputModifiers.MiddleMouseButton;
+			if ((buttonMask & MouseButtonMask.MbXbutton1) != 0)
+				inputModifiers |= RawInputModifiers.XButton1MouseButton;
+			if ((buttonMask & MouseButtonMask.MbXbutton2) != 0)
+				inputModifiers |= RawInputModifiers.XButton2MouseButton;
+
+			if (inputEventMouse is InputEventMouseMotion { PenInverted: true })
+				inputModifiers |= RawInputModifiers.PenInverted;
+		}
 
 		return inputModifiers;
 	}
