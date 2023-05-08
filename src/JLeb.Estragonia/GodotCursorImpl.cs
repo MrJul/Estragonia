@@ -11,6 +11,9 @@ internal sealed class GodotStandardCursorImpl : ICursorImpl {
 	public GodotStandardCursorImpl(GdCursorShape cursorShape)
 		=> CursorShape = cursorShape;
 
+	public override string ToString()
+		=> CursorShape.ToString();
+
 	public void Dispose() {
 	}
 

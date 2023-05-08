@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
 using Avalonia.Platform;
 using Avalonia.Rendering;
@@ -21,6 +22,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	private readonly GodotVkPlatformGraphics _platformGraphics;
 	private readonly IKeyboardDevice _keyboardDevice;
 	private readonly IMouseDevice _mouseDevice;
+	private readonly IClipboard _clipboard;
 	private readonly Compositor _compositor;
 
 	private GodotSkiaSurface? _surface;
@@ -56,7 +58,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		}
 	}
 
-	public Action<Size, PlatformResizeReason>? Resized { get;set; }
+	public Action<Size, PlatformResizeReason>? Resized { get; set; }
 
 	public Action? Closed { get; set; }
 
@@ -84,10 +86,16 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
 
-	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics, IKeyboardDevice keyboardDevice, IMouseDevice mouseDevice) {
+	public GodotTopLevelImpl(
+		GodotVkPlatformGraphics platformGraphics,
+		IKeyboardDevice keyboardDevice,
+		IMouseDevice mouseDevice,
+		IClipboard clipboard
+	) {
 		_platformGraphics = platformGraphics;
 		_keyboardDevice = keyboardDevice;
 		_mouseDevice = mouseDevice;
+		_clipboard = clipboard;
 		RenderTimer = new ManualRenderTimer();
 		_compositor = new Compositor(new RenderLoop(RenderTimer, AvDispatcher.UIThread), platformGraphics);
 	}
@@ -272,8 +280,12 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	void ITopLevelImpl.SetFrameThemeVariant(PlatformThemeVariant themeVariant) {
 	}
 
-	object? IOptionalFeatureProvider.TryGetFeature(Type featureType)
-		=> null;
+	object? IOptionalFeatureProvider.TryGetFeature(Type featureType) {
+		if (featureType == typeof(IClipboard))
+			return _clipboard;
+
+		return null;
+	}
 
 	public void Dispose() {
 		if (_isDisposed)

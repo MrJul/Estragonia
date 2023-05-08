@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Platform;
 using Godot;
 using Godot.NativeInterop;
@@ -86,8 +87,9 @@ public class AvaloniaControl : GdControl {
 
 		var keyboardDevice = locator.GetRequiredService<IKeyboardDevice>();
 		var mouseDevice = locator.GetRequiredService<IMouseDevice>();
+		var clipboard = locator.GetRequiredService<IClipboard>();
 
-		var topLevelImpl = new GodotTopLevelImpl(graphics, keyboardDevice, mouseDevice) {
+		var topLevelImpl = new GodotTopLevelImpl(graphics, keyboardDevice, mouseDevice, clipboard) {
 			ClientSize = Size.ToAvaloniaSize(),
 			CursorChanged = OnAvaloniaCursorChanged
 		};
