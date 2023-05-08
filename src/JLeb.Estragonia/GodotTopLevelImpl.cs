@@ -60,6 +60,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Action<RawInputEventArgs>? Input { get; set; }
 
+	public Action? LostFocus { get;set; }
+
 	IEnumerable<object> ITopLevelImpl.Surfaces
 		=> GetOrCreateSurfaces();
 
@@ -77,8 +79,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	Action<double>? ITopLevelImpl.ScalingChanged { get; set; }
 
 	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
-
-	Action? ITopLevelImpl.LostFocus { get;set; }
 
 	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics, IKeyboardDevice keyboardDevice, IMouseDevice mouseDevice) {
 		_platformGraphics = platformGraphics;
@@ -226,6 +226,9 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 		return inputModifiers;
 	}
+
+	public void OnLostFocus()
+		=> LostFocus?.Invoke();
 
 	IRenderer ITopLevelImpl.CreateRenderer(IRenderRoot root)
 		=> new CompositingRenderer(root, _compositor, GetOrCreateSurfaces);

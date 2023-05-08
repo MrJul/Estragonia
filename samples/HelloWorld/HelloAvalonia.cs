@@ -1,5 +1,4 @@
 using Avalonia;
-using Godot;
 using JLeb.Estragonia;
 
 namespace HelloWorld;
@@ -7,7 +6,7 @@ namespace HelloWorld;
 public partial class HelloAvalonia : AvaloniaControl {
 
 	public override void _Ready() {
-		(GetViewport() as Window)?.SetImeActive(true);
+		GetWindow().SetImeActive(true);
 
 		AppBuilder.Configure<App>()
 			.UseWin32() // TODO: remove this, implement all needed services

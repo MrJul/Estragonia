@@ -100,13 +100,15 @@ public class AvaloniaControl : GdControl {
 		_topLevel.Prepare();
 		_topLevel.Renderer.Start();
 
-		Resized += OnSizeChanged;
+		Resized += OnResized;
+		FocusEntered += OnFocusEntered;
+		FocusExited += OnFocusExited;
 	}
 
 	public override void _Process(double delta)
 		=> _topLevel?.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
 
-	private void OnSizeChanged() {
+	private void OnResized() {
 		if (_topLevel is null)
 			return;
 
@@ -116,6 +118,19 @@ public class AvaloniaControl : GdControl {
 		_topLevel.Arrange(new Rect(size));
 	}
 
+	private void OnFocusEntered() {
+		if (_topLevel is null)
+			return;
+
+		_topLevel.Focus();
+
+		if (KeyboardNavigationHandler.GetNext(_topLevel, NavigationDirection.Next) is { } inputElement)
+			FocusManager.Instance?.Focus(inputElement, NavigationMethod.Tab);
+	}
+
+	private void OnFocusExited()
+		=> _topLevel?.Impl.OnLostFocus();
+
 	public override void _Draw() {
 		if (_topLevel is null)
 			return;
@@ -124,19 +139,42 @@ public class AvaloniaControl : GdControl {
 		DrawTexture(_topLevel.Impl.GetTexture(), Vector2.Zero);
 	}
 
-	public override void _GuiInput(InputEvent @event) {
+	public override void _GuiInput(InputEvent inputEvent) {
 		if (_topLevel is null)
 			return;
 
-		var handled = @event switch {
-			InputEventMouseMotion mouseMotion => _topLevel.Impl.OnMouseMotion(mouseMotion, Time.GetTicksMsec()),
-			InputEventMouseButton mouseButton => _topLevel.Impl.OnMouseButton(mouseButton, Time.GetTicksMsec()),
-			InputEventKey key => _topLevel.Impl.OnKey(key, Time.GetTicksMsec()),
+		if (TryHandleInput(_topLevel.Impl, inputEvent) || TryHandleAction(inputEvent))
+			AcceptEvent();
+	}
+
+	private static bool TryHandleAction(InputEvent inputEvent) {
+		if (!inputEvent.IsActionType())
+			return false;
+
+		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIFocusNext, true, true))
+			return TryFocusNext(NavigationDirection.Next);
+
+		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIFocusPrev, true, true))
+			return TryFocusNext(NavigationDirection.Previous);
+
+		return false;
+	}
+
+	private static bool TryHandleInput(GodotTopLevelImpl impl, InputEvent inputEvent)
+		=> inputEvent switch {
+			InputEventMouseMotion mouseMotion => impl.OnMouseMotion(mouseMotion, Time.GetTicksMsec()),
+			InputEventMouseButton mouseButton => impl.OnMouseButton(mouseButton, Time.GetTicksMsec()),
+			InputEventKey key => impl.OnKey(key, Time.GetTicksMsec()),
 			_ => false
 		};
 
-		if (handled)
-			GetViewport().SetInputAsHandled();
+	private static bool TryFocusNext(NavigationDirection direction) {
+		if (FocusManager.Instance is not { Current: { } currentElement } focusManager)
+			return false;
+
+		var nextElement = KeyboardNavigationHandler.GetNext(currentElement, direction);
+		focusManager.Focus(nextElement, NavigationMethod.Tab);
+		return nextElement is not null;
 	}
 
 	protected override void Dispose(bool disposing) {
@@ -149,6 +187,10 @@ public class AvaloniaControl : GdControl {
 			_topLevel.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
 
 			_topLevel = null;
+
+			Resized -= OnResized;
+			FocusEntered -= OnFocusEntered;
+			FocusExited -= OnFocusExited;
 		}
 
 		base.Dispose(disposing);
