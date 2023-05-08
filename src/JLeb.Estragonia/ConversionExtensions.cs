@@ -1,7 +1,9 @@
 ﻿using Avalonia;
+using Avalonia.Input;
 using Godot;
 using Godot.Collections;
 using AvKey = Avalonia.Input.Key;
+using GdCursorShape = Godot.Control.CursorShape;
 using GdKey = Godot.Key;
 
 namespace JLeb.Estragonia;
@@ -133,8 +135,33 @@ public static class ConversionExtensions {
 		[GdKey.Backslash] = AvKey.Oem5,
 		[GdKey.Bracketright] = AvKey.Oem6,
 		[GdKey.Apostrophe] = AvKey.Oem7,
-		[GdKey.Bar] = AvKey.Oem102,
-		[GdKey.Help] = AvKey.Help
+		[GdKey.Bar] = AvKey.Oem102
+	};
+
+	private static readonly Dictionary<StandardCursorType, GdCursorShape> s_cursorMap = new() {
+		[StandardCursorType.Arrow] = GdCursorShape.Arrow,
+		[StandardCursorType.Ibeam] = GdCursorShape.Ibeam,
+		[StandardCursorType.Wait] = GdCursorShape.Wait,
+		[StandardCursorType.Cross] = GdCursorShape.Cross,
+		[StandardCursorType.UpArrow] = GdCursorShape.Arrow,
+		[StandardCursorType.SizeWestEast] = GdCursorShape.Hsize,
+		[StandardCursorType.SizeNorthSouth] = GdCursorShape.Vsize,
+		[StandardCursorType.SizeAll] = GdCursorShape.Drag,
+		[StandardCursorType.No] = GdCursorShape.Forbidden,
+		[StandardCursorType.Hand] = GdCursorShape.PointingHand,
+		[StandardCursorType.AppStarting] = GdCursorShape.Busy,
+		[StandardCursorType.Help] = GdCursorShape.Help,
+		[StandardCursorType.TopSide] = GdCursorShape.Vsize,
+		[StandardCursorType.BottomSide] = GdCursorShape.Vsize,
+		[StandardCursorType.LeftSide] = GdCursorShape.Hsize,
+		[StandardCursorType.RightSide] = GdCursorShape.Hsize,
+		[StandardCursorType.TopLeftCorner] = GdCursorShape.Fdiagsize,
+		[StandardCursorType.TopRightCorner] = GdCursorShape.Bdiagsize,
+		[StandardCursorType.BottomLeftCorner] = GdCursorShape.Bdiagsize,
+		[StandardCursorType.BottomRightCorner] = GdCursorShape.Fdiagsize,
+		[StandardCursorType.DragMove] = GdCursorShape.Drag,
+		[StandardCursorType.DragCopy] = GdCursorShape.Drag,
+		[StandardCursorType.DragLink] = GdCursorShape.Drag
 	};
 
 	public static AvKey ToAvaloniaKey(this GdKey source)
@@ -145,5 +172,8 @@ public static class ConversionExtensions {
 
 	public static Point ToAvaloniaPoint(this Vector2 source)
 		=> new(source.X, source.Y);
+
+	public static GdCursorShape ToGodotCursorShape(this StandardCursorType source)
+		=> s_cursorMap.TryGetValue(source, out var result) ? result : GdCursorShape.Arrow;
 
 }

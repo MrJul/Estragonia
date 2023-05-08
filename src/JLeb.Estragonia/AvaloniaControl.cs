@@ -88,7 +88,8 @@ public class AvaloniaControl : GdControl {
 		var mouseDevice = locator.GetRequiredService<IMouseDevice>();
 
 		var topLevelImpl = new GodotTopLevelImpl(graphics, keyboardDevice, mouseDevice) {
-			ClientSize = Size.ToAvaloniaSize()
+			ClientSize = Size.ToAvaloniaSize(),
+			CursorChanged = OnAvaloniaCursorChanged
 		};
 
 		_topLevel = new GodotTopLevel(topLevelImpl) {
@@ -107,6 +108,9 @@ public class AvaloniaControl : GdControl {
 
 	public override void _Process(double delta)
 		=> _topLevel?.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
+
+	private void OnAvaloniaCursorChanged(CursorShape cursor)
+		=> MouseDefaultCursorShape = cursor;
 
 	private void OnResized() {
 		if (_topLevel is null)

@@ -52,7 +52,13 @@
 		<Border Width="100" Height="40" Classes="foo" />
 
 		<Border Background="Chocolate" Margin="8">
-			<Button Margin="16" Content="Click me!" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_OnClick" />
+			<Button
+				Content="Click me!"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				Margin="16"
+				Cursor="Hand"
+				Click="Button_OnClick" />
 		</Border>
 
 		<TextBox

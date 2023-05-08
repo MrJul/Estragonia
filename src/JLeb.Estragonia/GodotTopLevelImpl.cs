@@ -10,6 +10,7 @@ using Avalonia.Rendering.Composition;
 using Godot;
 using AvDispatcher = Avalonia.Threading.Dispatcher;
 using AvKey = Avalonia.Input.Key;
+using GdCursorShape = Godot.Control.CursorShape;
 using GdMouseButton = Godot.MouseButton;
 
 namespace JLeb.Estragonia;
@@ -26,6 +27,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	private WindowTransparencyLevel _transparencyLevel = WindowTransparencyLevel.Transparent;
 	private Size _clientSize;
 	private IInputRoot? _inputRoot;
+	private GdCursorShape _cursorShape;
 	private bool _isDisposed;
 
 	public ManualRenderTimer RenderTimer { get; }
@@ -61,6 +63,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	public Action<RawInputEventArgs>? Input { get; set; }
 
 	public Action? LostFocus { get;set; }
+
+	public Action<GdCursorShape>? CursorChanged { get; set; }
 
 	IEnumerable<object> ITopLevelImpl.Surfaces
 		=> GetOrCreateSurfaces();
@@ -243,6 +247,12 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		=> PixelPoint.FromPoint(point, RenderScaling);
 
 	void ITopLevelImpl.SetCursor(ICursorImpl? cursor) {
+		var cursorShape = (cursor as GodotStandardCursorImpl)?.CursorShape ?? GdCursorShape.Arrow;
+		if (_cursorShape == cursorShape)
+			return;
+
+		_cursorShape = cursorShape;
+		CursorChanged?.Invoke(cursorShape);
 	}
 
 	IPopupImpl? ITopLevelImpl.CreatePopup()
