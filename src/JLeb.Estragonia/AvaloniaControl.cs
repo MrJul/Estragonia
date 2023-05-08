@@ -11,11 +11,13 @@ using GdControl = Godot.Control;
 
 namespace JLeb.Estragonia;
 
+/// <summary>Renders an Avalonia control and forwards input to it.</summary>
 public class AvaloniaControl : GdControl {
 
 	private AvControl? _control;
 	private GodotTopLevel? _topLevel;
 
+	/// <summary>Gets or sets the underlying Avalonia control that will be rendered.</summary>
 	public AvControl? Control {
 		get => _control;
 		set {
@@ -29,6 +31,9 @@ public class AvaloniaControl : GdControl {
 		}
 	}
 
+	/// <summary>Gets the underlying texture where <see cref="Control"/> is rendered.</summary>
+	/// <returns>A texture.</returns>
+	/// <exception cref="InvalidOperationException">Thrown if the control isn't ready or has been disposed.</exception>
 	public Texture2D GetTexture()
 		=> _topLevel is null
 			? throw new InvalidOperationException($"The {nameof(AvaloniaControl)} isn't initialized")
@@ -123,17 +128,16 @@ public class AvaloniaControl : GdControl {
 		if (_topLevel is null)
 			return;
 
-		if (TryHandleInput(_topLevel.Impl, @event))
-			GetViewport().SetInputAsHandled();
-	}
-
-	private static bool TryHandleInput(GodotTopLevelImpl impl, InputEvent inputEvent)
-		=> inputEvent switch {
-			InputEventMouseMotion mouseMotion => impl.OnMouseMotion(mouseMotion, Time.GetTicksMsec()),
-			InputEventMouseButton mouseButton => impl.OnMouseButton(mouseButton, Time.GetTicksMsec()),
-			InputEventKey key => impl.OnKey(key, Time.GetTicksMsec()),
+		var handled = @event switch {
+			InputEventMouseMotion mouseMotion => _topLevel.Impl.OnMouseMotion(mouseMotion, Time.GetTicksMsec()),
+			InputEventMouseButton mouseButton => _topLevel.Impl.OnMouseButton(mouseButton, Time.GetTicksMsec()),
+			InputEventKey key => _topLevel.Impl.OnKey(key, Time.GetTicksMsec()),
 			_ => false
 		};
+
+		if (handled)
+			GetViewport().SetInputAsHandled();
+	}
 
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {
