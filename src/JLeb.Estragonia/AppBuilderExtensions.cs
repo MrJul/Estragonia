@@ -17,6 +17,7 @@ public static class AppBuilderExtensions {
 					.Bind<ICursorFactory>().ToConstant(new GodotCursorFactory())
 					.Bind<IKeyboardDevice>().ToConstant(new KeyboardDevice())
 					.Bind<IMouseDevice>().ToConstant(new MouseDevice())
+					.Bind<IPlatformIconLoader>().ToConstant(new StubPlatformIconLoader())
 					.Bind<IPlatformGraphics>().ToConstant(new GodotVkPlatformGraphics())
 					.Bind<IPlatformSettings>().ToConstant(new GodotPlatformSettings())
 			)
