@@ -72,6 +72,7 @@ public class AvaloniaControl : GdControl {
 		=> method == Node.MethodName._Ready
 			|| method == Node.MethodName._Process
 			|| method == CanvasItem.MethodName._Draw
+			|| method == MethodName._GuiInput
 			|| base.HasGodotClassMethod(method);
 
 	public override void _Ready() {

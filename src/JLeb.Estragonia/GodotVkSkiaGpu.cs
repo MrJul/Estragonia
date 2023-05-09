@@ -18,7 +18,7 @@ namespace JLeb.Estragonia;
 /// <summary>Bridges the Godot Vulkan renderer with a Skia context used by Avalonia.</summary>
 internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 
-	private static int _createdSurfaceCount;
+	private static int s_createdSurfaceCount;
 
 	private readonly GRContext _grContext;
 	private readonly uint _queueFamilyIndex;
@@ -86,7 +86,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 
 	public GodotSkiaSurface CreateSurface(PixelSize size) {
 		size = new PixelSize(Math.Max(size.Width, 1), Math.Max(size.Height, 1));
-		var number = Interlocked.Increment(ref _createdSurfaceCount);
+		var number = Interlocked.Increment(ref s_createdSurfaceCount);
 
 		var gdViewport = new SubViewport {
 			RenderTargetClearMode = SubViewport.ClearMode.Never,
