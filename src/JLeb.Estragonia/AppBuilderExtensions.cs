@@ -18,6 +18,7 @@ public static class AppBuilderExtensions {
 					.Bind<IKeyboardDevice>().ToConstant(new KeyboardDevice())
 					.Bind<IMouseDevice>().ToConstant(new MouseDevice())
 					.Bind<IPlatformGraphics>().ToConstant(new GodotVkPlatformGraphics())
+					.Bind<IPlatformSettings>().ToConstant(new GodotPlatformSettings())
 			)
 			.AfterSetup(_ =>
 				AvaloniaLocator.CurrentMutable

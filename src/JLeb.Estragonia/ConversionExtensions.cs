@@ -2,8 +2,10 @@
 using Avalonia.Input;
 using Godot;
 using Godot.Collections;
+using AvColor = Avalonia.Media.Color;
 using AvKey = Avalonia.Input.Key;
 using GdCursorShape = Godot.Control.CursorShape;
+using GdColor = Godot.Color;
 using GdKey = Godot.Key;
 
 namespace JLeb.Estragonia;
@@ -172,6 +174,9 @@ public static class ConversionExtensions {
 
 	public static Point ToAvaloniaPoint(this Vector2 source)
 		=> new(source.X, source.Y);
+
+	public static AvColor ToAvaloniaColor(this GdColor source)
+		=> new((byte) source.A8, (byte) source.R8, (byte) source.G8, (byte) source.B8);
 
 	public static GdCursorShape ToGodotCursorShape(this StandardCursorType source)
 		=> s_cursorMap.TryGetValue(source, out var result) ? result : GdCursorShape.Arrow;
