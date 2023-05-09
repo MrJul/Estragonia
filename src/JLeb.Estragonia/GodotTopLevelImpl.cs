@@ -12,6 +12,8 @@ using Godot;
 using AvDispatcher = Avalonia.Threading.Dispatcher;
 using AvKey = Avalonia.Input.Key;
 using GdCursorShape = Godot.Control.CursorShape;
+using GdInput = Godot.Input;
+using GdKey = Godot.Key;
 using GdMouseButton = Godot.MouseButton;
 
 namespace JLeb.Estragonia;
@@ -241,6 +243,35 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public void OnLostFocus()
 		=> LostFocus?.Invoke();
+
+
+	public bool OnMouseExited(ulong timestamp) {
+		if (_inputRoot is null || Input is not { } input)
+			return false;
+
+		var inputModifiers = RawInputModifiers.None;
+		if (GdInput.IsKeyPressed(GdKey.Alt))
+			inputModifiers |= RawInputModifiers.Alt;
+		if (GdInput.IsKeyPressed(GdKey.Ctrl))
+			inputModifiers |= RawInputModifiers.Control;
+		if (GdInput.IsKeyPressed(GdKey.Shift))
+			inputModifiers |= RawInputModifiers.Shift;
+		if (GdInput.IsKeyPressed(GdKey.Meta))
+			inputModifiers |= RawInputModifiers.Meta;
+
+		var args = new RawPointerEventArgs(
+			_mouseDevice,
+			timestamp,
+			_inputRoot,
+			RawPointerEventType.LeaveWindow,
+			new Point(-1, -1),
+			inputModifiers
+		);
+
+		input(args);
+
+		return args.Handled;
+	}
 
 	IRenderer ITopLevelImpl.CreateRenderer(IRenderRoot root)
 		=> new CompositingRenderer(root, _compositor, GetOrCreateSurfaces);

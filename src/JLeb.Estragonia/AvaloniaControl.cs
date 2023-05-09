@@ -106,6 +106,7 @@ public class AvaloniaControl : GdControl {
 		Resized += OnResized;
 		FocusEntered += OnFocusEntered;
 		FocusExited += OnFocusExited;
+		MouseExited += OnMouseExited;
 	}
 
 	public override void _Process(double delta)
@@ -183,6 +184,9 @@ public class AvaloniaControl : GdControl {
 		return nextElement is not null;
 	}
 
+	private void OnMouseExited()
+		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
+
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {
 			_topLevel.Dispose();
@@ -192,11 +196,12 @@ public class AvaloniaControl : GdControl {
 			AvDispatcher.UIThread.RunJobs();
 			_topLevel.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
 
-			_topLevel = null;
-
 			Resized -= OnResized;
 			FocusEntered -= OnFocusEntered;
 			FocusExited -= OnFocusExited;
+			MouseExited -= OnMouseExited;
+
+			_topLevel = null;
 		}
 
 		base.Dispose(disposing);
