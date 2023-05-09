@@ -148,11 +148,11 @@ public class AvaloniaControl : GdControl {
 		DrawTexture(_topLevel.Impl.GetTexture(), Vector2.Zero);
 	}
 
-	public override void _GuiInput(InputEvent inputEvent) {
+	public override void _GuiInput(InputEvent @event) {
 		if (_topLevel is null)
 			return;
 
-		if (TryHandleInput(_topLevel.Impl, inputEvent) || TryHandleAction(inputEvent))
+		if (TryHandleInput(_topLevel.Impl, @event) || TryHandleAction(@event))
 			AcceptEvent();
 	}
 

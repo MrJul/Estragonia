@@ -5,6 +5,7 @@
 		<EnableDynamicLoading>true</EnableDynamicLoading>
 		<Nullable>enable</Nullable>
 		<LangVersion>11.0</LangVersion>
+		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
 
 	<ItemGroup>

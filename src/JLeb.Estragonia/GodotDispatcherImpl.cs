@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Avalonia.Threading;
 using Godot;
@@ -8,6 +9,11 @@ using SysTimer = System.Threading.Timer;
 namespace JLeb.Estragonia;
 
 /// <summary>An implementation of <see cref="IDispatcherImpl"/> that uses the underlying Godot dispatcher.</summary>
+[SuppressMessage(
+	"Design",
+	"CA1001:Types that own disposable fields should be disposable",
+	Justification = "This type has equivalent to a static lifetime"
+)]
 internal sealed class GodotDispatcherImpl : IDispatcherImpl {
 
 	private readonly Thread _mainThread;
