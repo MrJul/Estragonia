@@ -26,6 +26,8 @@ internal static class GodotPlatform {
 		=> throw new InvalidOperationException($"{nameof(GodotPlatform)} hasn't been initialized");
 
 	public static void Initialize() {
+		AvaloniaSynchronizationContext.AutoInstall = false; // Godot has its own sync context, don't replace it
+
 		var platformGraphics = new GodotVkPlatformGraphics();
 
 		AvaloniaLocator.CurrentMutable
