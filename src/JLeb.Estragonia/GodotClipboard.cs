@@ -10,10 +10,12 @@ namespace JLeb.Estragonia;
 internal sealed class GodotClipboard : IClipboard {
 
 	public Task<string?> GetTextAsync()
-		=> Task.Run<string?>(DisplayServer.ClipboardGet);
+		=> Task.FromResult<string?>(DisplayServer.ClipboardGet());
 
-	public Task SetTextAsync(string? text)
-		=> Task.Run(() => DisplayServer.ClipboardSet(text));
+	public Task SetTextAsync(string? text) {
+		DisplayServer.ClipboardSet(text);
+		return Task.CompletedTask;
+	}
 
 	public Task ClearAsync()
 		=> SetTextAsync(String.Empty);

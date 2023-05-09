@@ -89,8 +89,9 @@ public class AvaloniaControl : GdControl {
 		var keyboardDevice = locator.GetRequiredService<IKeyboardDevice>();
 		var mouseDevice = locator.GetRequiredService<IMouseDevice>();
 		var clipboard = locator.GetRequiredService<IClipboard>();
+		var compositor = GodotPlatform.Compositor;
 
-		var topLevelImpl = new GodotTopLevelImpl(graphics, keyboardDevice, mouseDevice, clipboard) {
+		var topLevelImpl = new GodotTopLevelImpl(graphics, keyboardDevice, mouseDevice, clipboard, compositor) {
 			ClientSize = Size.ToAvaloniaSize(),
 			CursorChanged = OnAvaloniaCursorChanged
 		};
@@ -111,7 +112,7 @@ public class AvaloniaControl : GdControl {
 	}
 
 	public override void _Process(double delta)
-		=> _topLevel?.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
+		=> GodotPlatform.TriggerRenderTick();
 
 	private void OnAvaloniaCursorChanged(CursorShape cursor)
 		=> MouseDefaultCursorShape = cursor;
@@ -143,7 +144,7 @@ public class AvaloniaControl : GdControl {
 		if (_topLevel is null)
 			return;
 
-		_topLevel.Renderer.Paint(new Rect(Size.ToAvaloniaSize()));
+		_topLevel.Impl.OnDraw(new Rect(Size.ToAvaloniaSize()));
 		DrawTexture(_topLevel.Impl.GetTexture(), Vector2.Zero);
 	}
 
@@ -190,12 +191,9 @@ public class AvaloniaControl : GdControl {
 
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {
-			_topLevel.Dispose();
 
-			// ensure the underlying Avalonia compositor render target is disposed
-			// shouldn't be needed anymore if https://github.com/AvaloniaUI/Avalonia/pull/11262/ is merged
-			AvDispatcher.UIThread.RunJobs();
-			_topLevel.Impl.RenderTimer.TriggerTick(new TimeSpan((long) (Time.GetTicksUsec() * 10UL)));
+			// Currently leaks the ServerCompositionTarget, see https://github.com/AvaloniaUI/Avalonia/pull/11262/
+			_topLevel.Dispose();
 
 			Resized -= OnResized;
 			FocusEntered -= OnFocusEntered;

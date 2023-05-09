@@ -34,8 +34,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	private GdCursorShape _cursorShape;
 	private bool _isDisposed;
 
-	public ManualRenderTimer RenderTimer { get; }
-
 	public double RenderScaling
 		=> 1.0;
 
@@ -60,6 +58,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		}
 	}
 
+	public Action<Rect>? Paint { get; set; }
+
 	public Action<Size, PlatformResizeReason>? Resized { get; set; }
 
 	public Action? Closed { get; set; }
@@ -82,8 +82,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	Size? ITopLevelImpl.FrameSize
 		=> null;
 
-	Action<Rect>? ITopLevelImpl.Paint { get; set; }
-
 	Action<double>? ITopLevelImpl.ScalingChanged { get; set; }
 
 	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
@@ -92,14 +90,14 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		GodotVkPlatformGraphics platformGraphics,
 		IKeyboardDevice keyboardDevice,
 		IMouseDevice mouseDevice,
-		IClipboard clipboard
+		IClipboard clipboard,
+		Compositor compositor
 	) {
 		_platformGraphics = platformGraphics;
 		_keyboardDevice = keyboardDevice;
 		_mouseDevice = mouseDevice;
 		_clipboard = clipboard;
-		RenderTimer = new ManualRenderTimer();
-		_compositor = new Compositor(new RenderLoop(RenderTimer, AvDispatcher.UIThread), platformGraphics);
+		_compositor = compositor;
 	}
 
 	private GodotSkiaSurface CreateSurface()
@@ -115,6 +113,9 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Texture2D GetTexture()
 		=> GetOrCreateSurface().GdTexture;
+
+	public void OnDraw(Rect rect)
+		=> Paint?.Invoke(rect);
 
 	public bool OnMouseMotion(InputEventMouseMotion inputEvent, ulong timestamp) {
 		if (_inputRoot is null || Input is not { } input)

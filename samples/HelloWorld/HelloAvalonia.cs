@@ -9,7 +9,6 @@ public partial class HelloAvalonia : AvaloniaControl {
 		GetWindow().SetImeActive(true);
 
 		AppBuilder.Configure<App>()
-			.UseWin32() // TODO: remove this, implement all needed services
 			.UseGodot()
 			.SetupWithoutStarting();
 
