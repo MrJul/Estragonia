@@ -12,8 +12,6 @@ using Godot;
 using AvDispatcher = Avalonia.Threading.Dispatcher;
 using AvKey = Avalonia.Input.Key;
 using GdCursorShape = Godot.Control.CursorShape;
-using GdInput = Godot.Input;
-using GdKey = Godot.Key;
 using GdMouseButton = Godot.MouseButton;
 
 namespace JLeb.Estragonia;
@@ -135,7 +133,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 				XTilt = tilt.X * 90.0f,
 				YTilt = tilt.Y * 90.0f
 			},
-			GetRawInputModifiers(inputEvent)
+			inputEvent.GetRawInputModifiers()
 		);
 
 		input(args);
@@ -148,10 +146,10 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 			return false;
 
 		RawPointerEventArgs CreateButtonArgs(RawPointerEventType type)
-			=> new(_mouseDevice, timestamp, _inputRoot, type, inputEvent.Position.ToAvaloniaPoint(), GetRawInputModifiers(inputEvent));
+			=> new(_mouseDevice, timestamp, _inputRoot, type, inputEvent.Position.ToAvaloniaPoint(), inputEvent.GetRawInputModifiers());
 
 		RawMouseWheelEventArgs CreateWheelArgs(Vector delta)
-			=> new(_mouseDevice, timestamp, _inputRoot, inputEvent.Position.ToAvaloniaPoint(), delta, GetRawInputModifiers(inputEvent));
+			=> new(_mouseDevice, timestamp, _inputRoot, inputEvent.Position.ToAvaloniaPoint(), delta, inputEvent.GetRawInputModifiers());
 
 		var args = (inputEvent.ButtonIndex, inputEvent.Pressed) switch {
 			(GdMouseButton.Left, true) => CreateButtonArgs(RawPointerEventType.LeftButtonDown),
@@ -189,7 +187,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		var key = keyCode.ToAvaloniaKey();
 		if (key != AvKey.None) {
 			var type = pressed ? RawKeyEventType.KeyDown : RawKeyEventType.KeyUp;
-			var args = new RawKeyEventArgs(_keyboardDevice, timestamp, _inputRoot, type, key, GetRawInputModifiers(inputEvent));
+			var args = new RawKeyEventArgs(_keyboardDevice, timestamp, _inputRoot, type, key, inputEvent.GetRawInputModifiers());
 
 			input(args);
 
@@ -210,38 +208,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		return false;
 	}
 
-	private static RawInputModifiers GetRawInputModifiers(InputEventWithModifiers inputEvent) {
-		var inputModifiers = RawInputModifiers.None;
-
-		if (inputEvent.AltPressed)
-			inputModifiers |= RawInputModifiers.Alt;
-		if (inputEvent.CtrlPressed)
-			inputModifiers |= RawInputModifiers.Control;
-		if (inputEvent.ShiftPressed)
-			inputModifiers |= RawInputModifiers.Shift;
-		if (inputEvent.MetaPressed)
-			inputModifiers |= RawInputModifiers.Meta;
-
-		if (inputEvent is InputEventMouse inputEventMouse) {
-			var buttonMask = inputEventMouse.ButtonMask;
-			if ((buttonMask & MouseButtonMask.Left) != 0)
-				inputModifiers |= RawInputModifiers.LeftMouseButton;
-			if ((buttonMask & MouseButtonMask.Right) != 0)
-				inputModifiers |= RawInputModifiers.RightMouseButton;
-			if ((buttonMask & MouseButtonMask.Middle) != 0)
-				inputModifiers |= RawInputModifiers.MiddleMouseButton;
-			if ((buttonMask & MouseButtonMask.MbXbutton1) != 0)
-				inputModifiers |= RawInputModifiers.XButton1MouseButton;
-			if ((buttonMask & MouseButtonMask.MbXbutton2) != 0)
-				inputModifiers |= RawInputModifiers.XButton2MouseButton;
-
-			if (inputEventMouse is InputEventMouseMotion { PenInverted: true })
-				inputModifiers |= RawInputModifiers.PenInverted;
-		}
-
-		return inputModifiers;
-	}
-
 	public void OnLostFocus()
 		=> LostFocus?.Invoke();
 
@@ -250,23 +216,13 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		if (_inputRoot is null || Input is not { } input)
 			return false;
 
-		var inputModifiers = RawInputModifiers.None;
-		if (GdInput.IsKeyPressed(GdKey.Alt))
-			inputModifiers |= RawInputModifiers.Alt;
-		if (GdInput.IsKeyPressed(GdKey.Ctrl))
-			inputModifiers |= RawInputModifiers.Control;
-		if (GdInput.IsKeyPressed(GdKey.Shift))
-			inputModifiers |= RawInputModifiers.Shift;
-		if (GdInput.IsKeyPressed(GdKey.Meta))
-			inputModifiers |= RawInputModifiers.Meta;
-
 		var args = new RawPointerEventArgs(
 			_mouseDevice,
 			timestamp,
 			_inputRoot,
 			RawPointerEventType.LeaveWindow,
 			new Point(-1, -1),
-			inputModifiers
+			InputModifiersProvider.GetRawInputModifiers()
 		);
 
 		input(args);

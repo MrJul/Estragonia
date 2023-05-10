@@ -1,9 +1,11 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Platform;
+using Avalonia.VisualTree;
 using Godot;
 using Godot.NativeInterop;
 using AvControl = Avalonia.Controls.Control;
@@ -161,10 +163,22 @@ public class AvaloniaControl : GdControl {
 			return false;
 
 		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIFocusNext, true, true))
-			return TryFocusNext(NavigationDirection.Next);
+			return TryFocusTab(NavigationDirection.Next, inputEvent);
 
 		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIFocusPrev, true, true))
-			return TryFocusNext(NavigationDirection.Previous);
+			return TryFocusTab(NavigationDirection.Previous, inputEvent);
+
+		if (inputEvent.IsActionPressed(GodotBuiltInActions.UILeft, true, true))
+			return TryFocusDirectional(inputEvent, NavigationDirection.Left);
+
+		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIRight, true, true))
+			return TryFocusDirectional(inputEvent, NavigationDirection.Right);
+
+		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIUp, true, true))
+			return TryFocusDirectional(inputEvent, NavigationDirection.Up);
+
+		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIDown, true, true))
+			return TryFocusDirectional(inputEvent, NavigationDirection.Down);
 
 		return false;
 	}
@@ -177,13 +191,34 @@ public class AvaloniaControl : GdControl {
 			_ => false
 		};
 
-	private static bool TryFocusNext(NavigationDirection direction) {
+	private static bool TryFocusTab(NavigationDirection direction, InputEvent inputEvent) {
 		if (FocusManager.Instance is not { Current: { } currentElement } focusManager)
 			return false;
 
 		var nextElement = KeyboardNavigationHandler.GetNext(currentElement, direction);
-		focusManager.Focus(nextElement, NavigationMethod.Tab);
+		focusManager.Focus(nextElement, NavigationMethod.Tab, inputEvent.GetKeyModifiers());
 		return nextElement is not null;
+	}
+
+	private static bool TryFocusDirectional(InputEvent inputEvent, NavigationDirection direction) {
+		if (FocusManager.Instance is not { Current: Visual currentElement } focusManager)
+			return false;
+
+		IInputElement? nextElement;
+
+		if (currentElement.FindAncestorOfType<ICustomKeyboardNavigation>(includeSelf: true) is { } customKeyboardNavigation)
+			(_, nextElement) = customKeyboardNavigation.GetNext((IInputElement) currentElement, direction);
+		else if (currentElement.GetVisualParent() is INavigableContainer navigableContainer) {
+			var wrapSelection = currentElement is SelectingItemsControl { WrapSelection: true };
+			nextElement = navigableContainer.GetNextFocusableControl(direction, (IInputElement) currentElement, wrapSelection);
+		}
+		else
+			return false;
+
+		if (nextElement is not null)
+			focusManager.Focus(nextElement, NavigationMethod.Directional, inputEvent.GetKeyModifiers());
+
+		return true;
 	}
 
 	private void OnMouseExited()

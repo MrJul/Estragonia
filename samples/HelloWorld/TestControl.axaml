@@ -71,6 +71,14 @@
 
 		<TextBlock Text="{Binding ElementName=Root, Path=Bounds}" />
 
+		<ListBox Height="200">
+			<ListBoxItem Content="Item 01" />
+			<ListBoxItem Content="Item 02" />
+			<ListBoxItem Content="Item 03" />
+			<ListBoxItem Content="Item 04" />
+			<ListBoxItem Content="Item 05" />
+		</ListBox>
+
 	</StackPanel>
 
 </UserControl>
