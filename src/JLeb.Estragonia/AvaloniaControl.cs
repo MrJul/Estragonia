@@ -11,6 +11,7 @@ using Godot.NativeInterop;
 using AvControl = Avalonia.Controls.Control;
 using AvDispatcher = Avalonia.Threading.Dispatcher;
 using GdControl = Godot.Control;
+using GdKey = Godot.Key;
 
 namespace JLeb.Estragonia;
 
@@ -180,7 +181,30 @@ public class AvaloniaControl : GdControl {
 		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIDown, true, true))
 			return TryFocusDirectional(inputEvent, NavigationDirection.Down);
 
+		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIAccept, true, true))
+			return SimulateKeyFromAction(inputEvent, GdKey.Enter);
+
+		if (inputEvent.IsActionPressed(GodotBuiltInActions.UICancel, true, true))
+			return SimulateKeyFromAction(inputEvent, GdKey.Escape);
+
 		return false;
+	}
+
+	private static bool SimulateKeyFromAction(InputEvent inputEvent, GdKey key) {
+		// if the action already matches the key we're going to simulate, abort: it already got through TryHandleInput and wasn't handled
+		if (inputEvent is InputEventKey inputEventKey && inputEventKey.Keycode == key)
+			return false;
+
+		if (FocusManager.Instance?.Current is not { } currentElement)
+			return false;
+
+		var args = new KeyEventArgs {
+			RoutedEvent = InputElement.KeyDownEvent,
+			Key = key.ToAvaloniaKey(),
+			KeyModifiers = inputEvent.GetKeyModifiers()
+		};
+		currentElement.RaiseEvent(args);
+		return args.Handled;
 	}
 
 	private static bool TryHandleInput(GodotTopLevelImpl impl, InputEvent inputEvent)

@@ -23,4 +23,10 @@ public static class GodotBuiltInActions {
 	/// <summary>Action name: ui_down</summary>
 	public static readonly StringName UIDown = "ui_down";
 
+	/// <summary>Action name: ui_accept</summary>
+	public static readonly StringName UIAccept = "ui_accept";
+
+	/// <summary>Action name: ui_cancel</summary>
+	public static readonly StringName UICancel = "ui_cancel";
+
 }
