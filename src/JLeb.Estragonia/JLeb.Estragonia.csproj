@@ -14,4 +14,30 @@
 		<PackageReference Include="Avalonia.Skia" Version="11.0.999-cibuild0033013-beta" />
 	</ItemGroup>
 
+	<!--
+		Reference the Avalonia runtime assemblies (lib/) instead of the reference assemblies (ref/) from nuget packages.
+		The reference assemblies have patches to prevent using some platform interfaces we need :(
+		Read https://github.com/AvaloniaUI/Avalonia/pull/11062 for more information.
+	-->
+	<Target
+		Name="EstragoniaReferenceAvaloniaRuntimeAssemblies"
+		AfterTargets="ResolvePackageAssets"
+		BeforeTargets="ResolveLockFileReferences">
+
+		<ItemGroup>
+
+			<ResolvedCompileFileDefinitions
+				Include="@(ResolvedCompileFileDefinitions->'%(Identity)'->Replace('/ref/', '/lib/')->Replace('\ref\', '\lib\'))"
+				HintPath="$([System.String]::new('%(HintPath)').Replace('/ref/', '/lib/').Replace('\ref\', '\lib\'))"
+				PathInPackage="lib/$([System.String]::new('%(PathInPackage)').Substring(4))"
+				Condition="$([System.String]::new('%(PathInPackage)').StartsWith('ref/$(TargetFramework)/Avalonia'))" />
+
+			<ResolvedCompileFileDefinitions
+				Remove="@(ResolvedCompileFileDefinitions)"
+				Condition="$([System.String]::new('%(PathInPackage)').StartsWith('ref/$(TargetFramework)/Avalonia'))" />
+
+		</ItemGroup>
+
+	</Target>
+
 </Project>

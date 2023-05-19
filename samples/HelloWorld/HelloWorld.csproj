@@ -11,7 +11,6 @@
 	<ItemGroup>
 		<PackageReference Include="Avalonia.Diagnostics" Version="11.0.999-cibuild0033013-beta" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.999-cibuild0033013-beta" />
-		<PackageReference Include="Avalonia.Win32" Version="11.0.999-cibuild0033013-beta" />
 	</ItemGroup>
 
 	<ItemGroup>
