@@ -23,6 +23,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	private readonly GodotVkPlatformGraphics _platformGraphics;
 	private readonly IClipboard _clipboard;
 	private readonly Compositor _compositor;
+	private readonly TouchDevice _touchDevice = new();
 
 	private GodotSkiaSurface? _surface;
 	private WindowTransparencyLevel _transparencyLevel = WindowTransparencyLevel.Transparent;
@@ -113,20 +114,12 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		if (_inputRoot is null || Input is not { } input)
 			return false;
 
-		var tilt = inputEvent.Tilt;
-
 		var args = new RawPointerEventArgs(
 			GodotDevices.GetMouse(inputEvent.Device),
 			timestamp,
 			_inputRoot,
 			RawPointerEventType.Move,
-			new RawPointerPoint {
-				Position = inputEvent.Position.ToAvaloniaPoint(),
-				Twist = 0.0f,
-				Pressure = inputEvent.Pressure,
-				XTilt = tilt.X * 90.0f,
-				YTilt = tilt.Y * 90.0f
-			},
+			CreateRawPointerPoint(inputEvent.Position, inputEvent.Pressure, inputEvent.Tilt),
 			inputEvent.GetRawInputModifiers()
 		);
 
@@ -187,6 +180,53 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		return args.Handled;
 	}
 
+	public bool OnScreenTouch(InputEventScreenTouch inputEvent, ulong timestamp) {
+		if (_inputRoot is null || Input is not { } input)
+			return false;
+
+		var args = new RawTouchEventArgs(
+			_touchDevice,
+			timestamp,
+			_inputRoot,
+			inputEvent.Pressed ? RawPointerEventType.TouchBegin : RawPointerEventType.TouchEnd,
+			inputEvent.Position.ToAvaloniaPoint(),
+			InputModifiersProvider.GetRawInputModifiers(),
+			inputEvent.Index
+		);
+
+		input(args);
+
+		return args.Handled;
+	}
+
+	public bool OnScreenDrag(InputEventScreenDrag inputEvent, ulong timestamp) {
+		if (_inputRoot is null || Input is not { } input)
+			return false;
+
+		var args = new RawTouchEventArgs(
+			_touchDevice,
+			timestamp,
+			_inputRoot,
+			RawPointerEventType.TouchUpdate,
+			CreateRawPointerPoint(inputEvent.Position, inputEvent.Pressure, inputEvent.Tilt),
+			inputEvent.GetRawInputModifiers(),
+			inputEvent.Index
+		);
+
+		input(args);
+
+		return args.Handled;
+	}
+
+	private static RawPointerPoint CreateRawPointerPoint(Vector2 position, float pressure, Vector2 tilt)
+		=> new() {
+			Position = position.ToAvaloniaPoint(),
+			Twist = 0.0f,
+			Pressure = pressure,
+			XTilt = tilt.X * 90.0f,
+			YTilt = tilt.Y * 90.0f
+		};
+
 	public bool OnKey(InputEventKey inputEvent, ulong timestamp) {
 		if (_inputRoot is null || Input is not { } input)
 			return false;
@@ -196,8 +236,14 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 		var key = keyCode.ToAvaloniaKey();
 		if (key != AvKey.None) {
-			var type = pressed ? RawKeyEventType.KeyDown : RawKeyEventType.KeyUp;
-			var args = new RawKeyEventArgs(GodotDevices.Keyboard, timestamp, _inputRoot, type, key, inputEvent.GetRawInputModifiers());
+			var args = new RawKeyEventArgs(
+				GodotDevices.Keyboard,
+				timestamp,
+				_inputRoot,
+				pressed ? RawKeyEventType.KeyDown : RawKeyEventType.KeyUp,
+				key,
+				inputEvent.GetRawInputModifiers()
+			);
 
 			input(args);
 
