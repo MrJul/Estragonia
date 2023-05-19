@@ -8,6 +8,7 @@ using Avalonia.Rendering;
 using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Godot;
+using JLeb.Estragonia.Input;
 using Dispatcher = Avalonia.Threading.Dispatcher;
 
 namespace JLeb.Estragonia;
@@ -34,8 +35,7 @@ internal static class GodotPlatform {
 			.Bind<IClipboard>().ToConstant(new GodotClipboard())
 			.Bind<ICursorFactory>().ToConstant(new GodotCursorFactory())
 			.Bind<IDispatcherImpl>().ToConstant(new GodotDispatcherImpl(Thread.CurrentThread))
-			.Bind<IKeyboardDevice>().ToConstant(new KeyboardDevice())
-			.Bind<IMouseDevice>().ToConstant(new MouseDevice())
+			.Bind<IKeyboardDevice>().ToConstant(GodotDevices.Keyboard)
 			.Bind<IPlatformGraphics>().ToConstant(platformGraphics)
 			.Bind<IPlatformIconLoader>().ToConstant(new StubPlatformIconLoader())
 			.Bind<IPlatformSettings>().ToConstant(new GodotPlatformSettings())

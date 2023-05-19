@@ -9,6 +9,7 @@ using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Rendering.Composition;
 using Godot;
+using JLeb.Estragonia.Input;
 using AvDispatcher = Avalonia.Threading.Dispatcher;
 using AvKey = Avalonia.Input.Key;
 using GdCursorShape = Godot.Control.CursorShape;
@@ -20,8 +21,6 @@ namespace JLeb.Estragonia;
 internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	private readonly GodotVkPlatformGraphics _platformGraphics;
-	private readonly IKeyboardDevice _keyboardDevice;
-	private readonly IMouseDevice _mouseDevice;
 	private readonly IClipboard _clipboard;
 	private readonly Compositor _compositor;
 
@@ -31,6 +30,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	private IInputRoot? _inputRoot;
 	private GdCursorShape _cursorShape;
 	private bool _isDisposed;
+	private int _lastMouseDeviceId = GodotDevices.EmulatedDeviceId;
 
 	public double RenderScaling
 		=> 1.0;
@@ -84,16 +84,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
 
-	public GodotTopLevelImpl(
-		GodotVkPlatformGraphics platformGraphics,
-		IKeyboardDevice keyboardDevice,
-		IMouseDevice mouseDevice,
-		IClipboard clipboard,
-		Compositor compositor
-	) {
+	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics, IClipboard clipboard, Compositor compositor) {
 		_platformGraphics = platformGraphics;
-		_keyboardDevice = keyboardDevice;
-		_mouseDevice = mouseDevice;
 		_clipboard = clipboard;
 		_compositor = compositor;
 	}
@@ -116,13 +108,15 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		=> Paint?.Invoke(rect);
 
 	public bool OnMouseMotion(InputEventMouseMotion inputEvent, ulong timestamp) {
+		_lastMouseDeviceId = inputEvent.Device;
+
 		if (_inputRoot is null || Input is not { } input)
 			return false;
 
 		var tilt = inputEvent.Tilt;
 
 		var args = new RawPointerEventArgs(
-			_mouseDevice,
+			GodotDevices.GetMouse(inputEvent.Device),
 			timestamp,
 			_inputRoot,
 			RawPointerEventType.Move,
@@ -142,14 +136,30 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	}
 
 	public bool OnMouseButton(InputEventMouseButton inputEvent, ulong timestamp) {
+		_lastMouseDeviceId = inputEvent.Device;
+
 		if (_inputRoot is null || Input is not { } input)
 			return false;
 
 		RawPointerEventArgs CreateButtonArgs(RawPointerEventType type)
-			=> new(_mouseDevice, timestamp, _inputRoot, type, inputEvent.Position.ToAvaloniaPoint(), inputEvent.GetRawInputModifiers());
+			=> new(
+				GodotDevices.GetMouse(inputEvent.Device),
+				timestamp,
+				_inputRoot,
+				type,
+				inputEvent.Position.ToAvaloniaPoint(),
+				inputEvent.GetRawInputModifiers()
+			);
 
 		RawMouseWheelEventArgs CreateWheelArgs(Vector delta)
-			=> new(_mouseDevice, timestamp, _inputRoot, inputEvent.Position.ToAvaloniaPoint(), delta, inputEvent.GetRawInputModifiers());
+			=> new(
+				GodotDevices.GetMouse(inputEvent.Device),
+				timestamp,
+				_inputRoot,
+				inputEvent.Position.ToAvaloniaPoint(),
+				delta,
+				inputEvent.GetRawInputModifiers()
+			);
 
 		var args = (inputEvent.ButtonIndex, inputEvent.Pressed) switch {
 			(GdMouseButton.Left, true) => CreateButtonArgs(RawPointerEventType.LeftButtonDown),
@@ -187,7 +197,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		var key = keyCode.ToAvaloniaKey();
 		if (key != AvKey.None) {
 			var type = pressed ? RawKeyEventType.KeyDown : RawKeyEventType.KeyUp;
-			var args = new RawKeyEventArgs(_keyboardDevice, timestamp, _inputRoot, type, key, inputEvent.GetRawInputModifiers());
+			var args = new RawKeyEventArgs(GodotDevices.Keyboard, timestamp, _inputRoot, type, key, inputEvent.GetRawInputModifiers());
 
 			input(args);
 
@@ -197,7 +207,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 		if (pressed && OS.IsKeycodeUnicode((long) keyCode)) {
 			var text = Char.ConvertFromUtf32((int) inputEvent.Unicode);
-			var args = new RawTextInputEventArgs(_keyboardDevice, timestamp, _inputRoot, text);
+			var args = new RawTextInputEventArgs(GodotDevices.Keyboard, timestamp, _inputRoot, text);
 
 			input(args);
 
@@ -208,16 +218,50 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		return false;
 	}
 
+	public bool OnJoypadButton(InputEventJoypadButton inputEvent, ulong timestamp) {
+		if (_inputRoot is null || Input is not { } input)
+			return false;
+
+		var args = new RawJoypadButtonEventArgs(
+			GodotDevices.GetJoypad(inputEvent.Device),
+			timestamp,
+			_inputRoot,
+			inputEvent.IsPressed() ? RawJoypadButtonEventType.ButtonDown : RawJoypadButtonEventType.ButtonUp,
+			inputEvent.ButtonIndex,
+			inputEvent.Pressure
+		);
+
+		input(args);
+
+		return args.Handled;
+	}
+
+	public bool OnJoypadMotion(InputEventJoypadMotion inputEvent, ulong timestamp) {
+		if (_inputRoot is null || Input is not { } input)
+			return false;
+
+		var args = new RawJoypadAxisEventArgs(
+			GodotDevices.GetJoypad(inputEvent.Device),
+			timestamp,
+			_inputRoot,
+			inputEvent.Axis,
+			inputEvent.AxisValue
+		);
+
+		input(args);
+
+		return args.Handled;
+	}
+
 	public void OnLostFocus()
 		=> LostFocus?.Invoke();
-
 
 	public bool OnMouseExited(ulong timestamp) {
 		if (_inputRoot is null || Input is not { } input)
 			return false;
 
 		var args = new RawPointerEventArgs(
-			_mouseDevice,
+			GodotDevices.GetMouse(_lastMouseDeviceId),
 			timestamp,
 			_inputRoot,
 			RawPointerEventType.LeaveWindow,

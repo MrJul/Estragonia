@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using Avalonia.Media;
+using JLeb.Estragonia.Input;
 
 namespace HelloWorld;
 
@@ -14,7 +15,19 @@ public partial class TestControl : UserControl {
 	public TestControl() {
 		_ = new SolidColorBrush(); // force animator to be registered; TODO: investigate and remove
 		InitializeComponent();
+		AddHandler(JoypadEvents.JoypadButtonDownEvent, OnJoypadButtonDown);
+		AddHandler(JoypadEvents.JoypadButtonUpEvent, OnJoypadButtonUp);
+		AddHandler(JoypadEvents.JoypadAxisMovedEvent, OnJoypadAxisMoved);
 	}
+
+	private void OnJoypadButtonDown(object? sender, JoypadButtonEventArgs e)
+		=> Debug.WriteLine($"Joypad button DOWN: {e.Button}");
+
+	private void OnJoypadButtonUp(object? sender, JoypadButtonEventArgs e)
+		=> Debug.WriteLine($"Joypad button UP:   {e.Button}");
+
+	private void OnJoypadAxisMoved(object? sender, JoypadAxisEventArgs e)
+		=> Debug.WriteLine($"Joypad axis moved : {e.Axis} {e.AxisValue}");
 
 	protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e) {
 		base.OnAttachedToLogicalTree(e);

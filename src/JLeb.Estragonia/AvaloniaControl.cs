@@ -8,6 +8,7 @@ using Avalonia.Platform;
 using Avalonia.VisualTree;
 using Godot;
 using Godot.NativeInterop;
+using JLeb.Estragonia.Input;
 using AvControl = Avalonia.Controls.Control;
 using AvDispatcher = Avalonia.Threading.Dispatcher;
 using GdControl = Godot.Control;
@@ -89,12 +90,7 @@ public class AvaloniaControl : GdControl {
 			return;
 		}
 
-		var keyboardDevice = locator.GetRequiredService<IKeyboardDevice>();
-		var mouseDevice = locator.GetRequiredService<IMouseDevice>();
-		var clipboard = locator.GetRequiredService<IClipboard>();
-		var compositor = GodotPlatform.Compositor;
-
-		var topLevelImpl = new GodotTopLevelImpl(graphics, keyboardDevice, mouseDevice, clipboard, compositor) {
+		var topLevelImpl = new GodotTopLevelImpl(graphics, locator.GetRequiredService<IClipboard>(), GodotPlatform.Compositor) {
 			ClientSize = Size.ToAvaloniaSize(),
 			CursorChanged = OnAvaloniaCursorChanged
 		};
@@ -212,6 +208,8 @@ public class AvaloniaControl : GdControl {
 			InputEventMouseMotion mouseMotion => impl.OnMouseMotion(mouseMotion, Time.GetTicksMsec()),
 			InputEventMouseButton mouseButton => impl.OnMouseButton(mouseButton, Time.GetTicksMsec()),
 			InputEventKey key => impl.OnKey(key, Time.GetTicksMsec()),
+			InputEventJoypadButton joypadButton => impl.OnJoypadButton(joypadButton, Time.GetTicksMsec()),
+			InputEventJoypadMotion joypadMotion => impl.OnJoypadMotion(joypadMotion, Time.GetTicksMsec()),
 			_ => false
 		};
 
@@ -245,8 +243,9 @@ public class AvaloniaControl : GdControl {
 		return true;
 	}
 
-	private void OnMouseExited()
-		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
+	private void OnMouseExited() {
+		_topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
+	}
 
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {

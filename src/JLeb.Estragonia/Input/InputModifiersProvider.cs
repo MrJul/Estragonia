@@ -4,7 +4,7 @@ using GdInput = Godot.Input;
 using GdKey = Godot.Key;
 using GdMouseButton = Godot.MouseButton;
 
-namespace JLeb.Estragonia;
+namespace JLeb.Estragonia.Input;
 
 /// <summary>Contains methods to get input modifiers.</summary>
 internal static class InputModifiersProvider {
