@@ -40,7 +40,7 @@ internal static class GodotPlatform {
 			.Bind<IPlatformIconLoader>().ToConstant(new StubPlatformIconLoader())
 			.Bind<IPlatformSettings>().ToConstant(new GodotPlatformSettings())
 			.Bind<IWindowingPlatform>().ToConstant(new GodotWindowingPlatform())
-			.Bind<PlatformHotkeyConfiguration>().ToConstant(new PlatformHotkeyConfiguration());
+			.Bind<PlatformHotkeyConfiguration>().ToConstant(CreatePlatformHotKeyConfiguration());
 
 		// bind the render loop last, as it uses the dispatcher which must be registered before
 		var renderTimer = new ManualRenderTimer();
@@ -54,11 +54,16 @@ internal static class GodotPlatform {
 		s_compositor = new Compositor(renderLoop, platformGraphics);
 	}
 
+	private static PlatformHotkeyConfiguration CreatePlatformHotKeyConfiguration()
+		=> OperatingSystem.IsMacOS()
+			? new PlatformHotkeyConfiguration(commandModifiers: KeyModifiers.Meta, wholeWordTextActionModifiers: KeyModifiers.Alt)
+			: new PlatformHotkeyConfiguration(commandModifiers: KeyModifiers.Control);
+
 	public static void TriggerRenderTick() {
 		if (s_renderTimer is null)
 			return;
 
-		// if we have several AvaloniaControl, ensure we tick the timer only once each frame
+		// if we have several AvaloniaControls, ensure we tick the timer only once each frame
 		var processFrame = Engine.GetProcessFrames();
 		if (processFrame == s_lastProcessFrame)
 			return;
