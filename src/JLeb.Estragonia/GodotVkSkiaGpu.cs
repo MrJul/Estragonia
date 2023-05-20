@@ -20,6 +20,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 
 	private static int s_createdSurfaceCount;
 
+	private readonly RenderingDevice _renderingDevice;
 	private readonly GRContext _grContext;
 	private readonly uint _queueFamilyIndex;
 
@@ -27,13 +28,16 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		=> _grContext.IsAbandoned;
 
 	public unsafe GodotVkSkiaGpu() {
-		var gdRd = RenderingServer.GetRenderingDevice();
+		_renderingDevice = RenderingServer.GetRenderingDevice();
 
-		var vkInstance = (IntPtr) gdRd.GetDriverResource(RenderingDevice.DriverResource.Instance, default, 0UL);
-		var vkPhysicalDevice = (IntPtr) gdRd.GetDriverResource(RenderingDevice.DriverResource.PhysicalDevice, default, 0UL);
-		var vkDevice = (IntPtr) gdRd.GetDriverResource(RenderingDevice.DriverResource.Device, default, 0UL);
-		var vkQueue = (IntPtr) gdRd.GetDriverResource(RenderingDevice.DriverResource.Queue, default, 0UL);
-		var vkQueueFamilyIndex = (uint) gdRd.GetDriverResource(RenderingDevice.DriverResource.QueueFamilyIndex, default, 0UL);
+		if (_renderingDevice is null)
+			throw new NotSupportedException("Estragonia is only supported on Vulkan renderers (Forward+ or Mobile)");
+
+		var vkInstance = (IntPtr) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.Instance, default, 0UL);
+		var vkPhysicalDevice = (IntPtr) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.PhysicalDevice, default, 0UL);
+		var vkDevice = (IntPtr) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.Device, default, 0UL);
+		var vkQueue = (IntPtr) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.Queue, default, 0UL);
+		var vkQueueFamilyIndex = (uint) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.QueueFamilyIndex, default, 0UL);
 
 		var vkLibrary = NativeLibrary.Load(OperatingSystem.IsWindows() ? "vulkan-1" : "libvulkan");
 		var vkGetInstanceProcAddr =
@@ -102,13 +106,11 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		if (!gdRdTexture.IsValid)
 			throw new InvalidOperationException("Couldn't get Godot rendering device texture");
 
-		var gdRd = RenderingServer.GetRenderingDevice();
-
-		var vkImage = gdRd.GetDriverResource(RenderingDevice.DriverResource.Image, gdRdTexture, 0UL);
+		var vkImage = _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.Image, gdRdTexture, 0UL);
 		if (vkImage == 0UL)
 			throw new InvalidOperationException("Couldn't get Vulkan image from Godot texture");
 
-		var vkFormat = (uint) gdRd.GetDriverResource(RenderingDevice.DriverResource.ImageNativeTextureFormat, gdRdTexture, 0UL);
+		var vkFormat = (uint) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.ImageNativeTextureFormat, gdRdTexture, 0UL);
 		if (vkFormat == 0U)
 			throw new InvalidOperationException("Couldn't get Vulkan format from Godot texture");
 
