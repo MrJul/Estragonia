@@ -12,6 +12,7 @@ using JLeb.Estragonia.Input;
 using AvControl = Avalonia.Controls.Control;
 using AvDispatcher = Avalonia.Threading.Dispatcher;
 using GdControl = Godot.Control;
+using GdInput = Godot.Input;
 using GdKey = Godot.Key;
 
 namespace JLeb.Estragonia;
@@ -132,8 +133,19 @@ public class AvaloniaControl : GdControl {
 
 		_topLevel.Focus();
 
-		if (KeyboardNavigationHandler.GetNext(_topLevel, NavigationDirection.Next) is { } inputElement)
-			inputElement.Focus(NavigationMethod.Tab);
+		if (KeyboardNavigationHandler.GetNext(_topLevel, NavigationDirection.Next) is not { } inputElement)
+			return;
+
+		NavigationMethod navigationMethod;
+
+		if (GdInput.IsActionPressed(GodotBuiltInActions.UIFocusNext))
+			navigationMethod = NavigationMethod.Tab;
+		else if (GdInput.GetMouseButtonMask() != 0)
+			navigationMethod = NavigationMethod.Pointer;
+		else
+			navigationMethod = NavigationMethod.Unspecified;
+
+		inputElement.Focus(navigationMethod);
 	}
 
 	private void OnFocusExited()
