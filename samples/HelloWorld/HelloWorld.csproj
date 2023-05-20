@@ -9,8 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Diagnostics" Version="11.0.999-cibuild0033013-beta" />
-		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.999-cibuild0033013-beta" />
+		<PackageReference Include="Avalonia.Diagnostics" Version="11.0.999-cibuild0035131-beta" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.999-cibuild0035131-beta" />
 	</ItemGroup>
 
 	<ItemGroup>

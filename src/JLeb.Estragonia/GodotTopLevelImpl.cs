@@ -53,13 +53,13 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 				return;
 
 			_surface = CreateSurface();
-			Resized?.Invoke(value, PlatformResizeReason.Unspecified);
+			Resized?.Invoke(value, WindowResizeReason.Unspecified);
 		}
 	}
 
 	public Action<Rect>? Paint { get; set; }
 
-	public Action<Size, PlatformResizeReason>? Resized { get; set; }
+	public Action<Size, WindowResizeReason>? Resized { get; set; }
 
 	public Action? Closed { get; set; }
 

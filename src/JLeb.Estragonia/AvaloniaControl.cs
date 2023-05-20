@@ -133,7 +133,7 @@ public class AvaloniaControl : GdControl {
 		_topLevel.Focus();
 
 		if (KeyboardNavigationHandler.GetNext(_topLevel, NavigationDirection.Next) is { } inputElement)
-			FocusManager.Instance?.Focus(inputElement, NavigationMethod.Tab);
+			inputElement.Focus(NavigationMethod.Tab);
 	}
 
 	private void OnFocusExited()
@@ -155,7 +155,7 @@ public class AvaloniaControl : GdControl {
 			AcceptEvent();
 	}
 
-	private static bool TryHandleAction(InputEvent inputEvent) {
+	private bool TryHandleAction(InputEvent inputEvent) {
 		if (!inputEvent.IsActionType())
 			return false;
 
@@ -186,12 +186,12 @@ public class AvaloniaControl : GdControl {
 		return false;
 	}
 
-	private static bool SimulateKeyFromAction(InputEvent inputEvent, GdKey key) {
+	private bool SimulateKeyFromAction(InputEvent inputEvent, GdKey key) {
 		// if the action already matches the key we're going to simulate, abort: it already got through TryHandleInput and wasn't handled
 		if (inputEvent is InputEventKey inputEventKey && inputEventKey.Keycode == key)
 			return false;
 
-		if (FocusManager.Instance?.Current is not { } currentElement)
+		if (_topLevel?.FocusManager?.GetFocusedElement() is not { } currentElement)
 			return false;
 
 		var args = new KeyEventArgs {
@@ -215,17 +215,23 @@ public class AvaloniaControl : GdControl {
 			_ => false
 		};
 
-	private static bool TryFocusTab(NavigationDirection direction, InputEvent inputEvent) {
-		if (FocusManager.Instance is not { Current: { } currentElement } focusManager)
+	private bool TryFocusTab(NavigationDirection direction, InputEvent inputEvent) {
+		if (_topLevel?.FocusManager is not { } focusManager
+		|| focusManager.GetFocusedElement() is not { } currentElement)
 			return false;
 
-		var nextElement = KeyboardNavigationHandler.GetNext(currentElement, direction);
-		focusManager.Focus(nextElement, NavigationMethod.Tab, inputEvent.GetKeyModifiers());
-		return nextElement is not null;
+		if (KeyboardNavigationHandler.GetNext(currentElement, direction) is not { } nextElement) {
+			focusManager.ClearFocus();
+			return false;
+		}
+
+		nextElement.Focus(NavigationMethod.Tab, inputEvent.GetKeyModifiers());
+		return true;
 	}
 
-	private static bool TryFocusDirectional(InputEvent inputEvent, NavigationDirection direction) {
-		if (FocusManager.Instance is not { Current: Visual currentElement } focusManager)
+	private bool TryFocusDirectional(InputEvent inputEvent, NavigationDirection direction) {
+		if (_topLevel?.FocusManager is not { } focusManager
+		|| focusManager.GetFocusedElement() is not Visual currentElement)
 			return false;
 
 		IInputElement? nextElement;
@@ -239,15 +245,13 @@ public class AvaloniaControl : GdControl {
 		else
 			return false;
 
-		if (nextElement is not null)
-			focusManager.Focus(nextElement, NavigationMethod.Directional, inputEvent.GetKeyModifiers());
+		nextElement?.Focus(NavigationMethod.Directional, inputEvent.GetKeyModifiers());
 
 		return true;
 	}
 
-	private void OnMouseExited() {
-		_topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
-	}
+	private void OnMouseExited()
+		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
 
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {
