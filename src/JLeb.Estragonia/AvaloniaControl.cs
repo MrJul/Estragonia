@@ -228,22 +228,19 @@ public class AvaloniaControl : GdControl {
 		};
 
 	private bool TryFocusTab(NavigationDirection direction, InputEvent inputEvent) {
-		if (_topLevel?.FocusManager is not { } focusManager
-		|| focusManager.GetFocusedElement() is not { } currentElement)
-			return false;
-
-		if (KeyboardNavigationHandler.GetNext(currentElement, direction) is not { } nextElement) {
-			focusManager.ClearFocus();
-			return false;
+		if (_topLevel?.FocusManager is { } focusManager
+			&& focusManager.GetFocusedElement() is { } currentElement
+			&& KeyboardNavigationHandler.GetNext(currentElement, direction) is { } nextElement
+		) {
+			nextElement.Focus(NavigationMethod.Tab, inputEvent.GetKeyModifiers());
+			return true;
 		}
 
-		nextElement.Focus(NavigationMethod.Tab, inputEvent.GetKeyModifiers());
-		return true;
+		return false;
 	}
 
 	private bool TryFocusDirectional(InputEvent inputEvent, NavigationDirection direction) {
-		if (_topLevel?.FocusManager is not { } focusManager
-		|| focusManager.GetFocusedElement() is not Visual currentElement)
+		if (_topLevel?.FocusManager is not { } focusManager || focusManager.GetFocusedElement() is not Visual currentElement)
 			return false;
 
 		IInputElement? nextElement;
