@@ -10,8 +10,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GodotSharp" Version="4.0.2" />
-		<PackageReference Include="Avalonia.Skia" Version="11.0.999-cibuild0035131-beta" />
+		<PackageReference Include="GodotSharp" Version="4.0.3" />
+		<PackageReference Include="Avalonia.Skia" Version="11.0.999-cibuild0035348-beta" />
 	</ItemGroup>
 
 	<!--
