@@ -14,8 +14,7 @@ public static class GodotDevices {
 
 	/// <summary>Gets the keyboard device.</summary>
 	/// <remarks>At this time, we don't support multiple keyboard devices since Avalonia needs a single one for focus management.</remarks>
-	public static IKeyboardDevice Keyboard
-		=> new KeyboardDevice();
+	public static IKeyboardDevice Keyboard { get; } = new KeyboardDevice();
 
 	/// <summary>Gets a mouse device for a given Godot device identifier.</summary>
 	/// <param name="deviceId">The device identifier.</param>
