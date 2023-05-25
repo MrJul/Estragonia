@@ -9,7 +9,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Diagnostics" Version="11.0.999-cibuild0035348-beta" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.999-cibuild0035348-beta" />
 	</ItemGroup>
 
@@ -18,11 +17,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="Properties/launchSettings.json" />
+		<AvaloniaResource Include="*.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AvaloniaResource Include="Avalonia.png" />
+	  <None Include="Properties/launchSettings.json" />
 	</ItemGroup>
 
 </Project>

@@ -1,0 +1,81 @@
+﻿<UserControl
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	x:Class="HelloWorld.HelloWorldView" Background="Transparent">
+
+	<UserControl.Styles>
+
+		<Style Selector="Border.anim">
+			<Style.Animations>
+				<Animation Duration="0:0:2" IterationCount="infinite" PlaybackDirection="Alternate">
+					<KeyFrame Cue="0%">
+						<Setter Property="Background" Value="#AAFF0000" />
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="Background" Value="#AA1E90FF" />
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
+
+	</UserControl.Styles>
+
+	<Grid RowDefinitions="*,*">
+
+		<Border
+			CornerRadius="16"
+			Classes="anim"
+			VerticalAlignment="Top"
+			Margin="100"
+			RenderOptions.EdgeMode="Aliased">
+
+			<Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Center" RenderOptions.EdgeMode="Antialias">
+
+				<Image
+					Source="Avalonia.png"
+					Width="64"
+					Height="64"
+					VerticalAlignment="Center"
+					Grid.Column="0" />
+
+				<TextBlock
+					Text="Hello from Avalonia in Godot!"
+					VerticalAlignment="Center"
+					TextTrimming="{x:Static TextTrimming.CharacterEllipsis}"
+					Margin="8"
+					FontSize="48"
+					Foreground="Orange"
+					Grid.Column="1" />
+
+			</Grid>
+
+		</Border>
+
+		<TextBox
+			TextWrapping="Wrap"
+			Width="200"
+			Height="160"
+			Grid.Row="1">
+			<TextBox.Text>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+				Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			</TextBox.Text>
+		</TextBox>
+
+		<TextBlock
+			x:Name="FpsCounter"
+			RenderOptions.TextRenderingMode="Antialias"
+			Grid.Row="0"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
+			FontSize="24"
+			Foreground="Black" />
+
+	</Grid>
+
+</UserControl>
