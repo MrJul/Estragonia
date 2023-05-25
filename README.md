@@ -6,7 +6,7 @@ Estragonia is a bridge allowing to use the powerful [Avalonia UI](https://github
 
 ## ⚡Getting started
 
-1. Have Godot 4.0.x with .NET support installed.
+1. Have Godot 4.0.3 with .NET support installed.
 2. Install the `JLeb.Estragonia` NuGet package inside your project.
 3. Initialize the Avalonia application using `UseGodot().SetupWithoutStarting()`.
 4. Create a Godot `Control` node, assign it a script inheriting from `JLeb.Estragonia.AvaloniaControl` and populate its `Control` property with any valid Avalonia view.

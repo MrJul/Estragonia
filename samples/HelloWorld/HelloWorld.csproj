@@ -21,7 +21,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Properties/launchSettings.json" />
+		<None Include="Properties/launchSettings.json"/>
+		<None Include="README.md"/>
 	</ItemGroup>
 
 </Project>
