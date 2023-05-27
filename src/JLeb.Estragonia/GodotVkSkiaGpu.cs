@@ -39,7 +39,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		var vkQueue = (IntPtr) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.Queue, default, 0UL);
 		var vkQueueFamilyIndex = (uint) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.QueueFamilyIndex, default, 0UL);
 
-		var vkLibrary = NativeLibrary.Load(OperatingSystem.IsWindows() ? "vulkan-1" : "libvulkan");
+		var vkLibrary = NativeLibrary.Load(OperatingSystem.IsWindows() ? "vulkan-1" : "libvulkan", typeof(GodotVkSkiaGpu).Assembly, null);
 		var vkGetInstanceProcAddr =
 			(delegate* unmanaged[Cdecl]<IntPtr, byte*, IntPtr>) NativeLibrary.GetExport(vkLibrary, "vkGetInstanceProcAddr");
 		var vkGetDeviceProcAddr =
