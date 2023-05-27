@@ -4,7 +4,8 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-	x:Class="HelloWorld.HelloWorldView">
+	x:Class="HelloWorld.HelloWorldView"
+	RenderOptions.TextRenderingMode="Antialias">
 
 	<UserControl.Styles>
 
@@ -26,13 +27,14 @@
 	<Grid RowDefinitions="*,*">
 
 		<Border
+			BorderThickness="1"
+			BorderBrush="DodgerBlue"
 			CornerRadius="16"
 			Classes="anim"
 			VerticalAlignment="Top"
-			Margin="100"
-			RenderOptions.EdgeMode="Aliased">
+			Margin="100">
 
-			<Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Center" RenderOptions.EdgeMode="Antialias">
+			<Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
 
 				<Image
 					Source="Avalonia.png"
@@ -69,7 +71,6 @@
 
 		<TextBlock
 			x:Name="FpsCounter"
-			RenderOptions.TextRenderingMode="Antialias"
 			Grid.Row="0"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Top"

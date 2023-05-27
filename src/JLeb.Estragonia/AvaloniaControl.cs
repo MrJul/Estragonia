@@ -84,6 +84,12 @@ public class AvaloniaControl : GdControl {
 		if (Engine.IsEditorHint())
 			return;
 
+		// Skia outputs a premultiplied alpha image, ensure we got the correct blend mode if the user didn't specify any
+		Material ??= new CanvasItemMaterial {
+			BlendMode = CanvasItemMaterial.BlendModeEnum.PremultAlpha,
+			LightMode = CanvasItemMaterial.LightModeEnum.Unshaded
+		};
+
 		var locator = AvaloniaLocator.Current;
 
 		if (locator.GetService<IPlatformGraphics>() is not GodotVkPlatformGraphics graphics) {
