@@ -1,0 +1,43 @@
+﻿<ResourceDictionary
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<ControlTheme x:Key="{x:Type ScrollViewer}" TargetType="ScrollViewer">
+
+		<Setter Property="Background" Value="Transparent" />
+
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
+					<ScrollContentPresenter
+						Name="PART_ContentPresenter"
+						Padding="{TemplateBinding Padding}"
+						HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+						VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+						HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+						VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+						Background="{TemplateBinding Background}">
+						<ScrollContentPresenter.GestureRecognizers>
+							<ScrollGestureRecognizer
+								CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
+								CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
+								IsScrollInertiaEnabled="{Binding IsScrollInertiaEnabled, RelativeSource={RelativeSource TemplatedParent}}" />
+						</ScrollContentPresenter.GestureRecognizers>
+					</ScrollContentPresenter>
+					<ScrollBar
+						Name="PART_HorizontalScrollBar"
+						Orientation="Horizontal"
+						Grid.Row="1"
+						Grid.Column="0" />
+					<ScrollBar
+						Name="PART_VerticalScrollBar"
+						Grid.Row="0"
+						Grid.Column="1"
+						Orientation="Vertical" />
+				</Grid>
+			</ControlTemplate>
+		</Setter>
+
+	</ControlTheme>
+
+</ResourceDictionary>

@@ -1,0 +1,29 @@
+<Application
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="GameMenu.UI.App"
+	RequestedThemeVariant="Dark">
+
+	<Application.Styles>
+		<Styles>
+
+			<SimpleTheme />
+
+			<!-- <Styles.Resources> -->
+			<!-- 	<ResourceDictionary> -->
+			<!-- 		<ResourceDictionary.MergedDictionaries> -->
+			<!-- 			<MergeResourceInclude Source="Styles/_Brushes.axaml" /> -->
+			<!-- 			<MergeResourceInclude Source="Styles/EmbeddableControlRoot.axaml" /> -->
+			<!-- 			<MergeResourceInclude Source="Styles/ListBox.axaml" /> -->
+			<!-- 			<MergeResourceInclude Source="Styles/ListBoxItem.axaml" /> -->
+			<!-- 			<MergeResourceInclude Source="Styles/ScrollViewer.axaml" /> -->
+			<!-- 		</ResourceDictionary.MergedDictionaries> -->
+			<!-- 	</ResourceDictionary> -->
+			<!-- </Styles.Resources> -->
+			<!-- -->
+			<!-- <StyleInclude Source="Styles/UserControl.axaml" /> -->
+
+		</Styles>
+	</Application.Styles>
+
+</Application>

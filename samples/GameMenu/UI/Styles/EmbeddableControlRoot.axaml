@@ -1,0 +1,22 @@
+﻿<ResourceDictionary
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<!-- Style for EmbeddedControlRoot, which is the TopLevel embedded in Godot -->
+	<ControlTheme x:Key="{x:Type EmbeddableControlRoot}" TargetType="EmbeddableControlRoot">
+		<Setter Property="Foreground" Value="White" />
+		<Setter Property="FontFamily" Value="Segoe UI" />
+		<Setter Property="FontSize" Value="16" />
+		<Setter Property="Template">
+			<ControlTemplate>
+				<VisualLayerManager>
+					<ContentPresenter
+						Name="PART_ContentPresenter"
+						ContentTemplate="{TemplateBinding ContentTemplate}"
+						Content="{TemplateBinding Content}"
+						Margin="{TemplateBinding Padding}" />
+				</VisualLayerManager>
+			</ControlTemplate>
+		</Setter>
+	</ControlTheme>
+</ResourceDictionary>

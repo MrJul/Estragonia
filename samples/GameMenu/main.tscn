@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://rd2cmut32jks"]
+
+[ext_resource type="Shader" path="res://Shaders/night_sky.gdshader" id="1_1stsx"]
+[ext_resource type="Script" path="res://UI/UserInterface.cs" id="1_55fpk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sf078"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_h2534"]
+sky_material = SubResource("ProceduralSkyMaterial_sf078")
+
+[sub_resource type="Environment" id="Environment_rffk7"]
+background_mode = 3
+sky = SubResource("Sky_h2534")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2yo11"]
+shader = ExtResource("1_1stsx")
+
+[sub_resource type="BoxMesh" id="BoxMesh_gai5s"]
+
+[node name="Root" type="Node3D"]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 4.13667, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rffk7")
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="NightSky" type="Panel" parent="Background"]
+material = SubResource("ShaderMaterial_2yo11")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(0.439971, -0.298253, 0.847036, 0, 0.943235, 0.332126, -0.898012, -0.146126, 0.414996, 8.52597, 3.34307, 4.1772)
+
+[node name="Cube" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.11653)
+mesh = SubResource("BoxMesh_gai5s")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="UserInterface" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+script = ExtResource("1_55fpk")
