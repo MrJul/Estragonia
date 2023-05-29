@@ -37,13 +37,17 @@ public class AvaloniaControl : GdControl {
 		}
 	}
 
-	/// <summary>Gets the underlying texture where <see cref="Control"/> is rendered.</summary>
+	/// <summary>Gets the underlying Avalonia top-level element.</summary>
+	/// <returns>The Avalonia top-level element.</returns>
+	/// <exception cref="InvalidOperationException">Thrown if the control isn't ready or has been disposed.</exception>
+	public GodotTopLevel GetTopLevel()
+		=> _topLevel ?? throw new InvalidOperationException($"The {nameof(AvaloniaControl)} isn't initialized");
+
+	/// <summary>Gets the underlying Godot texture where <see cref="Control"/> is rendered.</summary>
 	/// <returns>A texture.</returns>
 	/// <exception cref="InvalidOperationException">Thrown if the control isn't ready or has been disposed.</exception>
 	public Texture2D GetTexture()
-		=> _topLevel is null
-			? throw new InvalidOperationException($"The {nameof(AvaloniaControl)} isn't initialized")
-			: _topLevel.Impl.GetTexture();
+		=> GetTopLevel().Impl.GetTexture();
 
 	protected override bool InvokeGodotClassMethod(in godot_string_name method, NativeVariantPtrArgs args, out godot_variant ret) {
 		if (method == Node.MethodName._Ready && args.Count == 0) {

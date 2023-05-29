@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.999-cibuild0035348-beta" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.999-cibuild0035551-beta" />
 	</ItemGroup>
 
 	<ItemGroup>
