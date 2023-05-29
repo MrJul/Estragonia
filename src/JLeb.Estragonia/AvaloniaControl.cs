@@ -119,6 +119,9 @@ public class AvaloniaControl : GdControl {
 		FocusEntered += OnFocusEntered;
 		FocusExited += OnFocusExited;
 		MouseExited += OnMouseExited;
+
+		if (HasFocus())
+			OnFocusEntered();
 	}
 
 	public override void _Process(double delta)
