@@ -38,8 +38,13 @@ internal sealed class GodotDispatcherImpl : IDispatcherImpl {
 		_timer = new(OnTimerTick, this, Timeout.Infinite, Timeout.Infinite);
 	}
 
-	public void UpdateTimer(long? dueTimeInMs)
-		=> _timer.Change(dueTimeInMs.GetValueOrDefault(Timeout.Infinite), Timeout.Infinite);
+	public void UpdateTimer(long? dueTimeInMs) {
+		var interval = dueTimeInMs is { } value
+			? Math.Clamp(value - Now, 0L, 0xFFFFFFFEL)
+			: Timeout.Infinite;
+
+		_timer.Change(interval, Timeout.Infinite);
+	}
 
 	private void OnTimerTick(object? state)
 		=> GdDispatcher.SynchronizationContext.Post(_invokeTimer, null);

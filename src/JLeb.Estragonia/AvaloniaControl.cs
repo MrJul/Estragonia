@@ -109,11 +109,11 @@ public class AvaloniaControl : GdControl {
 		_topLevel = new GodotTopLevel(topLevelImpl) {
 			Background = null,
 			Content = Control,
-			TransparencyLevelHint = WindowTransparencyLevel.Transparent
+			TransparencyLevelHint = new[] { WindowTransparencyLevel.Transparent, WindowTransparencyLevel.None }
 		};
 
 		_topLevel.Prepare();
-		_topLevel.Renderer.Start();
+		_topLevel.StartRendering();
 
 		Resized += OnResized;
 		FocusEntered += OnFocusEntered;
@@ -278,14 +278,12 @@ public class AvaloniaControl : GdControl {
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {
 
-			// Currently leaks the ServerCompositionTarget, see https://github.com/AvaloniaUI/Avalonia/pull/11262/
-			_topLevel.Dispose();
-
 			Resized -= OnResized;
 			FocusEntered -= OnFocusEntered;
 			FocusExited -= OnFocusExited;
 			MouseExited -= OnMouseExited;
 
+			_topLevel.Dispose();
 			_topLevel = null;
 		}
 

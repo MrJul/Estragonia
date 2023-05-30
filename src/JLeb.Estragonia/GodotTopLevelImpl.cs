@@ -6,7 +6,6 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
 using Avalonia.Platform;
-using Avalonia.Rendering;
 using Avalonia.Rendering.Composition;
 using Godot;
 using JLeb.Estragonia.Input;
@@ -22,7 +21,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	private readonly GodotVkPlatformGraphics _platformGraphics;
 	private readonly IClipboard _clipboard;
-	private readonly Compositor _compositor;
 	private readonly TouchDevice _touchDevice = new();
 
 	private GodotSkiaSurface? _surface;
@@ -35,6 +33,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public double RenderScaling
 		=> 1.0;
+
+	public Compositor Compositor { get; }
 
 	public Size ClientSize {
 		get => _clientSize;
@@ -57,6 +57,17 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		}
 	}
 
+	public WindowTransparencyLevel TransparencyLevel {
+		get => _transparencyLevel;
+		private set {
+			if (_transparencyLevel.Equals(value))
+				return;
+
+			_transparencyLevel = value;
+			TransparencyLevelChanged?.Invoke(value);
+		}
+	}
+
 	public Action<Rect>? Paint { get; set; }
 
 	public Action<Size, WindowResizeReason>? Resized { get; set; }
@@ -72,9 +83,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	IEnumerable<object> ITopLevelImpl.Surfaces
 		=> GetOrCreateSurfaces();
 
-	WindowTransparencyLevel ITopLevelImpl.TransparencyLevel
-		=> _transparencyLevel;
-
 	AcrylicPlatformCompensationLevels ITopLevelImpl.AcrylicCompensationLevels
 		=> new(1.0, 1.0, 1.0);
 
@@ -88,7 +96,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics, IClipboard clipboard, Compositor compositor) {
 		_platformGraphics = platformGraphics;
 		_clipboard = clipboard;
-		_compositor = compositor;
+		Compositor = compositor;
 	}
 
 	private GodotSkiaSurface CreateSurface()
@@ -320,9 +328,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		return args.Handled;
 	}
 
-	IRenderer ITopLevelImpl.CreateRenderer(IRenderRoot root)
-		=> new CompositingRenderer(root, _compositor, GetOrCreateSurfaces);
-
 	void ITopLevelImpl.SetInputRoot(IInputRoot inputRoot)
 		=> _inputRoot = inputRoot;
 
@@ -344,14 +349,12 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	IPopupImpl? ITopLevelImpl.CreatePopup()
 		=> null;
 
-	void ITopLevelImpl.SetTransparencyLevelHint(WindowTransparencyLevel transparencyLevel) {
-		transparencyLevel = transparencyLevel == WindowTransparencyLevel.Transparent
-			? WindowTransparencyLevel.Transparent
-			: WindowTransparencyLevel.None;
-
-		if (transparencyLevel != _transparencyLevel) {
-			_transparencyLevel = transparencyLevel;
-			TransparencyLevelChanged?.Invoke(transparencyLevel);
+	void ITopLevelImpl.SetTransparencyLevelHint(IReadOnlyList<WindowTransparencyLevel> transparencyLevels) {
+		foreach (var transparencyLevel in transparencyLevels) {
+			if (transparencyLevel == WindowTransparencyLevel.Transparent || transparencyLevel == WindowTransparencyLevel.None) {
+				TransparencyLevel = transparencyLevel;
+				return;
+			}
 		}
 	}
 

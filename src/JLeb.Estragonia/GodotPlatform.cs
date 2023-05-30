@@ -9,7 +9,6 @@ using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Godot;
 using JLeb.Estragonia.Input;
-using Dispatcher = Avalonia.Threading.Dispatcher;
 
 namespace JLeb.Estragonia;
 
@@ -21,15 +20,13 @@ internal static class GodotPlatform {
 	private static ulong s_lastProcessFrame = UInt64.MaxValue;
 
 	public static Compositor Compositor
-		=> s_compositor ?? VerifyInitialized();
-
-	private static Compositor VerifyInitialized()
-		=> throw new InvalidOperationException($"{nameof(GodotPlatform)} hasn't been initialized");
+		=> s_compositor ?? throw new InvalidOperationException($"{nameof(GodotPlatform)} hasn't been initialized");
 
 	public static void Initialize() {
 		AvaloniaSynchronizationContext.AutoInstall = false; // Godot has its own sync context, don't replace it
 
 		var platformGraphics = new GodotVkPlatformGraphics();
+		var renderTimer = new ManualRenderTimer();
 
 		AvaloniaLocator.CurrentMutable
 			.Bind<IClipboard>().ToConstant(new GodotClipboard())
@@ -39,19 +36,12 @@ internal static class GodotPlatform {
 			.Bind<IPlatformGraphics>().ToConstant(platformGraphics)
 			.Bind<IPlatformIconLoader>().ToConstant(new StubPlatformIconLoader())
 			.Bind<IPlatformSettings>().ToConstant(new GodotPlatformSettings())
+			.Bind<IRenderTimer>().ToConstant(renderTimer)
 			.Bind<IWindowingPlatform>().ToConstant(new GodotWindowingPlatform())
 			.Bind<PlatformHotkeyConfiguration>().ToConstant(CreatePlatformHotKeyConfiguration());
 
-		// bind the render loop last, as it uses the dispatcher which must be registered before
-		var renderTimer = new ManualRenderTimer();
-		var renderLoop = new RenderLoop(renderTimer, Dispatcher.UIThread);
-
-		AvaloniaLocator.CurrentMutable
-			.Bind<IRenderTimer>().ToConstant(renderTimer)
-			.Bind<IRenderLoop>().ToConstant(renderLoop);
-
 		s_renderTimer = renderTimer;
-		s_compositor = new Compositor(renderLoop, platformGraphics);
+		s_compositor = new Compositor(platformGraphics);
 	}
 
 	private static PlatformHotkeyConfiguration CreatePlatformHotKeyConfiguration()
