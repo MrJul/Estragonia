@@ -1,0 +1,31 @@
+﻿<UserControl
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ui="clr-namespace:GameMenu.UI"
+	mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
+	x:Class="GameMenu.UI.OptionsView"
+	x:DataType="ui:OptionsViewModel">
+
+	<Grid
+		ColumnDefinitions="Auto,*"
+		RowDefinitions="Auto"
+		HorizontalAlignment="Center"
+		VerticalAlignment="Center"
+		Margin="16">
+
+		<TextBlock
+			Text="Vertical Sync"
+			Grid.Column="0"
+			Grid.Row="0" />
+
+		<CheckBox
+			Name="IsVSyncEnabledCheckBox"
+			IsChecked="{Binding IsVSyncEnabled, Mode=TwoWay}"
+			Grid.Column="1"
+			Grid.Row="0" />
+
+	</Grid>
+
+</UserControl>

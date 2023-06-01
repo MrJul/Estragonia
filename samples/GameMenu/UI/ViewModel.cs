@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace GameMenu.UI;
 
-public class ViewModel : INotifyPropertyChanged {
+public abstract class ViewModel : INotifyPropertyChanged {
 
 	public event PropertyChangedEventHandler? PropertyChanged;
+
+	private Task? _loadTask;
 
 	protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
 		=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -19,5 +22,13 @@ public class ViewModel : INotifyPropertyChanged {
 		OnPropertyChanged(propertyName);
 		return true;
 	}
+
+	public Task EnsureLoadedAsync()
+		=> _loadTask ??= LoadAsync();
+
+	protected abstract Task LoadAsync();
+
+	public virtual Task<bool> TryCloseAsync()
+		=> Task.FromResult(true);
 
 }

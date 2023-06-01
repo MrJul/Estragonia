@@ -5,12 +5,8 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
 	mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
-	x:Class="GameMenu.UI.MenuView"
-	x:DataType="ui:MenuViewModel"
-	RenderOptions.TextRenderingMode="Antialias"
-	FontFamily="/Fonts/#Orbitron"
-	FontWeight="Bold"
-	FontSize="24">
+	x:Class="GameMenu.UI.MainMenuView"
+	x:DataType="ui:MainMenuViewModel">
 
 	<UserControl.Resources>
 
@@ -36,15 +32,15 @@
 			<GradientStop Offset="1.0" Color="{StaticResource MainMenuItemSelectedBackgroundColor2}" />
 		</LinearGradientBrush>
 
-
 		<SolidColorBrush x:Key="MainMenuItemNormalBorderBrush" Color="{StaticResource MainMenuItemNormalBorderColor}" />
 		<SolidColorBrush x:Key="MainMenuItemSelectedBorderBrush" Color="{StaticResource MainMenuItemSelectedBorderColor}" />
 
-		<ControlTheme x:Key="MainMenuItemTheme" TargetType="MenuItem">
+		<ControlTheme x:Key="MainMenuItemTheme" TargetType="MenuItem" x:DataType="ui:MainMenuItem">
 
 			<Setter Property="Background" Value="{StaticResource MainMenuItemNormalBackgroundBrush}" />
 			<Setter Property="BorderBrush" Value="{StaticResource MainMenuItemNormalBorderBrush}" />
 			<Setter Property="Margin" Value="0,8" />
+			<Setter Property="Command" Value="{Binding ExecuteAsync}" />
 
 			<Setter Property="Template">
 				<ControlTemplate>
@@ -92,7 +88,7 @@
 
 	<UserControl.DataTemplates>
 
-		<DataTemplate DataType="ui:MenuItemViewModel">
+		<DataTemplate DataType="ui:MainMenuItem">
 			<TextBlock Text="{Binding Display}" />
 		</DataTemplate>
 
@@ -105,8 +101,10 @@
 			ItemContainerTheme="{StaticResource MainMenuItemTheme}"
 			Background="{x:Null}"
 			BorderThickness="0"
-			Width="260"
-			VerticalAlignment="Center">
+			MinWidth="260"
+			VerticalAlignment="Center"
+			HorizontalAlignment="Center"
+			FontWeight="Bold">
 
 			<Menu.ItemsPanel>
 				<ItemsPanelTemplate>

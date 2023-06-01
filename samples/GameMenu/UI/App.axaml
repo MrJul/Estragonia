@@ -5,25 +5,7 @@
 	RequestedThemeVariant="Dark">
 
 	<Application.Styles>
-		<Styles>
-
-			<SimpleTheme />
-
-			<!-- <Styles.Resources> -->
-			<!-- 	<ResourceDictionary> -->
-			<!-- 		<ResourceDictionary.MergedDictionaries> -->
-			<!-- 			<MergeResourceInclude Source="Styles/_Brushes.axaml" /> -->
-			<!-- 			<MergeResourceInclude Source="Styles/EmbeddableControlRoot.axaml" /> -->
-			<!-- 			<MergeResourceInclude Source="Styles/ListBox.axaml" /> -->
-			<!-- 			<MergeResourceInclude Source="Styles/ListBoxItem.axaml" /> -->
-			<!-- 			<MergeResourceInclude Source="Styles/ScrollViewer.axaml" /> -->
-			<!-- 		</ResourceDictionary.MergedDictionaries> -->
-			<!-- 	</ResourceDictionary> -->
-			<!-- </Styles.Resources> -->
-			<!-- -->
-			<!-- <StyleInclude Source="Styles/UserControl.axaml" /> -->
-
-		</Styles>
+		<SimpleTheme />
 	</Application.Styles>
 
 </Application>
