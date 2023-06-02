@@ -32,7 +32,7 @@
 			CornerRadius="16"
 			Classes="anim"
 			VerticalAlignment="Top"
-			Margin="100">
+			Margin="100,100,100,0">
 
 			<Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
 

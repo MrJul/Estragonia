@@ -14,6 +14,8 @@ internal sealed class GodotSkiaSurface : ISkiaSurface {
 
 	public GodotObject GdTextureOwner { get; }
 
+	public double RenderScaling { get; }
+
 	public bool IsDisposed { get; private set; }
 
 	SKSurface ISkiaSurface.Surface
@@ -22,10 +24,11 @@ internal sealed class GodotSkiaSurface : ISkiaSurface {
 	bool ISkiaSurface.CanBlit
 		=> false;
 
-	public GodotSkiaSurface(SKSurface skSurface, Texture2D gdTexture, GodotObject gdTextureOwner) {
+	public GodotSkiaSurface(SKSurface skSurface, Texture2D gdTexture, GodotObject gdTextureOwner, double renderScaling) {
 		SkSurface = skSurface;
 		GdTexture = gdTexture;
 		GdTextureOwner = gdTextureOwner;
+		RenderScaling = renderScaling;
 		IsDisposed = false;
 	}
 

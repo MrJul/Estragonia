@@ -88,7 +88,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 			? new GodotSkiaRenderTarget(surface, _grContext)
 			: null;
 
-	public GodotSkiaSurface CreateSurface(PixelSize size) {
+	public GodotSkiaSurface CreateSurface(PixelSize size, double renderScaling) {
 		size = new PixelSize(Math.Max(size.Width, 1), Math.Max(size.Height, 1));
 		var number = Interlocked.Increment(ref s_createdSurfaceCount);
 
@@ -145,11 +145,13 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		if (skSurface is null)
 			throw new InvalidOperationException("Couldn't create Skia surface from Vulkan image");
 
-		return new GodotSkiaSurface(skSurface, gdTexture, gdViewport);
+		return new GodotSkiaSurface(skSurface, gdTexture, gdViewport, renderScaling);
 	}
 
-	ISkiaSurface ISkiaGpu.TryCreateSurface(PixelSize size, ISkiaGpuRenderSession? session)
-		=> CreateSurface(size);
+	ISkiaSurface? ISkiaGpu.TryCreateSurface(PixelSize size, ISkiaGpuRenderSession? session)
+		=> session is GodotSkiaGpuRenderSession godotSession
+			? CreateSurface(size, godotSession.Surface.RenderScaling)
+			: null;
 
 	public void Dispose()
 		=> _grContext.Dispose();

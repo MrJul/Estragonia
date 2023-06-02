@@ -14,7 +14,7 @@ internal sealed class GodotSkiaGpuRenderSession : ISkiaGpuRenderSession {
 		=> Surface.SkSurface;
 
 	double ISkiaGpuRenderSession.ScaleFactor
-		=> 1.0;
+		=> Surface.RenderScaling;
 
 	GRSurfaceOrigin ISkiaGpuRenderSession.SurfaceOrigin
 		=> GRSurfaceOrigin.TopLeft;

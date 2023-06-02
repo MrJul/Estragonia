@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace JLeb.Estragonia;
 
 /// <summary>Contains some used Vulkan constants.</summary>
-[SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Matches the official Vulkan names")]
 internal static class VkConstants {
 
 	internal enum VkImageLayout {

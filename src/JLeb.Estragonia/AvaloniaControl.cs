@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -21,6 +22,7 @@ namespace JLeb.Estragonia;
 public class AvaloniaControl : GdControl {
 
 	private AvControl? _control;
+	private double _renderScaling = 1.0;
 	private GodotTopLevel? _topLevel;
 
 	/// <summary>Gets or sets the underlying Avalonia control that will be rendered.</summary>
@@ -34,6 +36,19 @@ public class AvaloniaControl : GdControl {
 
 			if (_topLevel is not null)
 				_topLevel.Content = _control;
+		}
+	}
+
+	/// <summary>Gets or sets the render scaling for the Avalonia control. Defaults to 1.0.</summary>
+	[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Only used as a guard, doesn't affect correctness")]
+	public double RenderScaling {
+		get => _renderScaling;
+		set {
+			if (_renderScaling == value)
+				return;
+
+			_renderScaling = value;
+			OnResized();
 		}
 	}
 
@@ -102,9 +117,10 @@ public class AvaloniaControl : GdControl {
 		}
 
 		var topLevelImpl = new GodotTopLevelImpl(graphics, locator.GetRequiredService<IClipboard>(), GodotPlatform.Compositor) {
-			ClientSize = Size.ToAvaloniaSize(),
 			CursorChanged = OnAvaloniaCursorChanged
 		};
+
+		topLevelImpl.SetRenderSize(GetFrameSize(), RenderScaling);
 
 		_topLevel = new GodotTopLevel(topLevelImpl) {
 			Background = null,
@@ -127,18 +143,14 @@ public class AvaloniaControl : GdControl {
 	public override void _Process(double delta)
 		=> GodotPlatform.TriggerRenderTick();
 
+	private PixelSize GetFrameSize()
+		=> PixelSize.FromSize(Size.ToAvaloniaSize(), 1.0);
+
 	private void OnAvaloniaCursorChanged(CursorShape cursor)
 		=> MouseDefaultCursorShape = cursor;
 
-	private void OnResized() {
-		if (_topLevel is null)
-			return;
-
-		var size = Size.ToAvaloniaSize();
-		_topLevel.Impl.ClientSize = size;
-		_topLevel.Measure(size);
-		_topLevel.Arrange(new Rect(size));
-	}
+	private void OnResized()
+		=> _topLevel?.Impl.SetRenderSize(GetFrameSize(), RenderScaling);
 
 	private void OnFocusEntered() {
 		if (_topLevel is null)

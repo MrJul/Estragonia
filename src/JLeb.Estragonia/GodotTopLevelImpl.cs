@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -25,37 +26,17 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	private GodotSkiaSurface? _surface;
 	private WindowTransparencyLevel _transparencyLevel = WindowTransparencyLevel.Transparent;
-	private Size _clientSize;
+	private PixelSize _renderSize;
 	private IInputRoot? _inputRoot;
 	private GdCursorShape _cursorShape;
 	private bool _isDisposed;
 	private int _lastMouseDeviceId = GodotDevices.EmulatedDeviceId;
 
-	public double RenderScaling
-		=> 1.0;
+	public double RenderScaling { get; private set; } = 1.0;
 
 	public Compositor Compositor { get; }
 
-	public Size ClientSize {
-		get => _clientSize;
-		set {
-			if (_clientSize.Equals(value))
-				return;
-
-			_clientSize = value;
-
-			if (_surface is not null) {
-				_surface.Dispose();
-				_surface = null;
-			}
-
-			if (_isDisposed)
-				return;
-
-			_surface = CreateSurface();
-			Resized?.Invoke(value, WindowResizeReason.Unspecified);
-		}
-	}
+	public Size ClientSize { get; private set; }
 
 	public WindowTransparencyLevel TransparencyLevel {
 		get => _transparencyLevel;
@@ -99,16 +80,42 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		Compositor = compositor;
 	}
 
-	private GodotSkiaSurface CreateSurface()
-		=> _isDisposed
-			? throw new ObjectDisposedException(nameof(GodotTopLevelImpl))
-			: _platformGraphics.GetSharedContext().CreateSurface(PixelSize.FromSize(_clientSize, RenderScaling));
+	private GodotSkiaSurface CreateSurface() {
+		if (_isDisposed)
+			throw new ObjectDisposedException(nameof(GodotTopLevelImpl));
+
+		return _platformGraphics.GetSharedContext().CreateSurface(_renderSize, RenderScaling);
+	}
 
 	private GodotSkiaSurface GetOrCreateSurface()
 		=> _surface ??= CreateSurface();
 
 	private IEnumerable<object> GetOrCreateSurfaces()
 		=> new object[] { GetOrCreateSurface() };
+
+	[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Only used as a guard, doesn't affect correctness")]
+	public void SetRenderSize(PixelSize renderSize, double renderScaling) {
+		if (_renderSize == renderSize && RenderScaling == renderScaling)
+			return;
+
+		var clientSize = renderSize.ToSize(renderScaling);
+		ClientSize = new Size(Math.Max(clientSize.Width, 0.0), Math.Max(clientSize.Height, 0.0));
+
+		_renderSize = renderSize;
+		ClientSize = renderSize.ToSize(renderScaling);
+		RenderScaling = renderScaling;
+
+		if (_surface is not null) {
+			_surface.Dispose();
+			_surface = null;
+		}
+
+		if (_isDisposed)
+			return;
+
+		_surface = CreateSurface();
+		Resized?.Invoke(ClientSize, WindowResizeReason.Unspecified);
+	}
 
 	public Texture2D GetTexture()
 		=> GetOrCreateSurface().GdTexture;
@@ -148,7 +155,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 				timestamp,
 				_inputRoot,
 				type,
-				inputEvent.Position.ToAvaloniaPoint(),
+				inputEvent.Position.ToAvaloniaPoint() / RenderScaling,
 				inputEvent.GetRawInputModifiers()
 			);
 
@@ -157,7 +164,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 				GodotDevices.GetMouse(inputEvent.Device),
 				timestamp,
 				_inputRoot,
-				inputEvent.Position.ToAvaloniaPoint(),
+				inputEvent.Position.ToAvaloniaPoint() / RenderScaling,
 				delta,
 				inputEvent.GetRawInputModifiers()
 			);
@@ -197,7 +204,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 			timestamp,
 			_inputRoot,
 			inputEvent.Pressed ? RawPointerEventType.TouchBegin : RawPointerEventType.TouchEnd,
-			inputEvent.Position.ToAvaloniaPoint(),
+			inputEvent.Position.ToAvaloniaPoint() / RenderScaling,
 			InputModifiersProvider.GetRawInputModifiers(),
 			inputEvent.Index
 		);
@@ -226,9 +233,9 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		return args.Handled;
 	}
 
-	private static RawPointerPoint CreateRawPointerPoint(Vector2 position, float pressure, Vector2 tilt)
+	private RawPointerPoint CreateRawPointerPoint(Vector2 position, float pressure, Vector2 tilt)
 		=> new() {
-			Position = position.ToAvaloniaPoint(),
+			Position = position.ToAvaloniaPoint() / RenderScaling,
 			Twist = 0.0f,
 			Pressure = pressure,
 			XTilt = tilt.X * 90.0f,
