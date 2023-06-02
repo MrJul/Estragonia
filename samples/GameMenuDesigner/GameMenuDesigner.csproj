@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<Nullable>enable</Nullable>
+		<LangVersion>11.0</LangVersion>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<OutputType>WinExe</OutputType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="[11.0.999-cibuild0036727-beta]" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\GameMenu\GameMenu.csproj" />
+	</ItemGroup>
+
+</Project>

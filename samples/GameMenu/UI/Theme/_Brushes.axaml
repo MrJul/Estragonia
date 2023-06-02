@@ -1,0 +1,15 @@
+﻿<ResourceDictionary
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<SolidColorBrush x:Key="ContainerNormalBackgroundBrush" Color="#201E90FF" />
+	<SolidColorBrush x:Key="ContainerNormalBorderBrush" Color="Transparent" />
+	<SolidColorBrush x:Key="ContainerFocusBackgroundBrush" Color="#451E90FF" />
+	<SolidColorBrush x:Key="ContainerFocusBorderBrush" Color="#FFFFFFFF" />
+
+	<SolidColorBrush x:Key="ButtonNormalBackgroundBrush" Color="#601E90FF" />
+	<SolidColorBrush x:Key="ButtonNormalBorderBrush" Color="#FF1E90FF" />
+	<SolidColorBrush x:Key="ButtonFocusBackgroundBrush" Color="#B080C1FF" />
+	<SolidColorBrush x:Key="ButtonFocusBorderBrush" Color="#FFFFFFFF" />
+
+</ResourceDictionary>

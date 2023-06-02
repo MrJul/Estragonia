@@ -5,12 +5,14 @@ namespace GameMenu.UI;
 
 public class MainMenuViewModel : ViewModel {
 
-	private readonly ShellViewModel _shell;
+	private readonly MainViewModel _mainViewModel;
+	private readonly UIOptions _uiOptions;
 
 	public ObservableCollection<MainMenuItem> Items { get; } = new();
 
-	public MainMenuViewModel(ShellViewModel shell) {
-		_shell = shell;
+	public MainMenuViewModel(MainViewModel mainViewModel, UIOptions uiOptions) {
+		_mainViewModel = mainViewModel;
+		_uiOptions = uiOptions;
 
 		Items.Add(new MainMenuItem("New Game", StartNewGameAsync));
 		Items.Add(new MainMenuItem("Continue", ContinueGameAsync));
@@ -28,12 +30,12 @@ public class MainMenuViewModel : ViewModel {
 		=> Task.CompletedTask;
 
 	private Task OpenOptionsAsync() {
-		_shell.NavigateTo(new OptionsViewModel());
+		_mainViewModel.NavigateTo(new OptionsViewModel(_uiOptions));
 		return Task.CompletedTask;
 	}
 
 	private Task ExitAsync() {
-		_shell.SceneTree.Quit();
+		_mainViewModel.SceneTree.Quit();
 		return Task.CompletedTask;
 	}
 

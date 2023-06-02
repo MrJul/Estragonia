@@ -1,22 +1,36 @@
 ﻿using System.Threading.Tasks;
-using Godot;
 
 namespace GameMenu.UI;
 
 public class OptionsViewModel : ViewModel {
 
-	public bool IsVSyncEnabled {
-		get => DisplayServer.WindowGetVsyncMode() != DisplayServer.VSyncMode.Disabled;
-		set {
-			if (IsVSyncEnabled == value)
-				return;
+	private readonly UIOptions _uiOptions;
+	private bool _isVSyncEnabled;
+	private double _uiScale;
 
-			DisplayServer.WindowSetVsyncMode(value ? DisplayServer.VSyncMode.Enabled : DisplayServer.VSyncMode.Disabled);
-			OnPropertyChanged();
-		}
+	public bool IsVSyncEnabled {
+		get => _isVSyncEnabled;
+		set => SetField(ref _isVSyncEnabled, value);
+	}
+
+	public double UIScale {
+		get => _uiScale;
+		set => SetField(ref _uiScale, value);
+	}
+
+	public OptionsViewModel(UIOptions uiOptions) {
+		_uiOptions = uiOptions;
+		_isVSyncEnabled = uiOptions.IsVSyncEnabled;
+		_uiScale = uiOptions.UIScale;
 	}
 
 	protected override Task LoadAsync()
 		=> Task.CompletedTask;
+
+	public Task AcceptAsync() {
+		_uiOptions.IsVSyncEnabled = IsVSyncEnabled;
+		_uiOptions.UIScale = UIScale;
+		return Task.CompletedTask;
+	}
 
 }

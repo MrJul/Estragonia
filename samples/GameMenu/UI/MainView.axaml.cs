@@ -2,9 +2,9 @@
 
 namespace GameMenu.UI;
 
-public partial class ShellView : UserControl {
+public partial class MainView : UserControl {
 
-	public ShellView()
+	public MainView()
 		=> InitializeComponent();
 
 }

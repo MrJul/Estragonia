@@ -1,31 +1,157 @@
-﻿<UserControl
+﻿<ui:View
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
-	mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
+	xmlns:controls="clr-namespace:GameMenu.UI.Controls"
+	xmlns:converters="clr-namespace:GameMenu.UI.Converters"
+	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="480"
 	x:Class="GameMenu.UI.OptionsView"
-	x:DataType="ui:OptionsViewModel">
+	x:DataType="ui:OptionsViewModel"
+	KeyboardNavigation.TabNavigation="Cycle">
 
-	<Grid
-		ColumnDefinitions="Auto,*"
-		RowDefinitions="Auto"
-		HorizontalAlignment="Center"
-		VerticalAlignment="Center"
-		Margin="16">
+	<Design.DesignStyle>
+		<Style Selector="ui|OptionsView">
+			<Setter Property="Background" Value="Black" />
+		</Style>
+	</Design.DesignStyle>
 
-		<TextBlock
-			Text="Vertical Sync"
-			Grid.Column="0"
-			Grid.Row="0" />
+	<Design.DataContext>
+		<ui:OptionsViewModel>
+			<x:Arguments>
+				<ui:UIOptions />
+			</x:Arguments>
+		</ui:OptionsViewModel>
+	</Design.DataContext>
 
-		<CheckBox
-			Name="IsVSyncEnabledCheckBox"
-			IsChecked="{Binding IsVSyncEnabled, Mode=TwoWay}"
-			Grid.Column="1"
-			Grid.Row="0" />
+	<UserControl.Resources>
+		<converters:BooleanToOnOffConverter x:Key="BooleanToOnOffConverter" />
+	</UserControl.Resources>
 
-	</Grid>
+	<UserControl.Styles>
 
-</UserControl>
+		<Style Selector="Border.option">
+			<Setter Property="Background" Value="{DynamicResource ContainerNormalBackgroundBrush}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource ContainerNormalBorderBrush}" />
+			<Setter Property="BorderThickness" Value="1" />
+
+			<Style Selector="^ > Grid > TextBlock.label">
+				<Setter Property="Margin" Value="16" />
+				<Setter Property="Grid.Column" Value="0" />
+			</Style>
+
+			<Style Selector="^ > Grid > TextBlock.value-display">
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="HorizontalAlignment" Value="Right" />
+				<Setter Property="Grid.Column" Value="1" />
+			</Style>
+
+			<Style Selector="^ > Grid > :is(Control).value">
+				<Setter Property="VerticalAlignment" Value="Center" />
+				<Setter Property="Grid.Column" Value="2" />
+			</Style>
+
+		</Style>
+
+		<Style Selector="Border.option:focus-within">
+			<Setter Property="Background" Value="{DynamicResource ContainerFocusBackgroundBrush}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource ContainerFocusBorderBrush}" />
+		</Style>
+
+	</UserControl.Styles>
+
+	<!-- ReSharper disable Xaml.MissingGridIndex -->
+
+	<Border VerticalAlignment="Center" MinWidth="400" MaxWidth="600">
+
+		<StackPanel
+			Orientation="Vertical"
+			Spacing="8"
+			Margin="8">
+
+			<!-- Vertical Sync -->
+			<Border Classes="option">
+
+				<Interaction.Behaviors>
+					<ui:FocusWithPointerBehavior Target="{Binding #IsVSyncEnabledCheckBox}" />
+				</Interaction.Behaviors>
+
+				<Grid ColumnDefinitions="3*,*,*">
+
+					<TextBlock
+						Classes="label"
+						Text="Vertical Sync" />
+
+					<TextBlock
+						Classes="value-display"
+						Text="{Binding IsVSyncEnabled, Converter={StaticResource BooleanToOnOffConverter}}" />
+
+					<CheckBox
+						x:Name="IsVSyncEnabledCheckBox"
+						Classes="value"
+						IsChecked="{Binding IsVSyncEnabled, Mode=TwoWay}"
+						HorizontalAlignment="Center"
+						Padding="0" />
+
+				</Grid>
+
+			</Border>
+
+			<!-- UI Scale -->
+			<Border Classes="option">
+
+				<Interaction.Behaviors>
+					<ui:FocusWithPointerBehavior Target="{Binding #UIScaleSlider}" />
+				</Interaction.Behaviors>
+
+				<Grid ColumnDefinitions="3*,*,*">
+
+					<TextBlock
+						Classes="label"
+						Text="UI Scale" />
+
+					<TextBlock
+						Classes="value-display"
+						Text="{Binding UIScale, StringFormat=P0}"  />
+
+					<controls:ExtendedSlider
+						x:Name="UIScaleSlider"
+						Classes="value"
+						Value="{Binding UIScale, Mode=TwoWay}"
+						Minimum="0.6"
+						Maximum="2.0"
+						SmallChange="0.1"
+						LargeChange="0.5"
+						TickFrequency="0.1"
+						IsSnapToTickEnabled="True"
+						Margin="16,0" />
+
+				</Grid>
+
+			</Border>
+
+			<!-- Buttons -->
+			<StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center">
+
+				<Button
+					x:Name="ApplyButton"
+					Content="Apply"
+					Command="{Binding AcceptAsync}"
+					IsDefault="True"
+					ui:DirectionalFocus.FocusRight="{Binding #CloseButton}" />
+
+				<Button
+					x:Name="CloseButton"
+					Content="Close"
+					Command="{Binding TryCloseAsync}"
+					IsCancel="True"
+					ui:DirectionalFocus.FocusLeft="{Binding #ApplyButton}" />
+
+			</StackPanel>
+
+		</StackPanel>
+
+	</Border>
+
+</ui:View>

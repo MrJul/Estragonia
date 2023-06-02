@@ -1,0 +1,102 @@
+﻿<ResourceDictionary
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="clr-namespace:GameMenu.UI">
+
+	<Design.PreviewWith>
+		<Border Background="Black">
+			<StackPanel Spacing="20" Margin="20">
+				<CheckBox IsChecked="True" Content="CheckBox 1" />
+				<CheckBox IsChecked="False" Content="CheckBox 2" />
+			</StackPanel>
+		</Border>
+	</Design.PreviewWith>
+
+	<ControlTheme x:Key="{x:Type CheckBox}" TargetType="CheckBox">
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderBrush" Value="{x:Null}" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Padding" Value="8,4,4,4" />
+		<Setter Property="HorizontalContentAlignment" Value="Left" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Border
+					Background="{TemplateBinding Background}"
+					BorderBrush="{TemplateBinding BorderBrush}"
+					BorderThickness="{TemplateBinding BorderThickness}"
+					CornerRadius="{TemplateBinding CornerRadius}">
+					<Grid ColumnDefinitions="Auto,*">
+
+						<Border
+							x:Name="CheckBorder"
+							Background="{DynamicResource ButtonNormalBackgroundBrush}"
+							BorderBrush="{DynamicResource ButtonNormalBorderBrush}"
+							BorderThickness="1"
+							Width="32"
+							Height="32">
+
+							<Path x:Name="CheckGlyph"
+							  Data="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
+							  Margin="12"
+								Fill="{TemplateBinding Foreground}"
+							  Stretch="Uniform"
+							  VerticalAlignment="Center"
+							  Opacity="0" />
+
+						</Border>
+
+						<ContentPresenter
+							Content="{TemplateBinding Content}"
+							ContentTemplate="{TemplateBinding ContentTemplate}"
+							Padding="{TemplateBinding Padding}"
+							RecognizesAccessKey="True"
+							HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+							VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+							Grid.Column="1" />
+
+					</Grid>
+				</Border>
+			</ControlTemplate>
+		</Setter>
+
+		<Setter Property="Transitions">
+			<Transitions>
+				<BrushTransition Property="BorderBrush" Duration="0.2" />
+			</Transitions>
+		</Setter>
+
+		<Setter Property="Interaction.Behaviors">
+			<BehaviorCollectionTemplate>
+				<BehaviorCollection>
+					<ui:FocusWithPointerBehavior />
+				</BehaviorCollection>
+			</BehaviorCollectionTemplate>
+		</Setter>
+
+		<Style Selector="^:focus /template/ Border#CheckBorder">
+			<Setter Property="BorderBrush" Value="{StaticResource ButtonFocusBorderBrush}" />
+		</Style>
+
+		<Style Selector="^:focus /template/ Path#CheckGlyph">
+			<Setter Property="Fill" Value="{StaticResource ButtonFocusBorderBrush}" />
+		</Style>
+
+		<Style Selector="^ /template/ Path#CheckGlyph">
+			<Setter Property="Transitions">
+				<Transitions>
+					<DoubleTransition Property="Opacity" Duration="0.2" />
+					<ThicknessTransition Property="Margin" Duration="0.2" />
+				</Transitions>
+			</Setter>
+		</Style>
+
+		<Style Selector="^:checked /template/ Path#CheckGlyph">
+			<Setter Property="Opacity" Value="1.0" />
+			<Setter Property="Margin" Value="3" />
+		</Style>
+
+	</ControlTheme>
+
+</ResourceDictionary>

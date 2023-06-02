@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorld", "samples\Hello
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameMenu", "samples\GameMenu\GameMenu.csproj", "{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameMenuDesigner", "samples\GameMenuDesigner\GameMenuDesigner.csproj", "{5D55F29B-28DC-4901-9A05-24B83B39597C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{5D55F29B-28DC-4901-9A05-24B83B39597C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D55F29B-28DC-4901-9A05-24B83B39597C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D55F29B-28DC-4901-9A05-24B83B39597C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D55F29B-28DC-4901-9A05-24B83B39597C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,5 +56,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2125B402-E207-4382-AC5E-D8C7A868E2FA} = {8BDD182F-5C11-4089-9703-AD2E3B9B55B4}
 		{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB} = {8BDD182F-5C11-4089-9703-AD2E3B9B55B4}
+		{5D55F29B-28DC-4901-9A05-24B83B39597C} = {8BDD182F-5C11-4089-9703-AD2E3B9B55B4}
 	EndGlobalSection
 EndGlobal

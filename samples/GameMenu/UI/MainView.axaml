@@ -5,12 +5,9 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
 	mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
-	x:Class="GameMenu.UI.ShellView"
-	x:DataType="ui:ShellViewModel"
-	RenderOptions.TextRenderingMode="Antialias"
-	FontFamily="/Fonts/#Orbitron"
-	FontSize="24">
-
+	x:Class="GameMenu.UI.MainView"
+	x:DataType="ui:MainViewModel"
+	RenderOptions.TextRenderingMode="Antialias">
 
 	<UserControl.DataTemplates>
 		<ui:ViewLocator />

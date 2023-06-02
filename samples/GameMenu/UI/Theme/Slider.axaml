@@ -1,0 +1,102 @@
+﻿<ResourceDictionary
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="clr-namespace:GameMenu.UI">
+
+	<Design.PreviewWith>
+		<Border Background="Black">
+			<StackPanel Spacing="20" Margin="20">
+				<Slider Minimum="0" Maximum="100" Value="30" Width="200" />
+			</StackPanel>
+		</Border>
+	</Design.PreviewWith>
+
+	<ControlTheme x:Key="SliderHorizontalRepeatButton" TargetType="RepeatButton">
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Border Background="Transparent">
+					<Border
+						Background="{TemplateBinding Background}"
+						Height="4"
+					  VerticalAlignment="Center"/>
+				</Border>
+			</ControlTemplate>
+		</Setter>
+	</ControlTheme>
+
+	<ControlTheme x:Key="SliderThumbTheme" TargetType="Thumb">
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Border
+					Background="{TemplateBinding Background}"
+					BorderBrush="{TemplateBinding BorderBrush}"
+					BorderThickness="{TemplateBinding BorderThickness}"
+					CornerRadius="0" />
+			</ControlTemplate>
+		</Setter>
+	</ControlTheme>
+
+	<ControlTheme x:Key="{x:Type Slider}" TargetType="Slider">
+		<Setter Property="Background" Value="{StaticResource ButtonNormalBackgroundBrush}" />
+		<Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorderBrush}" />
+		<Setter Property="BorderThickness" Value="0" />
+
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Border
+					BorderBrush="{TemplateBinding BorderBrush}"
+					BorderThickness="{TemplateBinding BorderThickness}"
+					CornerRadius="{TemplateBinding CornerRadius}">
+					<Grid Margin="{TemplateBinding Padding}">
+						<Track
+							x:Name="PART_Track"
+							Minimum="{TemplateBinding Minimum}"
+							Maximum="{TemplateBinding Maximum}"
+							Value="{TemplateBinding Value, Mode=TwoWay}"
+							IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
+							Orientation="Horizontal">
+							<Track.DecreaseButton>
+								<RepeatButton
+									x:Name="PART_DecreaseButton"
+									Theme="{StaticResource SliderHorizontalRepeatButton}"
+									Background="{TemplateBinding Foreground}"
+									Focusable="False" />
+							</Track.DecreaseButton>
+							<Track.IncreaseButton>
+								<RepeatButton
+									x:Name="PART_IncreaseButton"
+									Theme="{StaticResource SliderHorizontalRepeatButton}"
+									Background="{TemplateBinding Background}"
+									Focusable="False" />
+							</Track.IncreaseButton>
+							<Thumb
+								x:Name="Thumb"
+								Width="6"
+								Height="20"
+								Margin="0"
+								Padding="0"
+								Background="{StaticResource ButtonNormalBorderBrush}"
+								BorderThickness="0"
+								Theme="{StaticResource SliderThumbTheme}"
+								DataContext="{TemplateBinding Value}" />
+						</Track>
+					</Grid>
+				</Border>
+			</ControlTemplate>
+		</Setter>
+
+		<Setter Property="Interaction.Behaviors">
+			<BehaviorCollectionTemplate>
+				<BehaviorCollection>
+					<ui:FocusWithPointerBehavior />
+				</BehaviorCollection>
+			</BehaviorCollectionTemplate>
+		</Setter>
+
+		<Style Selector="^:focus /template/ Thumb#Thumb">
+			<Setter Property="Background" Value="{StaticResource ButtonFocusBorderBrush}" />
+		</Style>
+
+	</ControlTheme>
+
+</ResourceDictionary>

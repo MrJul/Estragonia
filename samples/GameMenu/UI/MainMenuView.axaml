@@ -45,7 +45,7 @@
 			<Setter Property="Template">
 				<ControlTemplate>
 					<ContentPresenter
-						Name="PART_ContentPresenter"
+						x:Name="PART_ContentPresenter"
 						Padding="8,16"
 						HorizontalContentAlignment="Center"
 						VerticalContentAlignment="Center"
@@ -94,26 +94,22 @@
 
 	</UserControl.DataTemplates>
 
-	<Grid>
+	<Menu
+		ItemsSource="{Binding Items}"
+		ItemContainerTheme="{StaticResource MainMenuItemTheme}"
+		Background="{x:Null}"
+		BorderThickness="0"
+		MinWidth="260"
+		VerticalAlignment="Center"
+		HorizontalAlignment="Center"
+		FontWeight="Bold">
 
-		<Menu
-			ItemsSource="{Binding Items}"
-			ItemContainerTheme="{StaticResource MainMenuItemTheme}"
-			Background="{x:Null}"
-			BorderThickness="0"
-			MinWidth="260"
-			VerticalAlignment="Center"
-			HorizontalAlignment="Center"
-			FontWeight="Bold">
+		<Menu.ItemsPanel>
+			<ItemsPanelTemplate>
+				<StackPanel Orientation="Vertical" />
+			</ItemsPanelTemplate>
+		</Menu.ItemsPanel>
 
-			<Menu.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Vertical" />
-				</ItemsPanelTemplate>
-			</Menu.ItemsPanel>
-
-		</Menu>
-
-	</Grid>
+	</Menu>
 
 </UserControl>

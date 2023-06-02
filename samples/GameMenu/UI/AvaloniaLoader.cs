@@ -10,6 +10,7 @@ public partial class AvaloniaLoader : Node {
 		=> AppBuilder
 			.Configure<App>()
 			.UseGodot()
+			.LogToTrace()
 			.SetupWithoutStarting();
 
 }

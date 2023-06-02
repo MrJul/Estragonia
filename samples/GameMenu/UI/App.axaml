@@ -4,8 +4,36 @@
 	x:Class="GameMenu.UI.App"
 	RequestedThemeVariant="Dark">
 
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="Theme/_Brushes.axaml" />
+				<ResourceInclude Source="Theme/Button.axaml" />
+				<ResourceInclude Source="Theme/CheckBox.axaml" />
+				<ResourceInclude Source="Theme/Slider.axaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+
 	<Application.Styles>
-		<SimpleTheme />
+		<Styles>
+
+			<Styles.Resources>
+				<ResourceDictionary>
+					<ResourceDictionary.MergedDictionaries>
+
+					</ResourceDictionary.MergedDictionaries>
+				</ResourceDictionary>
+			</Styles.Resources>
+
+			<SimpleTheme />
+
+			<Style Selector=":is(TopLevel)">
+				<Setter Property="FontFamily" Value="/Fonts/#Orbitron" />
+				<Setter Property="FontSize" Value="24" />
+			</Style>
+
+		</Styles>
 	</Application.Styles>
 
 </Application>

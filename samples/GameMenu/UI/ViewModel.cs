@@ -1,34 +1,31 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace GameMenu.UI;
 
-public abstract class ViewModel : INotifyPropertyChanged {
-
-	public event PropertyChangedEventHandler? PropertyChanged;
+public abstract class ViewModel : NotificationObject {
 
 	private Task? _loadTask;
 
-	protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-		=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-	protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null) {
-		if (EqualityComparer<T>.Default.Equals(field, value))
-			return false;
-
-		field = value;
-		OnPropertyChanged(propertyName);
-		return true;
-	}
+	public event EventHandler? Closed;
 
 	public Task EnsureLoadedAsync()
 		=> _loadTask ??= LoadAsync();
 
 	protected abstract Task LoadAsync();
 
-	public virtual Task<bool> TryCloseAsync()
+	public async Task<bool> TryCloseAsync() {
+		if (!await TryCloseCoreAsync())
+			return false;
+
+		OnClosed();
+		return true;
+	}
+
+	protected virtual Task<bool> TryCloseCoreAsync()
 		=> Task.FromResult(true);
+
+	private void OnClosed()
+		=> Closed?.Invoke(this, EventArgs.Empty);
 
 }
