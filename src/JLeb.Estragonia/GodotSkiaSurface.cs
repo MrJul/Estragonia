@@ -14,7 +14,7 @@ internal sealed class GodotSkiaSurface : ISkiaSurface {
 
 	public GodotObject GdTextureOwner { get; }
 
-	public double RenderScaling { get; }
+	public double RenderScaling { get; set; }
 
 	public bool IsDisposed { get; private set; }
 

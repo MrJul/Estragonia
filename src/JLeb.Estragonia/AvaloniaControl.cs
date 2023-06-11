@@ -40,15 +40,17 @@ public class AvaloniaControl : GdControl {
 	}
 
 	/// <summary>Gets or sets the render scaling for the Avalonia control. Defaults to 1.0.</summary>
-	[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Only used as a guard, doesn't affect correctness")]
+	[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Doesn't affect correctness")]
 	public double RenderScaling {
 		get => _renderScaling;
 		set {
-			if (_renderScaling == value)
+			var newValue = Math.Max(1.0, value);
+			if (_renderScaling == newValue)
 				return;
 
-			_renderScaling = value;
+			_renderScaling = newValue;
 			OnResized();
+			QueueRedraw();
 		}
 	}
 

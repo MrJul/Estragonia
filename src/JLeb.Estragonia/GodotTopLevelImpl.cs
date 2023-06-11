@@ -61,6 +61,10 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public Action<GdCursorShape>? CursorChanged { get; set; }
 
+	public Action<double>? ScalingChanged { get; set; }
+
+	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
+
 	IEnumerable<object> ITopLevelImpl.Surfaces
 		=> GetOrCreateSurfaces();
 
@@ -69,10 +73,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	Size? ITopLevelImpl.FrameSize
 		=> null;
-
-	Action<double>? ITopLevelImpl.ScalingChanged { get; set; }
-
-	public Action<WindowTransparencyLevel>? TransparencyLevelChanged { get; set; }
 
 	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics, IClipboard clipboard, Compositor compositor) {
 		_platformGraphics = platformGraphics;
@@ -93,28 +93,41 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	private IEnumerable<object> GetOrCreateSurfaces()
 		=> new object[] { GetOrCreateSurface() };
 
-	[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Only used as a guard, doesn't affect correctness")]
+	[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Doesn't affect correctness")]
 	public void SetRenderSize(PixelSize renderSize, double renderScaling) {
-		if (_renderSize == renderSize && RenderScaling == renderScaling)
+		var hasScalingChanged = RenderScaling != renderScaling;
+		if (_renderSize == renderSize && !hasScalingChanged)
 			return;
 
-		var clientSize = renderSize.ToSize(renderScaling);
-		ClientSize = new Size(Math.Max(clientSize.Width, 0.0), Math.Max(clientSize.Height, 0.0));
+		var oldClientSize = ClientSize;
+		var unclampedClientSize = renderSize.ToSize(renderScaling);
 
-		_renderSize = renderSize;
-		ClientSize = renderSize.ToSize(renderScaling);
+		ClientSize = new Size(Math.Max(unclampedClientSize.Width, 0.0), Math.Max(unclampedClientSize.Height, 0.0));
 		RenderScaling = renderScaling;
 
-		if (_surface is not null) {
-			_surface.Dispose();
-			_surface = null;
+		if (_renderSize != renderSize) {
+			_renderSize = renderSize;
+
+			if (_surface is not null) {
+				_surface.Dispose();
+				_surface = null;
+			}
+
+			if (_isDisposed)
+				return;
+
+			_surface = CreateSurface();
 		}
 
-		if (_isDisposed)
-			return;
+		// currently the surface isn't correctly refreshed, see https://github.com/AvaloniaUI/Avalonia/pull/11741
+		if (hasScalingChanged) {
+			if (_surface != null)
+				_surface.RenderScaling = RenderScaling;
+			ScalingChanged?.Invoke(RenderScaling);
+		}
 
-		_surface = CreateSurface();
-		Resized?.Invoke(ClientSize, WindowResizeReason.Unspecified);
+		if (oldClientSize != ClientSize)
+			Resized?.Invoke(ClientSize, hasScalingChanged ? WindowResizeReason.DpiChange : WindowResizeReason.Unspecified);
 	}
 
 	public Texture2D GetTexture()
