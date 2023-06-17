@@ -2,11 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Platform;
-using Avalonia.VisualTree;
 using Godot;
 using Godot.NativeInterop;
 using JLeb.Estragonia.Input;
@@ -53,6 +51,13 @@ public class AvaloniaControl : GdControl {
 			QueueRedraw();
 		}
 	}
+
+	/// <summary>
+	/// Gets or sets whether some Godot UI actions will be automatically mapped to an <see cref="InputElement.KeyDownEvent"/> event.
+	/// The mapped actions are ui_left, ui_right, ui_up, ui_down, ui_accept and ui_cancel.
+	/// Defaults to true.
+	/// </summary>
+	public bool AutoConvertUIActionToKeyDown { get; set; } = true;
 
 	/// <summary>Gets the underlying Avalonia top-level element.</summary>
 	/// <returns>The Avalonia top-level element.</returns>
@@ -165,7 +170,7 @@ public class AvaloniaControl : GdControl {
 
 		NavigationMethod navigationMethod;
 
-		if (GdInput.IsActionPressed(GodotBuiltInActions.UIFocusNext))
+		if (GdInput.IsActionPressed(GodotBuiltInActions.UIFocusNext) || GdInput.IsActionPressed(GodotBuiltInActions.UIFocusPrev))
 			navigationMethod = NavigationMethod.Tab;
 		else if (GdInput.GetMouseButtonMask() != 0)
 			navigationMethod = NavigationMethod.Pointer;
@@ -204,28 +209,32 @@ public class AvaloniaControl : GdControl {
 		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIFocusPrev, true, true))
 			return TryFocusTab(NavigationDirection.Previous, inputEvent);
 
-		if (inputEvent.IsActionPressed(GodotBuiltInActions.UILeft, true, true))
-			return TryFocusDirectional(inputEvent, NavigationDirection.Left);
+		if (AutoConvertUIActionToKeyDown) {
 
-		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIRight, true, true))
-			return TryFocusDirectional(inputEvent, NavigationDirection.Right);
+			if (inputEvent.IsActionPressed(GodotBuiltInActions.UILeft, true, true))
+				return SimulateKeyDownFromAction(inputEvent, GdKey.Left);
 
-		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIUp, true, true))
-			return TryFocusDirectional(inputEvent, NavigationDirection.Up);
+			if (inputEvent.IsActionPressed(GodotBuiltInActions.UIRight, true, true))
+				return SimulateKeyDownFromAction(inputEvent, GdKey.Right);
 
-		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIDown, true, true))
-			return TryFocusDirectional(inputEvent, NavigationDirection.Down);
+			if (inputEvent.IsActionPressed(GodotBuiltInActions.UIUp, true, true))
+				return SimulateKeyDownFromAction(inputEvent, GdKey.Up);
 
-		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIAccept, true, true))
-			return SimulateKeyFromAction(inputEvent, GdKey.Enter);
+			if (inputEvent.IsActionPressed(GodotBuiltInActions.UIDown, true, true))
+				return SimulateKeyDownFromAction(inputEvent, GdKey.Down);
 
-		if (inputEvent.IsActionPressed(GodotBuiltInActions.UICancel, true, true))
-			return SimulateKeyFromAction(inputEvent, GdKey.Escape);
+			if (inputEvent.IsActionPressed(GodotBuiltInActions.UIAccept, true, true))
+				return SimulateKeyDownFromAction(inputEvent, GdKey.Enter);
+
+			if (inputEvent.IsActionPressed(GodotBuiltInActions.UICancel, true, true))
+				return SimulateKeyDownFromAction(inputEvent, GdKey.Escape);
+
+		}
 
 		return false;
 	}
 
-	private bool SimulateKeyFromAction(InputEvent inputEvent, GdKey key) {
+	private bool SimulateKeyDownFromAction(InputEvent inputEvent, GdKey key) {
 		// if the action already matches the key we're going to simulate, abort: it already got through TryHandleInput and wasn't handled
 		if (inputEvent is InputEventKey inputEventKey && inputEventKey.Keycode == key)
 			return false;
@@ -264,26 +273,6 @@ public class AvaloniaControl : GdControl {
 		}
 
 		return false;
-	}
-
-	private bool TryFocusDirectional(InputEvent inputEvent, NavigationDirection direction) {
-		if (_topLevel?.FocusManager is not { } focusManager || focusManager.GetFocusedElement() is not Visual currentElement)
-			return false;
-
-		IInputElement? nextElement;
-
-		if (currentElement.FindAncestorOfType<ICustomKeyboardNavigation>(includeSelf: true) is { } customKeyboardNavigation)
-			(_, nextElement) = customKeyboardNavigation.GetNext((IInputElement) currentElement, direction);
-		else if (currentElement.GetVisualParent() is INavigableContainer navigableContainer) {
-			var wrapSelection = currentElement is SelectingItemsControl { WrapSelection: true };
-			nextElement = navigableContainer.GetNextFocusableControl(direction, (IInputElement) currentElement, wrapSelection);
-		}
-		else
-			return false;
-
-		nextElement?.Focus(NavigationMethod.Directional, inputEvent.GetKeyModifiers());
-
-		return true;
 	}
 
 	private void OnMouseExited()
