@@ -11,7 +11,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="GodotSharp" Version="4.0.3" />
-		<PackageReference Include="Avalonia.Skia" Version="[11.0.0-rc1.1]" />
+		<PackageReference Include="Avalonia.Skia" Version="[11.0.999-cibuild0036727-beta]" />
 	</ItemGroup>
 
 	<!--
