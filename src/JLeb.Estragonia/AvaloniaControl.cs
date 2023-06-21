@@ -42,11 +42,10 @@ public class AvaloniaControl : GdControl {
 	public double RenderScaling {
 		get => _renderScaling;
 		set {
-			var newValue = Math.Max(1.0, value);
-			if (_renderScaling == newValue)
+			if (_renderScaling == value)
 				return;
 
-			_renderScaling = newValue;
+			_renderScaling = value;
 			OnResized();
 			QueueRedraw();
 		}
