@@ -5,13 +5,17 @@ using Godot;
 
 namespace GameMenu.UI;
 
-public class MainViewModel : ViewModel {
+public sealed class MainViewModel : ViewModel, INavigator {
 
 	private readonly List<ViewModel> _openViewModels = new();
 
+	private SceneTree? _sceneTree;
 	private int _framesPerSecond;
 
-	public SceneTree SceneTree { get; }
+	public SceneTree? SceneTree {
+		get => _sceneTree;
+		set => SetField(ref _sceneTree, value);
+	}
 
 	public UIOptions UIOptions { get; }
 
@@ -23,10 +27,8 @@ public class MainViewModel : ViewModel {
 		private set => SetField(ref _framesPerSecond, value);
 	}
 
-	public MainViewModel(SceneTree sceneTree, UIOptions uiOptions) {
-		UIOptions = uiOptions;
-		SceneTree = sceneTree;
-	}
+	public MainViewModel(UIOptions uiOptions)
+		=> UIOptions = uiOptions;
 
 	protected override async Task<bool> TryCloseCoreAsync() {
 		while (CurrentViewModel is not null) {
@@ -66,5 +68,8 @@ public class MainViewModel : ViewModel {
 
 	public void ProcessFrame()
 		=> FramesPerSecond = (int) Engine.GetFramesPerSecond();
+
+	public void Quit()
+		=> SceneTree?.Quit();
 
 }

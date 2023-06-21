@@ -64,99 +64,113 @@
 
 	<!-- ReSharper disable Xaml.MissingGridIndex -->
 
-	<Border VerticalAlignment="Center" MinWidth="400" MaxWidth="600">
+	<Grid>
 
-		<StackPanel
-			Orientation="Vertical"
-			Spacing="8"
-			Margin="8">
+		<TextBlock
+			Text="Options"
+			FontSize="48"
+			VerticalAlignment="Top"
+			TextAlignment="Left"
+			Margin="16" />
 
-			<!-- Vertical Sync -->
-			<Border Classes="option">
+		<Border VerticalAlignment="Center" MinWidth="400" MaxWidth="600">
 
-				<Interaction.Behaviors>
-					<behaviors:FocusWithPointerBehavior Target="{Binding #IsVSyncEnabledCheckBox}" />
-				</Interaction.Behaviors>
-
-				<Grid ColumnDefinitions="3*,*,*">
-
-					<TextBlock
-						Classes="label"
-						Text="Vertical Sync" />
-
-					<TextBlock
-						Classes="value-display"
-						Text="{Binding IsVSyncEnabled, Converter={StaticResource BooleanToOnOffConverter}}" />
-
-					<CheckBox
-						x:Name="IsVSyncEnabledCheckBox"
-						Classes="value"
-						IsChecked="{Binding IsVSyncEnabled, Mode=TwoWay}"
-						HorizontalAlignment="Center"
-						Padding="0" />
-
-				</Grid>
-
-			</Border>
-
-			<!-- UI Scale -->
-			<Border Classes="option">
-
-				<Interaction.Behaviors>
-					<behaviors:FocusWithPointerBehavior Target="{Binding #UIScaleSlider}" />
-				</Interaction.Behaviors>
-
-				<Grid ColumnDefinitions="3*,*,*">
-
-					<TextBlock
-						Classes="label"
-						Text="UI Scale" />
-
-					<TextBlock
-						Classes="value-display"
-						Text="{Binding UIScale, StringFormat=P0}"  />
-
-					<controls:ExtendedSlider
-						x:Name="UIScaleSlider"
-						Classes="value"
-						Value="{Binding UIScale, Mode=TwoWay}"
-						Minimum="0.6"
-						Maximum="2.0"
-						SmallChange="0.1"
-						LargeChange="0.5"
-						TickFrequency="0.1"
-						IsSnapToTickEnabled="True"
-						Margin="16,0" />
-
-				</Grid>
-
-			</Border>
-
-			<!-- Buttons -->
 			<StackPanel
-				Orientation="Horizontal"
-				HorizontalAlignment="Center"
-				Spacing="16"
-				Margin="16">
+				Orientation="Vertical"
+				Spacing="8"
+				Margin="8">
 
-				<Button
-					x:Name="ApplyButton"
-					Content="Apply"
-					Command="{Binding AcceptAsync}"
-					IsDefault="True"
-					ui:DirectionalFocus.FocusRight="{Binding #CloseButton}" />
+				<!-- Vertical Sync -->
+				<Border Classes="option">
 
-				<Button
-					x:Name="CloseButton"
-					Content="Close"
-					Command="{Binding TryCloseAsync}"
-					IsCancel="True"
-					ui:DirectionalFocus.FocusLeft="{Binding #ApplyButton}" />
+					<Interaction.Behaviors>
+						<behaviors:FocusWithPointerBehavior Target="{Binding #IsVSyncEnabledCheckBox}" />
+					</Interaction.Behaviors>
+
+					<Grid ColumnDefinitions="3*,*,*">
+
+						<TextBlock
+							Classes="label"
+							Text="Vertical Sync" />
+
+						<TextBlock
+							Classes="value-display"
+							Text="{Binding IsVSyncEnabled, Converter={StaticResource BooleanToOnOffConverter}}" />
+
+						<CheckBox
+							x:Name="IsVSyncEnabledCheckBox"
+							Classes="value"
+							IsChecked="{Binding IsVSyncEnabled, Mode=TwoWay}"
+							HorizontalAlignment="Center"
+							Padding="0" />
+
+					</Grid>
+
+				</Border>
+
+				<!-- UI Scale -->
+				<Border Classes="option">
+
+					<Interaction.Behaviors>
+						<behaviors:FocusWithPointerBehavior Target="{Binding #UIScaleSlider}" />
+					</Interaction.Behaviors>
+
+					<Grid ColumnDefinitions="3*,*,*">
+
+						<TextBlock
+							Classes="label"
+							Text="UI Scale" />
+
+						<TextBlock
+							Classes="value-display"
+							Text="{Binding UIScale, StringFormat=P0}"  />
+
+						<controls:ExtendedSlider
+							x:Name="UIScaleSlider"
+							Classes="value"
+							Value="{Binding UIScale, Mode=TwoWay}"
+							Minimum="0.6"
+							Maximum="2.0"
+							SmallChange="0.1"
+							LargeChange="0.5"
+							TickFrequency="0.1"
+							IsSnapToTickEnabled="True"
+							Margin="16,0" />
+
+					</Grid>
+
+				</Border>
+
+
 
 			</StackPanel>
 
+		</Border>
+
+		<!-- Buttons -->
+		<StackPanel
+			Orientation="Horizontal"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Bottom"
+			Spacing="16"
+			Margin="16">
+
+			<Button
+				x:Name="ApplyButton"
+				Content="Apply"
+				Command="{Binding AcceptAsync}"
+				IsDefault="True"
+				ui:DirectionalFocus.FocusRight="{Binding #CloseButton}" />
+
+			<Button
+				x:Name="CloseButton"
+				Content="Close"
+				Command="{Binding TryCloseAsync}"
+				IsCancel="True"
+				ui:DirectionalFocus.FocusLeft="{Binding #ApplyButton}" />
+
 		</StackPanel>
 
-	</Border>
+	</Grid>
 
 </ui:View>

@@ -2,7 +2,7 @@
 
 namespace GameMenu.UI;
 
-public class OptionsViewModel : ViewModel {
+public sealed class OptionsViewModel : ViewModel {
 
 	private readonly UIOptions _uiOptions;
 	private bool _isVSyncEnabled;

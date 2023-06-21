@@ -4,7 +4,7 @@ using JLeb.Estragonia;
 
 namespace GameMenu.UI;
 
-public partial class UserInterface : AvaloniaControl {
+public sealed partial class UserInterface : AvaloniaControl {
 
 	private UIOptions _uiOptions = null!;
 	private MainViewModel _mainViewModel = null!;
@@ -20,7 +20,9 @@ public partial class UserInterface : AvaloniaControl {
 		};
 		_uiOptions.PropertyChanged += OnUIOptionsPropertyChanged;
 
-		_mainViewModel = new MainViewModel(GetTree(), _uiOptions);
+		_mainViewModel = new MainViewModel(_uiOptions) {
+			SceneTree = GetTree()
+		};
 		_ = _mainViewModel.EnsureLoadedAsync();
 
 		Control = new MainView {

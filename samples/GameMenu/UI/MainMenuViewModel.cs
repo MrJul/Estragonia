@@ -3,15 +3,15 @@ using System.Threading.Tasks;
 
 namespace GameMenu.UI;
 
-public class MainMenuViewModel : ViewModel {
+public sealed class MainMenuViewModel : ViewModel {
 
-	private readonly MainViewModel _mainViewModel;
+	private readonly INavigator _navigator;
 	private readonly UIOptions _uiOptions;
 
 	public ObservableCollection<MainMenuItem> Items { get; } = new();
 
-	public MainMenuViewModel(MainViewModel mainViewModel, UIOptions uiOptions) {
-		_mainViewModel = mainViewModel;
+	public MainMenuViewModel(INavigator navigator, UIOptions uiOptions) {
+		_navigator = navigator;
 		_uiOptions = uiOptions;
 
 		Items.Add(new MainMenuItem("New Game", StartNewGameAsync));
@@ -30,12 +30,12 @@ public class MainMenuViewModel : ViewModel {
 		=> Task.CompletedTask;
 
 	private Task OpenOptionsAsync() {
-		_mainViewModel.NavigateTo(new OptionsViewModel(_uiOptions));
+		_navigator.NavigateTo(new OptionsViewModel(_uiOptions));
 		return Task.CompletedTask;
 	}
 
 	private Task ExitAsync() {
-		_mainViewModel.SceneTree.Quit();
+		_navigator.Quit();
 		return Task.CompletedTask;
 	}
 

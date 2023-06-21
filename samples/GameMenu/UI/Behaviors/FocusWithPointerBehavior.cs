@@ -5,7 +5,7 @@ using Avalonia.Xaml.Interactivity;
 
 namespace GameMenu.UI.Behaviors;
 
-public class FocusWithPointerBehavior : Behavior<Control> {
+public sealed class FocusWithPointerBehavior : Behavior<Control> {
 
 	public static readonly StyledProperty<IInputElement?> TargetProperty =
 		AvaloniaProperty.Register<FocusWithPointerBehavior, IInputElement?>(nameof(Target));

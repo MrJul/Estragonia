@@ -4,9 +4,24 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
-	mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
+	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="640"
 	x:Class="GameMenu.UI.MainMenuView"
 	x:DataType="ui:MainMenuViewModel">
+
+	<Design.DesignStyle>
+		<Style Selector="ui|MainMenuView">
+			<Setter Property="Background" Value="Black" />
+		</Style>
+	</Design.DesignStyle>
+
+	<Design.DataContext>
+		<ui:MainMenuViewModel>
+			<x:Arguments>
+				<ui:NullNavigator />
+				<ui:UIOptions />
+			</x:Arguments>
+		</ui:MainMenuViewModel>
+	</Design.DataContext>
 
 	<ui:View.DataTemplates>
 

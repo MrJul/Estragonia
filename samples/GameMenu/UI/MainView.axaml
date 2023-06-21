@@ -10,6 +10,20 @@
 	x:DataType="ui:MainViewModel"
 	RenderOptions.TextRenderingMode="Antialias">
 
+	<Design.DesignStyle>
+		<Style Selector="ui|MainView">
+			<Setter Property="Background" Value="Black" />
+		</Style>
+	</Design.DesignStyle>
+
+	<Design.DataContext>
+		<ui:MainViewModel>
+			<x:Arguments>
+				<ui:UIOptions />
+			</x:Arguments>
+		</ui:MainViewModel>
+	</Design.DataContext>
+
 	<ui:View.DataTemplates>
 		<ui:ViewLocator />
 	</ui:View.DataTemplates>

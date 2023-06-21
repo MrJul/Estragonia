@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace GameMenu.UI;
 
-public class MainMenuItem {
+public sealed class MainMenuItem {
 
 	private readonly Func<Task> _executeAsync;
 

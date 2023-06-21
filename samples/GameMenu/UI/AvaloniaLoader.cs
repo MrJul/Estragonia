@@ -4,7 +4,7 @@ using JLeb.Estragonia;
 
 namespace GameMenu.UI;
 
-public partial class AvaloniaLoader : Node {
+public sealed partial class AvaloniaLoader : Node {
 
 	public override void _Ready()
 		=> AppBuilder
