@@ -4,6 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
+	xmlns:controls="clr-namespace:GameMenu.UI.Controls"
 	mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
 	x:Class="GameMenu.UI.MainView"
 	x:DataType="ui:MainViewModel"
@@ -15,7 +16,15 @@
 
 	<Panel>
 
-		<ContentControl Content="{Binding CurrentViewModel}" />
+		<TransitioningContentControl Content="{Binding CurrentViewModel}">
+			<TransitioningContentControl.PageTransition>
+				<controls:AutoReversePageSlide
+					Duration="0.4"
+					Orientation="Horizontal"
+					SlideInEasing="ExponentialEaseInOut"
+					SlideOutEasing="ExponentialEaseInOut" />
+			</TransitioningContentControl.PageTransition>
+		</TransitioningContentControl>
 
 		<TextBlock
 			Text="{Binding FramesPerSecond, StringFormat='FPS: {0}'}"

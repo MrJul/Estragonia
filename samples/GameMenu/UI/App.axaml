@@ -11,6 +11,7 @@
 				<ResourceInclude Source="Theme/Button.axaml" />
 				<ResourceInclude Source="Theme/CheckBox.axaml" />
 				<ResourceInclude Source="Theme/Slider.axaml" />
+				<ResourceInclude Source="Theme/TransitioningContentControl.axaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>
