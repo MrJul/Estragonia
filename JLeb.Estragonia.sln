@@ -20,9 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{8BDD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorld", "samples\HelloWorld\HelloWorld.csproj", "{2125B402-E207-4382-AC5E-D8C7A868E2FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameMenu", "samples\GameMenu\GameMenu.csproj", "{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameMenu", "samples\GameMenu\GameMenu.csproj", "{8CFBC98F-46CD-4F19-97A3-5D36B11C54EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameMenuDesigner", "samples\GameMenuDesigner\GameMenuDesigner.csproj", "{5D55F29B-28DC-4901-9A05-24B83B39597C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameMenu.Designer", "samples\GameMenu.Designer\GameMenu.Designer.csproj", "{5D55F29B-28DC-4901-9A05-24B83B39597C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
