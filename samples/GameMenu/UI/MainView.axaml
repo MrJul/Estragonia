@@ -5,7 +5,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
 	xmlns:controls="clr-namespace:GameMenu.UI.Controls"
-	mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
+	mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
 	x:Class="GameMenu.UI.MainView"
 	x:DataType="ui:MainViewModel"
 	RenderOptions.TextRenderingMode="Antialias">

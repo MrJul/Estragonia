@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
-	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="640"
+	mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
 	x:Class="GameMenu.UI.MainMenuView"
 	x:DataType="ui:MainMenuViewModel">
 
@@ -36,9 +36,29 @@
 
 	</ui:View.DataTemplates>
 
-	<ItemsControl
-		ItemsSource="{Binding Items}"
-		VerticalAlignment="Center"
-		HorizontalAlignment="Center" />
+	<Panel>
+
+		<TextBlock
+			Text="Estragonia"
+			FontSize="72"
+			FontWeight="Black"
+			VerticalAlignment="Top"
+			TextAlignment="Center"
+			Margin="16" />
+
+		<ItemsControl
+			ItemsSource="{Binding Items}"
+			VerticalAlignment="Center"
+			HorizontalAlignment="Center"
+			Margin="0,32,0,0" />
+
+		<TextBlock
+			Text="Use mouse, keyboard or controller to navigate."
+			FontSize="16"
+			VerticalAlignment="Bottom"
+			HorizontalAlignment="Center"
+			Margin="8" />
+
+	</Panel>
 
 </ui:View>
