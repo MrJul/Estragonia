@@ -8,13 +8,21 @@ namespace GameMenu.UI;
 
 public abstract class View : UserControl {
 
+	private IInputElement? _lastFocusedChild;
+
 	protected override void OnLoaded() {
 		base.OnLoaded();
 
-		GetFirstFocusableChild()?.Focus();
+		var focusableChild = _lastFocusedChild ?? TryGetFirstFocusableChild();
+		focusableChild?.Focus();
 	}
 
-	private IInputElement? GetFirstFocusableChild()
+	protected override void OnGotFocus(GotFocusEventArgs e) {
+		_lastFocusedChild = e.Source as IInputElement;
+		base.OnGotFocus(e);
+	}
+
+	private IInputElement? TryGetFirstFocusableChild()
 		=> VisualChildren is [IInputElement firstChild, ..]
 			? firstChild.Focusable ? firstChild : KeyboardNavigationHandler.GetNext(firstChild, NavigationDirection.Next)
 			: null;
@@ -24,7 +32,7 @@ public abstract class View : UserControl {
 			return;
 
 		var currentElement = focusManager.GetFocusedElement();
-		var nextElement = currentElement is null ? GetFirstFocusableChild() : findNext(currentElement);
+		var nextElement = currentElement is null ? TryGetFirstFocusableChild() : findNext(currentElement);
 		nextElement?.Focus();
 	}
 

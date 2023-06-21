@@ -23,50 +23,64 @@
 		</ui:MainMenuViewModel>
 	</Design.DataContext>
 
-	<ui:View.DataTemplates>
-		<DataTemplate DataType="ui:MainMenuItem">
-			<Button
-				Content="{Binding Display}"
-				Command="{Binding ExecuteAsync}"
-				Margin="8"
-				Padding="32,12"
-				FontWeight="Bold" />
-		</DataTemplate>
-	</ui:View.DataTemplates>
-
 	<ui:View.Styles>
-		<Style Selector="TextBlock.title">
+
+		<Style Selector="Panel.title > TextBlock">
 			<Setter Property="Text" Value="Estragonia" />
 			<Setter Property="FontSize" Value="72" />
 			<Setter Property="FontWeight" Value="Black" />
 			<Setter Property="TextDecorations" Value="Underline" />
 		</Style>
+
+		<Style Selector="StackPanel.main-menu > Button">
+			<Setter Property="Margin" Value="8" />
+			<Setter Property="Padding" Value="32,12" />
+			<Setter Property="FontWeight" Value="Bold" />
+		</Style>
+
 	</ui:View.Styles>
 
 	<Panel>
 
 		<Panel
+			Classes="title"
 			VerticalAlignment="Top"
 			HorizontalAlignment="Center"
 			Margin="16">
 
 			<TextBlock
-				Classes="title"
 				Foreground="#FFFF9B2A"
 				Margin="0" />
 
 			<TextBlock
-				Classes="title"
 				Foreground="#80FF9B2A"
 				Margin="3,3,-3,-3" />
 
 		</Panel>
 
-		<ItemsControl
-			ItemsSource="{Binding Items}"
+		<StackPanel
+			Classes="main-menu"
 			VerticalAlignment="Center"
 			HorizontalAlignment="Center"
-			Margin="0,32,0,0" />
+			Margin="0,32,0,0">
+
+			<Button
+				Content="New Game"
+				Command="{Binding StartNewGameAsync}" />
+
+			<Button
+				Content="Continue"
+				Command="{Binding LoadExistingGameAsync}" />
+
+			<Button
+				Content="Options"
+				Command="{Binding OpenOptionsAsync}" />
+
+			<Button
+				Content="Exit"
+				Command="{Binding ExitAsync}" />
+
+		</StackPanel>
 
 		<TextBlock
 			Text="Use mouse, keyboard or controller to navigate"
