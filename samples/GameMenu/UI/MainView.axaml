@@ -28,15 +28,31 @@
 		<ui:ViewLocator />
 	</ui:View.DataTemplates>
 
-	<Panel>
+	<ui:View.Styles>
+		<Style Selector="Panel.fade-in">
+			<Setter Property="Opacity" Value="0" />
+			<Style.Animations>
+				<Animation Duration="0:0:2" FillMode="Forward" Easing="CubicEaseInOut">
+					<KeyFrame Cue="0%">
+						<Setter Property="Opacity" Value="0" />
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="Opacity" Value="1" />
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
+	</ui:View.Styles>
+
+	<Panel Classes="fade-in">
 
 		<TransitioningContentControl Content="{Binding CurrentViewModel}">
 			<TransitioningContentControl.PageTransition>
 				<controls:AutoReversePageSlide
 					Duration="0.4"
 					Orientation="Horizontal"
-					SlideInEasing="ExponentialEaseInOut"
-					SlideOutEasing="ExponentialEaseInOut" />
+					SlideInEasing="CubicEaseInOut"
+					SlideOutEasing="CubicEaseInOut" />
 			</TransitioningContentControl.PageTransition>
 		</TransitioningContentControl>
 

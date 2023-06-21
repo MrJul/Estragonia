@@ -24,7 +24,6 @@
 	</Design.DataContext>
 
 	<ui:View.DataTemplates>
-
 		<DataTemplate DataType="ui:MainMenuItem">
 			<Button
 				Content="{Binding Display}"
@@ -33,7 +32,6 @@
 				Padding="32,12"
 				FontWeight="Bold" />
 		</DataTemplate>
-
 	</ui:View.DataTemplates>
 
 	<Panel>

@@ -34,7 +34,6 @@ environment = SubResource("Environment_rffk7")
 layer = -100
 
 [node name="NightSky" type="Panel" parent="Background"]
-visible = false
 material = SubResource("ShaderMaterial_2yo11")
 anchors_preset = 15
 anchor_right = 1.0
