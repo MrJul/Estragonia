@@ -5,12 +5,18 @@ namespace GameMenu.UI;
 public sealed class OptionsViewModel : ViewModel {
 
 	private readonly UIOptions _uiOptions;
-	private bool _isVSyncEnabled;
+	private bool _vSync;
+	private bool _showFps;
 	private double _uiScale;
 
-	public bool IsVSyncEnabled {
-		get => _isVSyncEnabled;
-		set => SetField(ref _isVSyncEnabled, value);
+	public bool VSync {
+		get => _vSync;
+		set => SetField(ref _vSync, value);
+	}
+
+	public bool ShowFps {
+		get => _showFps;
+		set => SetField(ref _showFps, value);
 	}
 
 	public double UIScale {
@@ -20,7 +26,8 @@ public sealed class OptionsViewModel : ViewModel {
 
 	public OptionsViewModel(UIOptions uiOptions) {
 		_uiOptions = uiOptions;
-		_isVSyncEnabled = uiOptions.IsVSyncEnabled;
+		_vSync = uiOptions.VSync;
+		_showFps = uiOptions.ShowFps;
 		_uiScale = uiOptions.UIScale;
 	}
 
@@ -28,7 +35,8 @@ public sealed class OptionsViewModel : ViewModel {
 		=> Task.CompletedTask;
 
 	public Task AcceptAsync() {
-		_uiOptions.IsVSyncEnabled = IsVSyncEnabled;
+		_uiOptions.VSync = VSync;
+		_uiOptions.ShowFps = ShowFps;
 		_uiOptions.UIScale = UIScale;
 		return Task.CompletedTask;
 	}

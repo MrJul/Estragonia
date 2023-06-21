@@ -84,7 +84,7 @@
 				<Border Classes="option">
 
 					<Interaction.Behaviors>
-						<behaviors:FocusWithPointerBehavior Target="{Binding #IsVSyncEnabledCheckBox}" />
+						<behaviors:FocusWithPointerBehavior Target="{Binding #VSyncCheckBox}" />
 					</Interaction.Behaviors>
 
 					<Grid ColumnDefinitions="3*,*,*">
@@ -95,12 +95,40 @@
 
 						<TextBlock
 							Classes="value-display"
-							Text="{Binding IsVSyncEnabled, Converter={StaticResource BooleanToOnOffConverter}}" />
+							Text="{Binding VSync, Converter={StaticResource BooleanToOnOffConverter}}" />
 
 						<CheckBox
-							x:Name="IsVSyncEnabledCheckBox"
+							x:Name="VSyncCheckBox"
 							Classes="value"
-							IsChecked="{Binding IsVSyncEnabled, Mode=TwoWay}"
+							IsChecked="{Binding VSync, Mode=TwoWay}"
+							HorizontalAlignment="Center"
+							Padding="0" />
+
+					</Grid>
+
+				</Border>
+
+				<!-- Show FPS -->
+				<Border Classes="option">
+
+					<Interaction.Behaviors>
+						<behaviors:FocusWithPointerBehavior Target="{Binding #ShowFpsCheckBox}" />
+					</Interaction.Behaviors>
+
+					<Grid ColumnDefinitions="3*,*,*">
+
+						<TextBlock
+							Classes="label"
+							Text="Show FPS" />
+
+						<TextBlock
+							Classes="value-display"
+							Text="{Binding ShowFps, Converter={StaticResource BooleanToOnOffConverter}}" />
+
+						<CheckBox
+							x:Name="ShowFpsCheckBox"
+							Classes="value"
+							IsChecked="{Binding ShowFps, Mode=TwoWay}"
 							HorizontalAlignment="Center"
 							Padding="0" />
 

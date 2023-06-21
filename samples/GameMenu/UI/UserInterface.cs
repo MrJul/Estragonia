@@ -16,7 +16,7 @@ public sealed partial class UserInterface : AvaloniaControl {
 
 		_uiOptions = new UIOptions {
 			UIScale = RenderScaling,
-			IsVSyncEnabled = DisplayServer.WindowGetVsyncMode() != DisplayServer.VSyncMode.Disabled
+			VSync = DisplayServer.WindowGetVsyncMode() != DisplayServer.VSyncMode.Disabled
 		};
 		_uiOptions.PropertyChanged += OnUIOptionsPropertyChanged;
 
@@ -35,9 +35,9 @@ public sealed partial class UserInterface : AvaloniaControl {
 	private void OnUIOptionsPropertyChanged(object? sender, PropertyChangedEventArgs e) {
 		switch (e.PropertyName)
 		{
-			case nameof(UIOptions.IsVSyncEnabled):
-				var vsyncMode = _uiOptions.IsVSyncEnabled ? DisplayServer.VSyncMode.Enabled : DisplayServer.VSyncMode.Disabled;
-				DisplayServer.WindowSetVsyncMode(vsyncMode);
+			case nameof(UIOptions.VSync):
+				var vSyncMode = _uiOptions.VSync ? DisplayServer.VSyncMode.Enabled : DisplayServer.VSyncMode.Disabled;
+				DisplayServer.WindowSetVsyncMode(vSyncMode);
 				break;
 			case nameof(UIOptions.UIScale):
 				RenderScaling = _uiOptions.UIScale;
