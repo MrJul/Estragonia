@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<ui:View
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,9 +10,9 @@
 	x:DataType="ui:MainViewModel"
 	RenderOptions.TextRenderingMode="Antialias">
 
-	<UserControl.DataTemplates>
+	<ui:View.DataTemplates>
 		<ui:ViewLocator />
-	</UserControl.DataTemplates>
+	</ui:View.DataTemplates>
 
 	<Panel>
 
@@ -34,4 +34,4 @@
 
 	</Panel>
 
-</UserControl>
+</ui:View>

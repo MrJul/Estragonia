@@ -19,14 +19,6 @@
 	<Application.Styles>
 		<Styles>
 
-			<Styles.Resources>
-				<ResourceDictionary>
-					<ResourceDictionary.MergedDictionaries>
-
-					</ResourceDictionary.MergedDictionaries>
-				</ResourceDictionary>
-			</Styles.Resources>
-
 			<SimpleTheme />
 
 			<Style Selector=":is(TopLevel)">

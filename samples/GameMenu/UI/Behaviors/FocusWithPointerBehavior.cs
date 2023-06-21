@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Xaml.Interactivity;
 
-namespace GameMenu.UI;
+namespace GameMenu.UI.Behaviors;
 
 public class FocusWithPointerBehavior : Behavior<Control> {
 

@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<ui:View
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,108 +8,22 @@
 	x:Class="GameMenu.UI.MainMenuView"
 	x:DataType="ui:MainMenuViewModel">
 
-	<UserControl.Resources>
-
-		<Color x:Key="MainMenuItemNormalBackgroundColor1">#A01E90FF</Color>
-		<Color x:Key="MainMenuItemNormalBackgroundColor2">#401E90FF</Color>
-		<Color x:Key="MainMenuItemNormalBorderColor">#FF1E90FF</Color>
-
-		<Color x:Key="MainMenuItemSelectedBackgroundColor1">#C080C1FF</Color>
-		<Color x:Key="MainMenuItemSelectedBackgroundColor2">#6080C1FF</Color>
-		<Color x:Key="MainMenuItemSelectedBorderColor">#FFFFFFFF</Color>
-
-		<LinearGradientBrush x:Key="MainMenuItemNormalBackgroundBrush">
-			<GradientStop Offset="0.0" Color="{StaticResource MainMenuItemNormalBackgroundColor1}" />
-			<GradientStop Offset="0.4" Color="{StaticResource MainMenuItemNormalBackgroundColor2}" />
-			<GradientStop Offset="0.6" Color="{StaticResource MainMenuItemNormalBackgroundColor2}" />
-			<GradientStop Offset="1.0" Color="{StaticResource MainMenuItemNormalBackgroundColor1}" />
-		</LinearGradientBrush>
-
-		<LinearGradientBrush x:Key="MainMenuItemSelectedBackgroundBrush">
-			<GradientStop Offset="0.0" Color="{StaticResource MainMenuItemSelectedBackgroundColor2}" />
-			<GradientStop Offset="0.4" Color="{StaticResource MainMenuItemSelectedBackgroundColor1}" />
-			<GradientStop Offset="0.6" Color="{StaticResource MainMenuItemSelectedBackgroundColor1}" />
-			<GradientStop Offset="1.0" Color="{StaticResource MainMenuItemSelectedBackgroundColor2}" />
-		</LinearGradientBrush>
-
-		<SolidColorBrush x:Key="MainMenuItemNormalBorderBrush" Color="{StaticResource MainMenuItemNormalBorderColor}" />
-		<SolidColorBrush x:Key="MainMenuItemSelectedBorderBrush" Color="{StaticResource MainMenuItemSelectedBorderColor}" />
-
-		<ControlTheme x:Key="MainMenuItemTheme" TargetType="MenuItem" x:DataType="ui:MainMenuItem">
-
-			<Setter Property="Background" Value="{StaticResource MainMenuItemNormalBackgroundBrush}" />
-			<Setter Property="BorderBrush" Value="{StaticResource MainMenuItemNormalBorderBrush}" />
-			<Setter Property="Margin" Value="0,8" />
-			<Setter Property="Command" Value="{Binding ExecuteAsync}" />
-
-			<Setter Property="Template">
-				<ControlTemplate>
-					<ContentPresenter
-						x:Name="PART_ContentPresenter"
-						Padding="8,16"
-						HorizontalContentAlignment="Center"
-						VerticalContentAlignment="Center"
-						Background="{TemplateBinding Background}"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						BorderThickness="2"
-						CornerRadius="8"
-						Content="{TemplateBinding Header}"
-						ContentTemplate="{TemplateBinding HeaderTemplate}" />
-				</ControlTemplate>
-			</Setter>
-
-			<Setter Property="Transitions">
-				<Transitions>
-					<BrushTransition Property="Background" Duration="0.2" />
-					<BrushTransition Property="BorderBrush" Duration="0.2" />
-				</Transitions>
-			</Setter>
-
-			<Style Selector="^:selected">
-				<Setter Property="Background" Value="{StaticResource MainMenuItemSelectedBackgroundBrush}" />
-				<Setter Property="BorderBrush" Value="{StaticResource MainMenuItemSelectedBorderBrush}" />
-
-				<Style.Animations>
-					<Animation Duration="1.0" IterationCount="infinite" PlaybackDirection="Alternate">
-						<KeyFrame Cue="0%">
-							<Setter Property="Background" Value="{StaticResource MainMenuItemSelectedBackgroundBrush}" />
-						</KeyFrame>
-						<KeyFrame Cue="100%">
-							<Setter Property="Background" Value="{StaticResource MainMenuItemNormalBackgroundBrush}" />
-						</KeyFrame>
-					</Animation>
-				</Style.Animations>
-
-			</Style>
-
-		</ControlTheme>
-
-	</UserControl.Resources>
-
-	<UserControl.DataTemplates>
+	<ui:View.DataTemplates>
 
 		<DataTemplate DataType="ui:MainMenuItem">
-			<TextBlock Text="{Binding Display}" />
+			<Button
+				Content="{Binding Display}"
+				Command="{Binding ExecuteAsync}"
+				Margin="8"
+				Padding="32,12"
+				FontWeight="Bold" />
 		</DataTemplate>
 
-	</UserControl.DataTemplates>
+	</ui:View.DataTemplates>
 
-	<Menu
+	<ItemsControl
 		ItemsSource="{Binding Items}"
-		ItemContainerTheme="{StaticResource MainMenuItemTheme}"
-		Background="{x:Null}"
-		BorderThickness="0"
-		MinWidth="260"
 		VerticalAlignment="Center"
-		HorizontalAlignment="Center"
-		FontWeight="Bold">
+		HorizontalAlignment="Center" />
 
-		<Menu.ItemsPanel>
-			<ItemsPanelTemplate>
-				<StackPanel Orientation="Vertical" />
-			</ItemsPanelTemplate>
-		</Menu.ItemsPanel>
-
-	</Menu>
-
-</UserControl>
+</ui:View>

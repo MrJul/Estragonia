@@ -4,6 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
+	xmlns:behaviors="clr-namespace:GameMenu.UI.Behaviors"
 	xmlns:controls="clr-namespace:GameMenu.UI.Controls"
 	xmlns:converters="clr-namespace:GameMenu.UI.Converters"
 	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="480"
@@ -25,11 +26,11 @@
 		</ui:OptionsViewModel>
 	</Design.DataContext>
 
-	<UserControl.Resources>
+	<ui:View.Resources>
 		<converters:BooleanToOnOffConverter x:Key="BooleanToOnOffConverter" />
-	</UserControl.Resources>
+	</ui:View.Resources>
 
-	<UserControl.Styles>
+	<ui:View.Styles>
 
 		<Style Selector="Border.option">
 			<Setter Property="Background" Value="{DynamicResource ContainerNormalBackgroundBrush}" />
@@ -59,7 +60,7 @@
 			<Setter Property="BorderBrush" Value="{DynamicResource ContainerFocusBorderBrush}" />
 		</Style>
 
-	</UserControl.Styles>
+	</ui:View.Styles>
 
 	<!-- ReSharper disable Xaml.MissingGridIndex -->
 
@@ -74,7 +75,7 @@
 			<Border Classes="option">
 
 				<Interaction.Behaviors>
-					<ui:FocusWithPointerBehavior Target="{Binding #IsVSyncEnabledCheckBox}" />
+					<behaviors:FocusWithPointerBehavior Target="{Binding #IsVSyncEnabledCheckBox}" />
 				</Interaction.Behaviors>
 
 				<Grid ColumnDefinitions="3*,*,*">
@@ -102,7 +103,7 @@
 			<Border Classes="option">
 
 				<Interaction.Behaviors>
-					<ui:FocusWithPointerBehavior Target="{Binding #UIScaleSlider}" />
+					<behaviors:FocusWithPointerBehavior Target="{Binding #UIScaleSlider}" />
 				</Interaction.Behaviors>
 
 				<Grid ColumnDefinitions="3*,*,*">
@@ -132,7 +133,11 @@
 			</Border>
 
 			<!-- Buttons -->
-			<StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center">
+			<StackPanel
+				Orientation="Horizontal"
+				HorizontalAlignment="Center"
+				Spacing="16"
+				Margin="16">
 
 				<Button
 					x:Name="ApplyButton"

@@ -7,7 +7,7 @@ namespace GameMenu.UI;
 
 public sealed class ViewLocator : IDataTemplate {
 
-	private readonly Dictionary<Type, Func<UserControl>> _viewFactoryByModelType = new() {
+	private readonly Dictionary<Type, Func<View>> _viewFactoryByModelType = new() {
 		[typeof(MainMenuViewModel)] = () => new MainMenuView(),
 		[typeof(OptionsViewModel)] = () => new OptionsView()
 	};
