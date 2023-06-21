@@ -204,10 +204,10 @@ public class AvaloniaControl : GdControl {
 			return false;
 
 		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIFocusNext, true, true))
-			return TryFocusTab(NavigationDirection.Next, inputEvent);
+			return TryMoveFocus(NavigationDirection.Next, inputEvent);
 
 		if (inputEvent.IsActionPressed(GodotBuiltInActions.UIFocusPrev, true, true))
-			return TryFocusTab(NavigationDirection.Previous, inputEvent);
+			return TryMoveFocus(NavigationDirection.Previous, inputEvent);
 
 		if (AutoConvertUIActionToKeyDown) {
 
@@ -263,10 +263,9 @@ public class AvaloniaControl : GdControl {
 			_ => false
 		};
 
-	private bool TryFocusTab(NavigationDirection direction, InputEvent inputEvent) {
+	private bool TryMoveFocus(NavigationDirection direction, InputEvent inputEvent) {
 		if (_topLevel?.FocusManager is { } focusManager
-			&& focusManager.GetFocusedElement() is { } currentElement
-			&& KeyboardNavigationHandler.GetNext(currentElement, direction) is { } nextElement
+			&& KeyboardNavigationHandler.GetNext(focusManager.GetFocusedElement() ?? _topLevel, direction) is { } nextElement
 		) {
 			nextElement.Focus(NavigationMethod.Tab, inputEvent.GetKeyModifiers());
 			return true;
