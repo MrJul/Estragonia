@@ -34,15 +34,33 @@
 		</DataTemplate>
 	</ui:View.DataTemplates>
 
+	<ui:View.Styles>
+		<Style Selector="TextBlock.title">
+			<Setter Property="Text" Value="Estragonia" />
+			<Setter Property="FontSize" Value="72" />
+			<Setter Property="FontWeight" Value="Black" />
+			<Setter Property="TextDecorations" Value="Underline" />
+		</Style>
+	</ui:View.Styles>
+
 	<Panel>
 
-		<TextBlock
-			Text="Estragonia"
-			FontSize="72"
-			FontWeight="Black"
+		<Panel
 			VerticalAlignment="Top"
-			TextAlignment="Center"
-			Margin="16" />
+			HorizontalAlignment="Center"
+			Margin="16">
+
+			<TextBlock
+				Classes="title"
+				Foreground="#FFFF9B2A"
+				Margin="0" />
+
+			<TextBlock
+				Classes="title"
+				Foreground="#80FF9B2A"
+				Margin="3,3,-3,-3" />
+
+		</Panel>
 
 		<ItemsControl
 			ItemsSource="{Binding Items}"
@@ -51,7 +69,7 @@
 			Margin="0,32,0,0" />
 
 		<TextBlock
-			Text="Use mouse, keyboard or controller to navigate."
+			Text="Use mouse, keyboard or controller to navigate"
 			FontSize="16"
 			VerticalAlignment="Bottom"
 			HorizontalAlignment="Center"

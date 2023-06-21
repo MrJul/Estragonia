@@ -68,6 +68,7 @@
 
 		<TextBlock
 			Text="Options"
+			FontWeight="Bold"
 			FontSize="48"
 			VerticalAlignment="Top"
 			TextAlignment="Left"

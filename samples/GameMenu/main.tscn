@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://rd2cmut32jks"]
+[gd_scene load_steps=7 format=3 uid="uid://rd2cmut32jks"]
 
 [ext_resource type="Shader" path="res://Shaders/night_sky.gdshader" id="1_1stsx"]
 [ext_resource type="Script" path="res://UI/UserInterface.cs" id="1_55fpk"]
@@ -18,8 +18,6 @@ glow_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2yo11"]
 shader = ExtResource("1_1stsx")
-
-[sub_resource type="BoxMesh" id="BoxMesh_gai5s"]
 
 [node name="Root" type="Node3D"]
 
@@ -43,10 +41,6 @@ grow_vertical = 2
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(0.439971, -0.298253, 0.847036, 0, 0.943235, 0.332126, -0.898012, -0.146126, 0.414996, 8.52597, 3.34307, 4.1772)
-
-[node name="Cube" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.11653)
-mesh = SubResource("BoxMesh_gai5s")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
