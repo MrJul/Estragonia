@@ -33,8 +33,8 @@
 	<ui:View.Styles>
 
 		<Style Selector="Border.option">
-			<Setter Property="Background" Value="{DynamicResource ContainerNormalBackgroundBrush}" />
-			<Setter Property="BorderBrush" Value="{DynamicResource ContainerNormalBorderBrush}" />
+			<Setter Property="Background" Value="{StaticResource ContainerNormalBackgroundBrush}" />
+			<Setter Property="BorderBrush" Value="{StaticResource ContainerNormalBorderBrush}" />
 			<Setter Property="BorderThickness" Value="1" />
 
 			<Style Selector="^ > Grid > TextBlock.label">
@@ -56,8 +56,8 @@
 		</Style>
 
 		<Style Selector="Border.option:focus-within">
-			<Setter Property="Background" Value="{DynamicResource ContainerFocusBackgroundBrush}" />
-			<Setter Property="BorderBrush" Value="{DynamicResource ContainerFocusBorderBrush}" />
+			<Setter Property="Background" Value="{StaticResource ContainerFocusBackgroundBrush}" />
+			<Setter Property="BorderBrush" Value="{StaticResource ContainerFocusBorderBrush}" />
 		</Style>
 
 	</ui:View.Styles>
@@ -69,7 +69,7 @@
 		<TextBlock
 			Text="Options"
 			FontWeight="Bold"
-			FontSize="48"
+			FontSize="{StaticResource ViewTitleFontSize}"
 			VerticalAlignment="Top"
 			TextAlignment="Left"
 			Margin="16" />

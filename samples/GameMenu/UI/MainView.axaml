@@ -59,6 +59,7 @@
 		<TextBlock
 			Text="{Binding FramesPerSecond, StringFormat='FPS: {0}'}"
 			IsVisible="{Binding UIOptions.ShowFps}"
+			FontSize="{StaticResource SmallFontSize}"
 			HorizontalAlignment="Right"
 			VerticalAlignment="Top"
 			Margin="8" />

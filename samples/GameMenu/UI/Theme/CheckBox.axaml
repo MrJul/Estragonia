@@ -31,8 +31,8 @@
 
 						<Border
 							x:Name="CheckBorder"
-							Background="{DynamicResource ButtonNormalBackgroundBrush}"
-							BorderBrush="{DynamicResource ButtonNormalBorderBrush}"
+							Background="{StaticResource ButtonNormalBackgroundBrush}"
+							BorderBrush="{StaticResource ButtonNormalBorderBrush}"
 							BorderThickness="1"
 							Width="32"
 							Height="32">

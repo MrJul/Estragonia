@@ -1,6 +1,13 @@
 ﻿<ResourceDictionary
 	xmlns="https://github.com/avaloniaui"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+	<FontFamily x:Key="StandardFontFamily">/Fonts/#Orbitron</FontFamily>
+	<system:Double x:Key="SmallFontSize">16</system:Double>
+	<system:Double x:Key="NormalFontSize">24</system:Double>
+	<system:Double x:Key="ViewTitleFontSize">48</system:Double>
+	<system:Double x:Key="MainTitleFontSize">72</system:Double>
 
 	<SolidColorBrush x:Key="ContainerNormalBackgroundBrush" Color="#401E90FF" />
 	<SolidColorBrush x:Key="ContainerNormalBorderBrush" Color="Transparent" />

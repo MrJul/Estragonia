@@ -23,18 +23,20 @@
 
 		<Setter Property="Template">
 			<ControlTemplate>
-				<ContentPresenter
-					x:Name="PART_ContentPresenter"
-					Background="{TemplateBinding Background}"
-					BorderBrush="{TemplateBinding BorderBrush}"
-					BorderThickness="{TemplateBinding BorderThickness}"
-					CornerRadius="{TemplateBinding CornerRadius}"
-					Content="{TemplateBinding Content}"
-					ContentTemplate="{TemplateBinding ContentTemplate}"
-					Padding="{TemplateBinding Padding}"
-					RecognizesAccessKey="True"
-					HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-					VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+				<Border Background="Transparent">
+					<ContentPresenter
+						x:Name="PART_ContentPresenter"
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						CornerRadius="{TemplateBinding CornerRadius}"
+						Content="{TemplateBinding Content}"
+						ContentTemplate="{TemplateBinding ContentTemplate}"
+						Padding="{TemplateBinding Padding}"
+						RecognizesAccessKey="True"
+						HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+						VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+				</Border>
 			</ControlTemplate>
 		</Setter>
 
@@ -70,7 +72,7 @@
 
 		</Style>
 
-		<Style Selector="^:pressed">
+		<Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
 			<Setter Property="RenderTransform" Value="scale(0.95)" />
 		</Style>
 

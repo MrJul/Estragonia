@@ -27,7 +27,7 @@
 
 		<Style Selector="Panel.title > TextBlock">
 			<Setter Property="Text" Value="Estragonia" />
-			<Setter Property="FontSize" Value="72" />
+			<Setter Property="FontSize" Value="{StaticResource MainTitleFontSize}" />
 			<Setter Property="FontWeight" Value="Black" />
 			<Setter Property="TextDecorations" Value="Underline" />
 		</Style>
@@ -84,7 +84,7 @@
 
 		<TextBlock
 			Text="Use mouse, keyboard or controller to navigate"
-			FontSize="16"
+			FontSize="{StaticResource SmallFontSize}"
 			VerticalAlignment="Bottom"
 			HorizontalAlignment="Center"
 			Margin="8" />
