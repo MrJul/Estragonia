@@ -49,12 +49,12 @@
 			Margin="16">
 
 			<TextBlock
-				Foreground="#FFFF9B2A"
-				Margin="0" />
+				Foreground="#FF804E15"
+				Margin="3,3,-3,-3" />
 
 			<TextBlock
-				Foreground="#80FF9B2A"
-				Margin="3,3,-3,-3" />
+				Foreground="#FFFF9B2A"
+				Margin="0" />
 
 		</Panel>
 

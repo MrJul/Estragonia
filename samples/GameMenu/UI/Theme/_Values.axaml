@@ -9,12 +9,12 @@
 	<system:Double x:Key="ViewTitleFontSize">48</system:Double>
 	<system:Double x:Key="MainTitleFontSize">72</system:Double>
 
-	<SolidColorBrush x:Key="ContainerNormalBackgroundBrush" Color="#401E90FF" />
+	<SolidColorBrush x:Key="ContainerNormalBackgroundBrush" Color="#A0324780" />
 	<SolidColorBrush x:Key="ContainerNormalBorderBrush" Color="Transparent" />
-	<SolidColorBrush x:Key="ContainerFocusBackgroundBrush" Color="#651E90FF" />
+	<SolidColorBrush x:Key="ContainerFocusBackgroundBrush" Color="#C5324780" />
 	<SolidColorBrush x:Key="ContainerFocusBorderBrush" Color="#FFFFFFFF" />
 
-	<SolidColorBrush x:Key="ButtonNormalBackgroundBrush" Color="#601E90FF" />
+	<SolidColorBrush x:Key="ButtonNormalBackgroundBrush" Color="#801E90FF" />
 	<SolidColorBrush x:Key="ButtonNormalBorderBrush" Color="#FF1E90FF" />
 	<SolidColorBrush x:Key="ButtonFocusBackgroundBrush" Color="#B080C1FF" />
 	<SolidColorBrush x:Key="ButtonFocusBorderBrush" Color="#FFFFFFFF" />
