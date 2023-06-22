@@ -61,12 +61,6 @@
 			</ControlTemplate>
 		</Setter>
 
-		<Setter Property="Transitions">
-			<Transitions>
-				<BrushTransition Property="BorderBrush" Duration="0.2" />
-			</Transitions>
-		</Setter>
-
 		<Setter Property="Interaction.Behaviors">
 			<BehaviorCollectionTemplate>
 				<BehaviorCollection>
@@ -75,12 +69,12 @@
 			</BehaviorCollectionTemplate>
 		</Setter>
 
-		<Style Selector="^:focus /template/ Border#CheckBorder">
-			<Setter Property="BorderBrush" Value="{StaticResource ButtonFocusBorderBrush}" />
-		</Style>
-
-		<Style Selector="^:focus /template/ Path#CheckGlyph">
-			<Setter Property="Fill" Value="{StaticResource ButtonFocusBorderBrush}" />
+		<Style Selector="^ /template/ Border#CheckBorder">
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="BorderBrush" Duration="0.2" />
+				</Transitions>
+			</Setter>
 		</Style>
 
 		<Style Selector="^ /template/ Path#CheckGlyph">
@@ -90,6 +84,14 @@
 					<ThicknessTransition Property="Margin" Duration="0.2" />
 				</Transitions>
 			</Setter>
+		</Style>
+
+		<Style Selector="^:focus /template/ Border#CheckBorder">
+			<Setter Property="BorderBrush" Value="{StaticResource ButtonFocusBorderBrush}" />
+		</Style>
+
+		<Style Selector="^:focus /template/ Path#CheckGlyph">
+			<Setter Property="Fill" Value="{StaticResource ButtonFocusBorderBrush}" />
 		</Style>
 
 		<Style Selector="^:checked /template/ Path#CheckGlyph">

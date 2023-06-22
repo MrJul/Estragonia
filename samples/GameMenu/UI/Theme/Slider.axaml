@@ -93,6 +93,14 @@
 			</BehaviorCollectionTemplate>
 		</Setter>
 
+		<Style Selector="^ /template/ Thumb#Thumb">
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="Background" Duration="0.2" />
+				</Transitions>
+			</Setter>
+		</Style>
+
 		<Style Selector="^:focus /template/ Thumb#Thumb">
 			<Setter Property="Background" Value="{StaticResource ButtonFocusBorderBrush}" />
 		</Style>
