@@ -10,7 +10,7 @@ public sealed partial class UserInterface : AvaloniaControl {
 	private MainViewModel _mainViewModel = null!;
 
 	public override void _Ready() {
-		GetWindow().MinSize = new Vector2I(480, 480);
+		GetWindow().MinSize = new Vector2I(1152, 648);
 
 		GrabFocus();
 
