@@ -2,6 +2,8 @@
 using Avalonia;
 using GameMenu.UI;
 
+namespace GameMenu.Designer;
+
 internal static class Program {
 
 	public static int Main(string[] args)

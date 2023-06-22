@@ -1,24 +1,18 @@
-﻿namespace GameMenu.UI;
+﻿using System.Diagnostics.CodeAnalysis;
+using CommunityToolkit.Mvvm.ComponentModel;
 
-public sealed class UIOptions : NotificationObject {
+namespace GameMenu.UI;
 
-	private bool _vSync = true;
-	private bool _showFps = true;
-	private double _uiScale = 1.0;
+public sealed partial class UIOptions : ObservableObject {
 
-	public bool VSync {
-		get => _vSync;
-		set => SetField(ref _vSync, value);
-	}
+	[ObservableProperty]
+	private bool _vSync;
 
-	public bool ShowFps {
-		get => _showFps;
-		set => SetField(ref _showFps, value);
-	}
+	[ObservableProperty]
+	private bool _showFps;
 
-	public double UIScale {
-		get => _uiScale;
-		set => SetField(ref _uiScale, value);
-	}
+	[ObservableProperty]
+	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Name required for correct property generation")]
+	private double _UIScale;
 
 }

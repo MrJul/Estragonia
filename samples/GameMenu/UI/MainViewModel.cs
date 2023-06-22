@@ -1,31 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Godot;
 
 namespace GameMenu.UI;
 
-public sealed class MainViewModel : ViewModel, INavigator {
+public sealed partial class MainViewModel : ViewModel, INavigator {
 
 	private readonly List<ViewModel> _openViewModels = new();
 
+	[ObservableProperty]
 	private SceneTree? _sceneTree;
-	private int _framesPerSecond;
 
-	public SceneTree? SceneTree {
-		get => _sceneTree;
-		set => SetField(ref _sceneTree, value);
-	}
+	[ObservableProperty]
+	private int _framesPerSecond;
 
 	public UIOptions UIOptions { get; }
 
 	public ViewModel? CurrentViewModel
 		=> _openViewModels.Count > 0 ? _openViewModels[^1] : null;
-
-	public int FramesPerSecond {
-		get => _framesPerSecond;
-		private set => SetField(ref _framesPerSecond, value);
-	}
 
 	public MainViewModel(UIOptions uiOptions)
 		=> UIOptions = uiOptions;

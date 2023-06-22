@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace GameMenu.UI;
@@ -6,30 +9,23 @@ namespace GameMenu.UI;
 public sealed partial class OptionsViewModel : ViewModel {
 
 	private readonly UIOptions _uiOptions;
+
+	[ObservableProperty]
 	private bool _vSync;
+
+	[ObservableProperty]
 	private bool _showFps;
-	private double _uiScale;
+
+	[ObservableProperty]
+	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Name required for correct property generation")]
+	private double _UIScale;
+
 	private bool _canApply;
-
-	public bool VSync {
-		get => _vSync;
-		set => SetField(ref _vSync, value);
-	}
-
-	public bool ShowFps {
-		get => _showFps;
-		set => SetField(ref _showFps, value);
-	}
-
-	public double UIScale {
-		get => _uiScale;
-		set => SetField(ref _uiScale, value);
-	}
 
 	public bool CanApply {
 		get => _canApply;
-		set {
-			if (SetField(ref _canApply, value))
+		private set {
+			if (SetProperty(ref _canApply, value))
 				ApplyCommand.NotifyCanExecuteChanged();
 		}
 	}
@@ -38,13 +34,13 @@ public sealed partial class OptionsViewModel : ViewModel {
 		_uiOptions = uiOptions;
 		_vSync = uiOptions.VSync;
 		_showFps = uiOptions.ShowFps;
-		_uiScale = uiOptions.UIScale;
+		_UIScale = uiOptions.UIScale;
 	}
 
-	protected override void OnPropertyChanged(string? propertyName = null) {
-		base.OnPropertyChanged(propertyName);
+	protected override void OnPropertyChanged(PropertyChangedEventArgs e) {
+		base.OnPropertyChanged(e);
 
-		if (propertyName != nameof(CanApply))
+		if (e.PropertyName != nameof(CanApply))
 			CanApply = true;
 	}
 

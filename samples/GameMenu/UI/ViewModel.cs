@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace GameMenu.UI;
 
-public abstract partial class ViewModel : NotificationObject {
+public abstract partial class ViewModel : ObservableObject {
 
 	private Task? _loadTask;
 
