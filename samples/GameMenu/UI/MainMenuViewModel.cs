@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
 
 namespace GameMenu.UI;
 
-public sealed class MainMenuViewModel : ViewModel {
+public sealed partial class MainMenuViewModel : ViewModel {
 
 	private readonly INavigator _navigator;
 	private readonly UIOptions _uiOptions;
@@ -15,20 +16,20 @@ public sealed class MainMenuViewModel : ViewModel {
 	protected override Task LoadAsync()
 		=> Task.CompletedTask;
 
-	public Task StartNewGameAsync()
-		=> Task.CompletedTask;
-
-	public Task LoadExistingGameAsync()
-		=> Task.CompletedTask;
-
-	public Task OpenOptionsAsync() {
-		_navigator.NavigateTo(new OptionsViewModel(_uiOptions));
-		return Task.CompletedTask;
+	[RelayCommand]
+	public void StartNewGame() {
 	}
 
-	public Task ExitAsync() {
-		_navigator.Quit();
-		return Task.CompletedTask;
+	[RelayCommand]
+	public void LoadExistingGame() {
 	}
+
+	[RelayCommand]
+	public void OpenOptions()
+		=> _navigator.NavigateTo(new OptionsViewModel(_uiOptions));
+
+	[RelayCommand]
+	public void Exit()
+		=> _navigator.Quit();
 
 }

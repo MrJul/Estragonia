@@ -42,6 +42,7 @@
 
 	<Grid RowDefinitions="5*,Auto,4*">
 
+		<!-- Title -->
 		<Viewbox
 			Stretch="Uniform"
 			StretchDirection="DownOnly"
@@ -64,6 +65,7 @@
 			</Panel>
 		</Viewbox>
 
+		<!-- Menu -->
 		<StackPanel
 			Classes="main-menu"
 			VerticalAlignment="Center"
@@ -72,19 +74,19 @@
 
 			<Button
 				Content="New Game"
-				Command="{Binding StartNewGameAsync}" />
+				Command="{Binding StartNewGameCommand}" />
 
 			<Button
 				Content="Continue"
-				Command="{Binding LoadExistingGameAsync}" />
+				Command="{Binding LoadExistingGameCommand}" />
 
 			<Button
 				Content="Options"
-				Command="{Binding OpenOptionsAsync}" />
+				Command="{Binding OpenOptionsCommand}" />
 
 			<Button
 				Content="Exit"
-				Command="{Binding ExitAsync}" />
+				Command="{Binding ExitCommand}" />
 
 		</StackPanel>
 

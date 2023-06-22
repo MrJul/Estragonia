@@ -1,11 +1,11 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Xaml.Interactivity;
 
 namespace GameMenu.UI.Behaviors;
 
-public sealed class FocusWithPointerBehavior : Behavior<Control> {
+/// <summary>A behavior that focuses a given target when the pointer enters the associated object.</summary>
+public sealed class FocusWithPointerBehavior : Behavior<InputElement> {
 
 	public static readonly StyledProperty<IInputElement?> TargetProperty =
 		AvaloniaProperty.Register<FocusWithPointerBehavior, IInputElement?>(nameof(Target));

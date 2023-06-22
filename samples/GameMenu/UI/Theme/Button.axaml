@@ -7,7 +7,7 @@
 		<Border Background="Black">
 			<StackPanel Spacing="20" Margin="20">
 				<Button Content="Button 1" />
-				<Button Content="Button 2" />
+				<Button Content="Button 2" IsEnabled="False" />
 			</StackPanel>
 		</Border>
 	</Design.PreviewWith>
@@ -74,6 +74,12 @@
 
 		<Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
 			<Setter Property="RenderTransform" Value="scale(0.95)" />
+		</Style>
+
+		<Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="{StaticResource DisabledBackgroundBrush}" />
+			<Setter Property="BorderBrush" Value="{StaticResource DisabledBorderBrush}" />
+			<Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
 		</Style>
 
 	</ControlTheme>

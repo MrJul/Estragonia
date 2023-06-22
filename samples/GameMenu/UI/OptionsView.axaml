@@ -32,39 +32,33 @@
 
 	<ui:View.Styles>
 
-		<Style Selector="Border.option">
-			<Setter Property="Background" Value="{StaticResource ContainerNormalBackgroundBrush}" />
-			<Setter Property="BorderBrush" Value="{StaticResource ContainerNormalBorderBrush}" />
-			<Setter Property="BorderThickness" Value="1" />
+		<Style Selector="Border.option > Grid">
 
-			<Style Selector="^ > Grid > TextBlock.label">
-				<Setter Property="Margin" Value="16" />
+			<Setter Property="Margin" Value="0,0,-16,0" />
+
+			<Style Selector="^ > TextBlock.label">
+				<Setter Property="Margin" Value="0,0,16,0" />
 				<Setter Property="Grid.Column" Value="0" />
 			</Style>
 
-			<Style Selector="^ > Grid > TextBlock.value-display">
+			<Style Selector="^ > TextBlock.value-display">
 				<Setter Property="VerticalAlignment" Value="Center" />
 				<Setter Property="HorizontalAlignment" Value="Right" />
 				<Setter Property="Grid.Column" Value="1" />
 			</Style>
 
-			<Style Selector="^ > Grid > :is(Control).value">
+			<Style Selector="^ > :is(Control).value">
 				<Setter Property="VerticalAlignment" Value="Center" />
 				<Setter Property="Grid.Column" Value="2" />
 			</Style>
 
 		</Style>
 
-		<Style Selector="Border.option:focus-within">
-			<Setter Property="Background" Value="{StaticResource ContainerFocusBackgroundBrush}" />
-			<Setter Property="BorderBrush" Value="{StaticResource ContainerFocusBorderBrush}" />
-		</Style>
-
 	</ui:View.Styles>
 
 	<!-- ReSharper disable Xaml.MissingGridIndex -->
 
-	<Grid>
+	<Panel>
 
 		<TextBlock
 			Text="Options"
@@ -74,6 +68,7 @@
 			TextAlignment="Left"
 			Margin="16" />
 
+		<!-- Options -->
 		<Border VerticalAlignment="Center" MinWidth="400" MaxWidth="600">
 
 			<StackPanel
@@ -82,7 +77,7 @@
 				Margin="8">
 
 				<!-- Vertical Sync -->
-				<Border Classes="option">
+				<Border Classes="selectable option">
 
 					<Interaction.Behaviors>
 						<behaviors:FocusWithPointerBehavior Target="{Binding #VSyncCheckBox}" />
@@ -110,7 +105,7 @@
 				</Border>
 
 				<!-- Show FPS -->
-				<Border Classes="option">
+				<Border Classes="selectable option">
 
 					<Interaction.Behaviors>
 						<behaviors:FocusWithPointerBehavior Target="{Binding #ShowFpsCheckBox}" />
@@ -138,7 +133,7 @@
 				</Border>
 
 				<!-- UI Scale -->
-				<Border Classes="option">
+				<Border Classes="selectable option">
 
 					<Interaction.Behaviors>
 						<behaviors:FocusWithPointerBehavior Target="{Binding #UIScaleSlider}" />
@@ -177,27 +172,34 @@
 		<!-- Buttons -->
 		<StackPanel
 			Orientation="Horizontal"
-			HorizontalAlignment="Center"
 			VerticalAlignment="Bottom"
-			Spacing="16"
-			Margin="16">
-
-			<Button
-				x:Name="ApplyButton"
-				Content="Apply"
-				Command="{Binding AcceptAsync}"
-				IsDefault="True"
-				ui:DirectionalFocus.FocusRight="{Binding #CloseButton}" />
+			HorizontalAlignment="Right"
+			Margin="16"
+			Spacing="16">
 
 			<Button
 				x:Name="CloseButton"
-				Content="Close"
-				Command="{Binding TryCloseAsync}"
+				Content="&lt; Back"
+				Command="{Binding TryCloseCommand}"
 				IsCancel="True"
-				ui:DirectionalFocus.FocusLeft="{Binding #ApplyButton}" />
+				ui:DirectionalFocus.FocusRight="{Binding #ApplyButton}" />
+
+			<Button
+				x:Name="ApplyButton"
+				Content="Apply ✓"
+				Command="{Binding ApplyCommand}"
+				IsDefault="True"
+				ui:DirectionalFocus.FocusLeft="{Binding #CloseButton}">
+
+				<Interaction.Behaviors>
+					<behaviors:FocusWithPointerBehavior />
+					<behaviors:MoveFocusWhenDisabledBehavior Target="{Binding #CloseButton}" />
+				</Interaction.Behaviors>
+
+			</Button>
 
 		</StackPanel>
 
-	</Grid>
+	</Panel>
 
 </ui:View>

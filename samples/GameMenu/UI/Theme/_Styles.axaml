@@ -1,0 +1,25 @@
+﻿<Styles
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Design.PreviewWith>
+		<Border Background="Black" Padding="20">
+			<Border Classes="selectable" MinWidth="200">
+				<TextBlock Text="Item"></TextBlock>
+			</Border>
+		</Border>
+	</Design.PreviewWith>
+
+	<Style Selector="Border.selectable">
+		<Setter Property="Background" Value="{StaticResource ContainerNormalBackgroundBrush}" />
+		<Setter Property="BorderBrush" Value="{StaticResource ContainerNormalBorderBrush}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Padding" Value="16" />
+	</Style>
+
+	<Style Selector="Border.selectable:focus-within">
+		<Setter Property="Background" Value="{StaticResource ContainerFocusBackgroundBrush}" />
+		<Setter Property="BorderBrush" Value="{StaticResource ContainerFocusBorderBrush}" />
+	</Style>
+
+</Styles>

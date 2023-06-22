@@ -1,0 +1,43 @@
+﻿<ResourceDictionary
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Design.PreviewWith>
+		<Border Background="Black" Padding="20">
+			<StackPanel>
+				<ListBoxItem Content="Item 1" MinWidth="200" />
+				<ListBoxItem Content="Item 2" MinWidth="200" />
+			</StackPanel>
+		</Border>
+	</Design.PreviewWith>
+
+	<ControlTheme x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
+		<Setter Property="Background" Value="{StaticResource ContainerNormalBackgroundBrush}" />
+		<Setter Property="BorderBrush" Value="{StaticResource ContainerNormalBorderBrush}" />
+		<Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Padding" Value="16" />
+		<Setter Property="Margin" Value="0,0,0,2" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter
+	        x:Name="PART_ContentPresenter"
+          Padding="{TemplateBinding Padding}"
+          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+          Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          Content="{TemplateBinding Content}"
+          ContentTemplate="{TemplateBinding ContentTemplate}"
+          CornerRadius="{TemplateBinding CornerRadius}" />
+      </ControlTemplate>
+    </Setter>
+
+		<Style Selector="^^:selected /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="{StaticResource ContainerFocusBackgroundBrush}" />
+			<Setter Property="BorderBrush" Value="{StaticResource ContainerFocusBorderBrush}" />
+		</Style>
+
+  </ControlTheme>
+
+</ResourceDictionary>

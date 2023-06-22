@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
 
 namespace GameMenu.UI;
 
-public abstract class ViewModel : NotificationObject {
+public abstract partial class ViewModel : NotificationObject {
 
 	private Task? _loadTask;
 
@@ -14,6 +15,7 @@ public abstract class ViewModel : NotificationObject {
 
 	protected abstract Task LoadAsync();
 
+	[RelayCommand]
 	public async Task<bool> TryCloseAsync() {
 		if (!await TryCloseCoreAsync())
 			return false;
