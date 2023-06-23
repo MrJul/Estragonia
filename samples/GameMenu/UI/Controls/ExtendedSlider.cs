@@ -5,7 +5,7 @@ using Avalonia.Input;
 namespace GameMenu.UI.Controls;
 
 /// <summary>A <see cref="Slider"/> that doesn't handle the Up and Down keys so navigation can occur naturally.</summary>
-public sealed class ExtendedSlider : Slider {
+public class ExtendedSlider : Slider {
 
 	protected override Type StyleKeyOverride
 		=> typeof(Slider);

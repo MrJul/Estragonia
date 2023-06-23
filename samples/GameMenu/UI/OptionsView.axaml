@@ -61,20 +61,13 @@
 	<Panel>
 
 		<TextBlock
-			Text="Options"
-			FontWeight="Bold"
-			FontSize="{StaticResource ViewTitleFontSize}"
-			VerticalAlignment="Top"
-			TextAlignment="Left"
-			Margin="16" />
+			Classes="view-title"
+			Text="Options" />
 
 		<!-- Options -->
-		<Border VerticalAlignment="Center" MinWidth="400" MaxWidth="600">
+		<Border Classes="centered-view-content">
 
-			<StackPanel
-				Orientation="Vertical"
-				Spacing="2"
-				Margin="8">
+			<StackPanel Spacing="2">
 
 				<!-- Vertical Sync -->
 				<Border Classes="selectable option">

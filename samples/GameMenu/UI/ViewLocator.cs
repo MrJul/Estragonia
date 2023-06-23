@@ -8,8 +8,9 @@ namespace GameMenu.UI;
 public sealed class ViewLocator : IDataTemplate {
 
 	private readonly Dictionary<Type, ViewFactory> _viewFactoryByModelType = new() {
-		[typeof(MainMenuViewModel)] = new(() => new MainMenuView(), shouldCacheView: true),
-		[typeof(OptionsViewModel)] = new(() => new OptionsView(), shouldCacheView: false)
+		[typeof(MainMenuViewModel)] = new(() => new MainMenuView(), cached: true),
+		[typeof(DifficultyViewModel)] = new(() => new DifficultyView()),
+		[typeof(OptionsViewModel)] = new(() => new OptionsView())
 	};
 
 	public bool Match(object? data)
@@ -26,17 +27,17 @@ public sealed class ViewLocator : IDataTemplate {
 	private sealed class ViewFactory {
 
 		private readonly Func<View> _createView;
-		private readonly bool _shouldCacheView;
+		private readonly bool _cached;
 		private View? _cachedView;
 
 		public View GetOrCreateView()
-			=> _shouldCacheView
+			=> _cached
 				? _cachedView ??= _createView()
 				: _createView();
 
-		public ViewFactory(Func<View> createView, bool shouldCacheView) {
+		public ViewFactory(Func<View> createView, bool cached = false) {
 			_createView = createView;
-			_shouldCacheView = shouldCacheView;
+			_cached = cached;
 		}
 
 	}

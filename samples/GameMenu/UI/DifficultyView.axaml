@@ -1,0 +1,71 @@
+﻿<ui:View
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ui="clr-namespace:GameMenu.UI"
+	xmlns:behaviors="clr-namespace:GameMenu.UI.Behaviors"
+	xmlns:controls="clr-namespace:GameMenu.UI.Controls"
+	mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+	x:Class="GameMenu.UI.DifficultyView"
+	x:DataType="ui:DifficultyViewModel">
+
+	<Design.DesignStyle>
+		<Style Selector="ui|DifficultyView">
+			<Setter Property="Background" Value="Black" />
+		</Style>
+	</Design.DesignStyle>
+
+	<Design.DataContext>
+		<ui:DifficultyViewModel />
+	</Design.DataContext>
+
+	<Panel>
+
+		<TextBlock
+			Classes="view-title"
+			Text="Difficulty" />
+
+		<Border Classes="centered-view-content">
+
+			<controls:ExtendedListBox
+				ItemsSource="{Binding Difficulties}"
+				SelectedItem="{Binding SelectedDifficulty}"
+				Background="Transparent" />
+
+		</Border>
+
+		<!-- Buttons -->
+		<StackPanel
+			Orientation="Horizontal"
+			VerticalAlignment="Bottom"
+			HorizontalAlignment="Right"
+			Margin="16"
+			Spacing="16">
+
+			<Button
+				x:Name="CloseButton"
+				Content="&lt; Back"
+				Command="{Binding TryCloseCommand}"
+				IsCancel="True"
+				ui:DirectionalFocus.FocusRight="{Binding #ApplyButton}" />
+
+			<Button
+				x:Name="ApplyButton"
+				Content="Start &gt;"
+				Command="{Binding StartGameCommand}"
+				IsDefault="True"
+				ui:DirectionalFocus.FocusLeft="{Binding #CloseButton}">
+
+				<Interaction.Behaviors>
+					<behaviors:FocusWithPointerBehavior />
+					<behaviors:MoveFocusWhenDisabledBehavior Target="{Binding #CloseButton}" />
+				</Interaction.Behaviors>
+
+			</Button>
+
+		</StackPanel>
+
+	</Panel>
+
+</ui:View>

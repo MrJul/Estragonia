@@ -1,12 +1,14 @@
 ﻿<ResourceDictionary
 	xmlns="https://github.com/avaloniaui"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:behaviors="clr-namespace:GameMenu.UI.Behaviors">
 
 	<Design.PreviewWith>
 		<Border Background="Black" Padding="20">
-			<StackPanel>
-				<ListBoxItem Content="Item 1" MinWidth="200" />
-				<ListBoxItem Content="Item 2" MinWidth="200" />
+			<StackPanel MinWidth="200">
+				<ListBoxItem Content="Item 1" />
+				<ListBoxItem Content="Item 2" />
+				<ListBoxItem Content="Item 3" IsSelected="True" />
 			</StackPanel>
 		</Border>
 	</Design.PreviewWith>
@@ -33,9 +35,30 @@
       </ControlTemplate>
     </Setter>
 
-		<Style Selector="^^:selected /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Interaction.Behaviors">
+			<BehaviorCollectionTemplate>
+				<BehaviorCollection>
+					<behaviors:FocusWithPointerBehavior />
+				</BehaviorCollection>
+			</BehaviorCollectionTemplate>
+		</Setter>
+
+		<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="Background" Duration="0.2" />
+				</Transitions>
+			</Setter>
+		</Style>
+
+		<Style Selector="^:focus /template/ ContentPresenter#PART_ContentPresenter">
 			<Setter Property="Background" Value="{StaticResource ContainerFocusBackgroundBrush}" />
 			<Setter Property="BorderBrush" Value="{StaticResource ContainerFocusBorderBrush}" />
+		</Style>
+
+		<Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Background" Value="#A8FFBB19" />
+			<Setter Property="FontWeight" Value="SemiBold" />
 		</Style>
 
   </ControlTheme>

@@ -17,8 +17,8 @@ public sealed partial class MainMenuViewModel : ViewModel {
 		=> Task.CompletedTask;
 
 	[RelayCommand]
-	public void StartNewGame() {
-	}
+	public void StartNewGame()
+		=> _navigator.NavigateTo(new DifficultyViewModel());
 
 	[RelayCommand]
 	public void LoadExistingGame() {

@@ -3,12 +3,30 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 	<Design.PreviewWith>
-		<Border Background="Black" Padding="20">
-			<Border Classes="selectable" MinWidth="200">
-				<TextBlock Text="Item"></TextBlock>
-			</Border>
+		<Border Background="Black" Width="400" Height="400" Padding="0">
+			<StackPanel>
+				<TextBlock Classes="view-title" Text="Title" />
+				<Border Classes="selectable" MinWidth="200" Margin="8,0">
+					<TextBlock Text="Item" />
+				</Border>
+			</StackPanel>
 		</Border>
 	</Design.PreviewWith>
+
+	<Style Selector="TextBlock.view-title">
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="FontSize" Value="{StaticResource ViewTitleFontSize}" />
+		<Setter Property="VerticalAlignment" Value="Top" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
+		<Setter Property="Margin" Value="16" />
+	</Style>
+
+	<Style Selector="Border.centered-view-content">
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="MinWidth" Value="400" />
+		<Setter Property="MaxWidth" Value="600" />
+		<Setter Property="Margin" Value="8" />
+	</Style>
 
 	<Style Selector="Border.selectable">
 		<Setter Property="Background" Value="{StaticResource ContainerNormalBackgroundBrush}" />

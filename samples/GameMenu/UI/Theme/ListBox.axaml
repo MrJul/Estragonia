@@ -5,9 +5,10 @@
 	<Design.PreviewWith>
 		<Border Background="Black" Padding="20">
 			<StackPanel>
-				<ListBox MinWidth="200" Height="200">
+				<ListBox MinWidth="200" MinHeight="400">
 					<ListBoxItem Content="Item 1" />
 					<ListBoxItem Content="Item 2" />
+					<ListBoxItem Content="Item 3" IsSelected="True" />
 				</ListBox>
 			</StackPanel>
 		</Border>
@@ -16,7 +17,7 @@
 	<ControlTheme x:Key="{x:Type ListBox}" TargetType="ListBox">
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="BorderBrush" Value="{x:Null}" />
-		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="BorderThickness" Value="0" />
 		<Setter Property="Padding" Value="2" />
 		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
 		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
