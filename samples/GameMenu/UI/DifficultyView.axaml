@@ -48,10 +48,10 @@
 				Content="&lt; Back"
 				Command="{Binding TryCloseCommand}"
 				IsCancel="True"
-				ui:DirectionalFocus.FocusRight="{Binding #ApplyButton}" />
+				ui:DirectionalFocus.FocusRight="{Binding #StartButton}" />
 
 			<Button
-				x:Name="ApplyButton"
+				x:Name="StartButton"
 				Content="Start &gt;"
 				Command="{Binding StartGameCommand}"
 				IsDefault="True"

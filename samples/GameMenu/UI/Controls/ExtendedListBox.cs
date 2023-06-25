@@ -9,50 +9,55 @@ namespace GameMenu.UI.Controls;
 public class ExtendedListBox : ListBox {
 
 	static ExtendedListBox()
-	 	=> KeyboardNavigation.TabNavigationProperty.OverrideDefaultValue<ExtendedListBox>(KeyboardNavigationMode.Continue);
+		=> KeyboardNavigation.TabNavigationProperty.OverrideDefaultValue<ExtendedListBox>(KeyboardNavigationMode.Continue);
 
 	protected override Type StyleKeyOverride
 		=> typeof(ListBox);
-
-	protected override void OnLoaded() {
-		base.OnLoaded();
-
-		if (KeyboardNavigation.GetTabNavigation(this) == KeyboardNavigationMode.Once)
-			KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Continue);
-	}
 
 	protected override void OnKeyDown(KeyEventArgs e) {
 		if (e.Handled)
 			return;
 
 		// Override the default ListBox behavior that changes the selection with Up/Down: we want to change the focus instead.
-		if (e.Key.ToNavigationDirection() is { } direction and (NavigationDirection.Up or NavigationDirection.Down)) {
-			if (TopLevel.GetTopLevel(this)?.FocusManager is not { } focusManager
-				|| Presenter?.Panel is not INavigableContainer navigableContainer
-			) {
-				return;
-			}
+		switch (e.Key) {
+			case Key.Up:
+				if (TryMoveFocus(NavigationDirection.Up, e.KeyModifiers))
+					e.Handled = true;
+				break;
+			case Key.Down:
+				if (TryMoveFocus(NavigationDirection.Down, e.KeyModifiers))
+					e.Handled = true;
+				break;
+			case Key.Enter:
+			case Key.Space:
+				e.Handled = UpdateSelectionFromEventSource(e.Source);
+				break;
+		}
+	}
 
-			var current = focusManager.GetFocusedElement() as Visual;
-
-			while (current is not null) {
-				if (current.GetVisualParent() == navigableContainer && current is IInputElement inputElement) {
-					var next = GetNextControl(navigableContainer, direction, inputElement, WrapSelection);
-
-					if (next is not null) {
-						next.Focus(NavigationMethod.Directional, e.KeyModifiers);
-						e.Handled = true;
-						return;
-					}
-
-					break;
-				}
-
-				current = current.GetVisualParent();
-			}
+	private bool TryMoveFocus(NavigationDirection direction, KeyModifiers keyModifiers) {
+		if (TopLevel.GetTopLevel(this)?.FocusManager is not { } focusManager
+			|| Presenter?.Panel is not INavigableContainer navigableContainer
+		) {
+			return false;
 		}
 
-		base.OnKeyDown(e);
+		var current = focusManager.GetFocusedElement() as Visual;
+
+		while (current is not null) {
+			if (current.GetVisualParent() == navigableContainer && current is IInputElement inputElement) {
+				if (GetNextControl(navigableContainer, direction, inputElement, WrapSelection) is { } next) {
+					next.Focus(NavigationMethod.Directional, keyModifiers);
+					return true;
+				}
+
+				break;
+			}
+
+			current = current.GetVisualParent();
+		}
+
+		return false;
 	}
 
 }

@@ -43,24 +43,26 @@
 			</BehaviorCollectionTemplate>
 		</Setter>
 
-		<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Transitions">
-				<Transitions>
-					<BrushTransition Property="Background" Duration="0.2" />
-				</Transitions>
-			</Setter>
-		</Style>
-
 		<Style Selector="^:focus /template/ ContentPresenter#PART_ContentPresenter">
 			<Setter Property="Background" Value="{StaticResource ContainerFocusBackgroundBrush}" />
 			<Setter Property="BorderBrush" Value="{StaticResource ContainerFocusBorderBrush}" />
 		</Style>
 
+		<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="Background" Duration="0.2" />
+					<ThicknessTransition Property="Margin" Duration="0.2" />
+				</Transitions>
+			</Setter>
+		</Style>
+
 		<Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
 			<Setter Property="Background" Value="#A8FFBB19" />
 			<Setter Property="FontWeight" Value="SemiBold" />
+			<Setter Property="Margin" Value="16,0,0,0" />
 		</Style>
 
-  </ControlTheme>
+	</ControlTheme>
 
 </ResourceDictionary>
