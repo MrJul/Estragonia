@@ -263,14 +263,48 @@ public class AvaloniaControl : GdControl {
 		};
 
 	private bool TryMoveFocus(NavigationDirection direction, InputEvent inputEvent) {
-		if (_topLevel?.FocusManager is { } focusManager
-			&& KeyboardNavigationHandler.GetNext(focusManager.GetFocusedElement() ?? _topLevel, direction) is { } nextElement
-		) {
-			nextElement.Focus(NavigationMethod.Tab, inputEvent.GetKeyModifiers());
-			return true;
+		if (_topLevel?.FocusManager is not { } focusManager)
+			return false;
+
+		var currentElement = focusManager.GetFocusedElement() ?? _topLevel;
+
+		// GodotTopLevel has a Continue tab navigation since we want to be able to focus the Godot controls
+		// once we're done with the Avalonia ones. However, if there's no Godot control, we want to act as Cycle.
+		var nextElement = GetNextTabElement(currentElement, direction);
+		if (nextElement is null) {
+			var nextGdControl = direction switch {
+				NavigationDirection.Next => FindNextValidFocus(),
+				NavigationDirection.Previous => FindPrevValidFocus(),
+				_ => null
+			};
+
+			if ((nextGdControl is null || nextGdControl == this) && currentElement != _topLevel)
+				nextElement = GetNextTabElement(_topLevel, direction);
 		}
 
-		return false;
+
+		if (nextElement is null)
+			return false;
+
+		nextElement.Focus(NavigationMethod.Tab, inputEvent.GetKeyModifiers());
+		return true;
+	}
+
+	private static IInputElement? GetNextTabElement(IInputElement element, NavigationDirection direction) {
+		var previous = element;
+
+		while (true) {
+			// GetNext doesn't take IsEffectivelyEnabled into account, check it manually
+			var next = KeyboardNavigationHandler.GetNext(previous, direction);
+			if (next is null || next.IsEffectivelyEnabled)
+				return next;
+
+			// handle potential all-disabled cycle
+			if (next == element)
+				return null;
+
+			previous = next;
+		}
 	}
 
 	private void OnMouseExited()
