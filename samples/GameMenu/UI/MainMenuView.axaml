@@ -86,7 +86,8 @@
 
 			<Button
 				Content="Exit"
-				Command="{Binding ExitCommand}" />
+				Command="{Binding ExitCommand}"
+				IsCancel="True" />
 
 		</StackPanel>
 

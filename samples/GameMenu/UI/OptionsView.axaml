@@ -147,7 +147,7 @@
 							Classes="value"
 							Value="{Binding UIScale, Mode=TwoWay}"
 							Minimum="0.6"
-							Maximum="1.8"
+							Maximum="2.0"
 							SmallChange="0.1"
 							LargeChange="0.5"
 							TickFrequency="0.1"

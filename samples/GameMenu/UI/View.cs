@@ -1,6 +1,9 @@
 ﻿using System;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 
 namespace GameMenu.UI;
 
@@ -10,8 +13,8 @@ public abstract class View : UserControl {
 
 	private IInputElement? _lastFocusedChild;
 
-	protected override void OnLoaded() {
-		base.OnLoaded();
+	protected override void OnLoaded(RoutedEventArgs e) {
+		base.OnLoaded(e);
 
 		var focusableChild = _lastFocusedChild ?? TryGetFirstFocusableChild();
 		focusableChild?.Focus();
@@ -32,7 +35,15 @@ public abstract class View : UserControl {
 			return;
 
 		var currentElement = focusManager.GetFocusedElement();
+
+		// on a list item, use the list instead
+		if (currentElement is ILogical logical && logical.GetLogicalParent() is ItemsControl itemsControl)
+			currentElement = itemsControl;
+
 		var nextElement = currentElement is null ? TryGetFirstFocusableChild() : findNext(currentElement);
+		if (nextElement is SelectingItemsControl selectingItemsControl)
+			selectingItemsControl.ContainerFromIndex(selectingItemsControl.SelectedIndex)?.Focus();
+
 		nextElement?.Focus();
 	}
 
@@ -44,11 +55,19 @@ public abstract class View : UserControl {
 
 		switch (e.Key) {
 			case Key.Up:
-				FocusDirectional(current => KeyboardNavigationHandler.GetNext(current, NavigationDirection.Previous));
+				FocusDirectional(
+					current => current is Control control && DirectionalFocus.GetFocusUp(control) is { } next
+						? next
+						: KeyboardNavigationHandler.GetNext(current, NavigationDirection.Previous)
+				);
 				e.Handled = true;
 				break;
 			case Key.Down:
-				FocusDirectional(current => KeyboardNavigationHandler.GetNext(current, NavigationDirection.Next));
+				FocusDirectional(
+					current => current is Control control && DirectionalFocus.GetFocusDown(control) is { } next
+						? next
+						: KeyboardNavigationHandler.GetNext(current, NavigationDirection.Next)
+				);
 				e.Handled = true;
 				break;
 			case Key.Left:

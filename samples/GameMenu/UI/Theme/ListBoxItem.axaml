@@ -18,7 +18,7 @@
 		<Setter Property="BorderBrush" Value="{StaticResource ContainerNormalBorderBrush}" />
 		<Setter Property="BorderThickness" Value="1" />
     <Setter Property="Padding" Value="16" />
-		<Setter Property="Margin" Value="0,0,0,2" />
+		<Setter Property="Margin" Value="0,2,0,0" />
     <Setter Property="Template">
       <ControlTemplate>
         <ContentPresenter
@@ -61,6 +61,10 @@
 			<Setter Property="Background" Value="#A8FFBB19" />
 			<Setter Property="FontWeight" Value="SemiBold" />
 			<Setter Property="Margin" Value="16,0,0,0" />
+		</Style>
+
+		<Style Selector="^:nth-child(1)">
+			<Setter Property="Margin" Value="0" />
 		</Style>
 
 	</ControlTheme>

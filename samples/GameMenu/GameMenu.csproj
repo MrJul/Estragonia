@@ -10,7 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Themes.Simple" Version="[11.0.999-cibuild0036727-beta]" />
+		<PackageReference Include="Avalonia.Themes.Simple" Version="[11.0.999-cibuild0037087-beta]" />
 		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="[11.0.0-rc1.1]" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 	</ItemGroup>

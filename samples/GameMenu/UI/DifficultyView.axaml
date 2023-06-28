@@ -20,18 +20,21 @@
 		<ui:DifficultyViewModel />
 	</Design.DataContext>
 
-	<Panel>
+	<Grid RowDefinitions="Auto,*,Auto">
 
 		<TextBlock
 			Classes="view-title"
-			Text="Difficulty" />
+			Text="Difficulty"
+			Grid.Row="0" />
 
-		<Border Classes="centered-view-content">
+		<Border Classes="centered-view-content" Grid.Row="1">
 
 			<controls:ExtendedListBox
+				x:Name="DifficultiesListBox"
 				ItemsSource="{Binding Difficulties}"
 				SelectedItem="{Binding SelectedDifficulty}"
-				Background="Transparent" />
+				Background="Transparent"
+				ui:DirectionalFocus.FocusDown="{Binding #StartButton}" />
 
 		</Border>
 
@@ -41,13 +44,15 @@
 			VerticalAlignment="Bottom"
 			HorizontalAlignment="Right"
 			Margin="16"
-			Spacing="16">
+			Spacing="16"
+			Grid.Row="2" >
 
 			<Button
 				x:Name="CloseButton"
 				Content="&lt; Back"
 				Command="{Binding TryCloseCommand}"
 				IsCancel="True"
+				ui:DirectionalFocus.FocusUp="{Binding #DifficultiesListBox}"
 				ui:DirectionalFocus.FocusRight="{Binding #StartButton}" />
 
 			<Button
@@ -55,6 +60,7 @@
 				Content="Start &gt;"
 				Command="{Binding StartGameCommand}"
 				IsDefault="True"
+				ui:DirectionalFocus.FocusUp="{Binding #DifficultiesListBox}"
 				ui:DirectionalFocus.FocusLeft="{Binding #CloseButton}">
 
 				<Interaction.Behaviors>
@@ -66,6 +72,6 @@
 
 		</StackPanel>
 
-	</Panel>
+	</Grid>
 
 </ui:View>
