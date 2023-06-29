@@ -6,10 +6,10 @@ namespace GameMenu.UI;
 public sealed partial class UIOptions : ObservableObject {
 
 	[ObservableProperty]
-	private bool _vSync;
+	private bool _vSync = true;
 
 	[ObservableProperty]
-	private bool _showFps;
+	private bool _showFps = true;
 
 	[ObservableProperty]
 	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Name required for correct property generation")]

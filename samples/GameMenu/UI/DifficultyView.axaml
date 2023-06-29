@@ -20,17 +20,13 @@
 		<ui:DifficultyViewModel />
 	</Design.DataContext>
 
-	<ui:View.DirectionalFocusGrid>
-		<ui:DirectionalFocusGrid>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #DifficultiesListBox}" />
-			</ui:DirectionalFocusRow>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #CloseButton}" />
-				<ui:DirectionalFocusCell Control="{Binding #StartButton}" IsRowDefault="True" />
-			</ui:DirectionalFocusRow>
-		</ui:DirectionalFocusGrid>
-	</ui:View.DirectionalFocusGrid>
+	<ui:View.DirectionalFocusStructure>
+		<ui:DirectionalFocusStructure>
+			<ui:DirectionalFocusControl Control="{Binding #DifficultiesListBox}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #CloseButton}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #StartButton}" IsRowDefault="True" />
+		</ui:DirectionalFocusStructure>
+	</ui:View.DirectionalFocusStructure>
 
 	<Grid RowDefinitions="Auto,*,Auto">
 

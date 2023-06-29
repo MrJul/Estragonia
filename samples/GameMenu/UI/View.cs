@@ -13,12 +13,12 @@ public abstract class View : UserControl {
 
 	private Control? _lastFocusedChild;
 
-	public static readonly StyledProperty<DirectionalFocusGrid?> DirectionalFocusGridProperty =
-		AvaloniaProperty.Register<View, DirectionalFocusGrid?>(nameof(DirectionalFocusGrid));
+	public static readonly StyledProperty<DirectionalFocusStructure?> DirectionalFocusStructureProperty =
+		AvaloniaProperty.Register<View, DirectionalFocusStructure?>(nameof(DirectionalFocusStructure));
 
-	public DirectionalFocusGrid? DirectionalFocusGrid {
-		get => GetValue(DirectionalFocusGridProperty);
-		set => SetValue(DirectionalFocusGridProperty, value);
+	public DirectionalFocusStructure? DirectionalFocusStructure {
+		get => GetValue(DirectionalFocusStructureProperty);
+		set => SetValue(DirectionalFocusStructureProperty, value);
 	}
 
 	protected override void OnLoaded(RoutedEventArgs e) {
@@ -34,7 +34,7 @@ public abstract class View : UserControl {
 	}
 
 	private Control? TryGetFirstFocusableChild()
-		=> AdjustFocusTarget(DirectionalFocusGrid?.GetDown(null), forward: true);
+		=> AdjustFocusTarget(DirectionalFocusStructure?.GetDown(null), forward: true);
 
 	private void FocusDirectional(Func<Control?, Control?> findNext) {
 		if (TopLevel.GetTopLevel(this)?.FocusManager is not { } focusManager)
@@ -68,22 +68,22 @@ public abstract class View : UserControl {
 
 		switch (e.Key) {
 			case Key.Up:
-				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusGrid?.GetUp(current), forward: false));
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetUp(current), forward: false));
 				e.Handled = true;
 				break;
 
 			case Key.Down:
-				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusGrid?.GetDown(current), forward: true));
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetDown(current), forward: true));
 				e.Handled = true;
 				break;
 
 			case Key.Left:
-				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusGrid?.GetLeft(current), forward: false));
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetLeft(current), forward: false));
 				e.Handled = true;
 				break;
 
 			case Key.Right:
-				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusGrid?.GetRight(current), forward: true));
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetRight(current), forward: true));
 				e.Handled = true;
 				break;
 		}

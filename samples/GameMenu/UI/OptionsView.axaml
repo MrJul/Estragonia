@@ -56,23 +56,15 @@
 
 	</ui:View.Styles>
 
-	<ui:View.DirectionalFocusGrid>
-		<ui:DirectionalFocusGrid>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #VSyncCheckBox}" />
-			</ui:DirectionalFocusRow>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #ShowFpsCheckBox}" />
-			</ui:DirectionalFocusRow>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #UIScaleSlider}" />
-			</ui:DirectionalFocusRow>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #CloseButton}" />
-				<ui:DirectionalFocusCell Control="{Binding #ApplyButton}" IsRowDefault="True" />
-			</ui:DirectionalFocusRow>
-		</ui:DirectionalFocusGrid>
-	</ui:View.DirectionalFocusGrid>
+	<ui:View.DirectionalFocusStructure>
+		<ui:DirectionalFocusStructure>
+			<ui:DirectionalFocusControl Control="{Binding #VSyncCheckBox}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #ShowFpsCheckBox}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #UIScaleSlider}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #CloseButton}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #ApplyButton}" IsRowDefault="True" />
+		</ui:DirectionalFocusStructure>
+	</ui:View.DirectionalFocusStructure>
 
 	<!-- ReSharper disable Xaml.MissingGridIndex -->
 

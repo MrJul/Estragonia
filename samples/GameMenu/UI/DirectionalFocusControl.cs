@@ -3,17 +3,25 @@ using Avalonia.Controls;
 
 namespace GameMenu.UI;
 
-public sealed class DirectionalFocusCell : AvaloniaObject {
+public sealed class DirectionalFocusControl : AvaloniaObject {
 
 	public static readonly StyledProperty<Control?> ControlProperty =
-		AvaloniaProperty.Register<DirectionalFocusCell, Control?>(nameof(Control));
+		AvaloniaProperty.Register<DirectionalFocusControl, Control?>(nameof(Control));
+
+	public static readonly StyledProperty<bool> IsNewRowProperty =
+		AvaloniaProperty.Register<DirectionalFocusControl, bool>(nameof(IsNewRow), defaultValue: false);
 
 	public static readonly StyledProperty<bool> IsRowDefaultProperty =
-		AvaloniaProperty.Register<DirectionalFocusCell, bool>(nameof(IsRowDefault));
+		AvaloniaProperty.Register<DirectionalFocusControl, bool>(nameof(IsRowDefault), defaultValue: false);
 
 	public Control? Control {
 		get => GetValue(ControlProperty);
 		set => SetValue(ControlProperty, value);
+	}
+
+	public bool IsNewRow {
+		get => GetValue(IsNewRowProperty);
+		set => SetValue(IsNewRowProperty, value);
 	}
 
 	public bool IsRowDefault {

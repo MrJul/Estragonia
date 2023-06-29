@@ -23,22 +23,14 @@
 		</ui:MainMenuViewModel>
 	</Design.DataContext>
 
-	<ui:View.DirectionalFocusGrid>
-		<ui:DirectionalFocusGrid>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #StartNewGameButton}" />
-			</ui:DirectionalFocusRow>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #LoadExistingGameButton}" />
-			</ui:DirectionalFocusRow>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #OpenOptionsButton}" />
-			</ui:DirectionalFocusRow>
-			<ui:DirectionalFocusRow>
-				<ui:DirectionalFocusCell Control="{Binding #ExitButton}" />
-			</ui:DirectionalFocusRow>
-		</ui:DirectionalFocusGrid>
-	</ui:View.DirectionalFocusGrid>
+	<ui:View.DirectionalFocusStructure>
+		<ui:DirectionalFocusStructure>
+			<ui:DirectionalFocusControl Control="{Binding #StartNewGameButton}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #LoadExistingGameButton}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #OpenOptionsButton}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #ExitButton}" IsNewRow="True" />
+		</ui:DirectionalFocusStructure>
+	</ui:View.DirectionalFocusStructure>
 
 	<ui:View.Styles>
 
@@ -113,7 +105,7 @@
 		</StackPanel>
 
 		<TextBlock
-			Text="Use mouse, keyboard or controller to navigate"
+			Text="Use mouse, keyboard arrows or controller D-pad to navigate"
 			FontSize="{StaticResource SmallFontSize}"
 			VerticalAlignment="Bottom"
 			HorizontalAlignment="Center"
