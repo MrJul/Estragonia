@@ -23,6 +23,23 @@
 		</ui:MainMenuViewModel>
 	</Design.DataContext>
 
+	<ui:View.DirectionalFocusGrid>
+		<ui:DirectionalFocusGrid>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #StartNewGameButton}" />
+			</ui:DirectionalFocusRow>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #LoadExistingGameButton}" />
+			</ui:DirectionalFocusRow>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #OpenOptionsButton}" />
+			</ui:DirectionalFocusRow>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #ExitButton}" />
+			</ui:DirectionalFocusRow>
+		</ui:DirectionalFocusGrid>
+	</ui:View.DirectionalFocusGrid>
+
 	<ui:View.Styles>
 
 		<Style Selector="Panel.title > TextBlock">
@@ -73,18 +90,22 @@
 			Grid.Row="1">
 
 			<Button
+				x:Name="StartNewGameButton"
 				Content="New Game"
 				Command="{Binding StartNewGameCommand}" />
 
 			<Button
+				x:Name="LoadExistingGameButton"
 				Content="Continue"
 				Command="{Binding LoadExistingGameCommand}" />
 
 			<Button
+				x:Name="OpenOptionsButton"
 				Content="Options"
 				Command="{Binding OpenOptionsCommand}" />
 
 			<Button
+				x:Name="ExitButton"
 				Content="Exit"
 				Command="{Binding ExitCommand}"
 				IsCancel="True" />

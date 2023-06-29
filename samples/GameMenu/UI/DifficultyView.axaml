@@ -20,6 +20,18 @@
 		<ui:DifficultyViewModel />
 	</Design.DataContext>
 
+	<ui:View.DirectionalFocusGrid>
+		<ui:DirectionalFocusGrid>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #DifficultiesListBox}" />
+			</ui:DirectionalFocusRow>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #CloseButton}" />
+				<ui:DirectionalFocusCell Control="{Binding #StartButton}" IsRowDefault="True" />
+			</ui:DirectionalFocusRow>
+		</ui:DirectionalFocusGrid>
+	</ui:View.DirectionalFocusGrid>
+
 	<Grid RowDefinitions="Auto,*,Auto">
 
 		<TextBlock
@@ -33,8 +45,7 @@
 				x:Name="DifficultiesListBox"
 				ItemsSource="{Binding Difficulties}"
 				SelectedItem="{Binding SelectedDifficulty}"
-				Background="Transparent"
-				ui:DirectionalFocus.FocusDown="{Binding #StartButton}" />
+				Background="Transparent" />
 
 		</Border>
 
@@ -51,17 +62,13 @@
 				x:Name="CloseButton"
 				Content="&lt; Back"
 				Command="{Binding TryCloseCommand}"
-				IsCancel="True"
-				ui:DirectionalFocus.FocusUp="{Binding #DifficultiesListBox}"
-				ui:DirectionalFocus.FocusRight="{Binding #StartButton}" />
+				IsCancel="True" />
 
 			<Button
 				x:Name="StartButton"
 				Content="Start &gt;"
 				Command="{Binding StartGameCommand}"
-				IsDefault="True"
-				ui:DirectionalFocus.FocusUp="{Binding #DifficultiesListBox}"
-				ui:DirectionalFocus.FocusLeft="{Binding #CloseButton}">
+				IsDefault="True">
 
 				<Interaction.Behaviors>
 					<behaviors:FocusWithPointerBehavior />

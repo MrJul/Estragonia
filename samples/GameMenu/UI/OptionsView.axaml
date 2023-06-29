@@ -56,109 +56,130 @@
 
 	</ui:View.Styles>
 
+	<ui:View.DirectionalFocusGrid>
+		<ui:DirectionalFocusGrid>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #VSyncCheckBox}" />
+			</ui:DirectionalFocusRow>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #ShowFpsCheckBox}" />
+			</ui:DirectionalFocusRow>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #UIScaleSlider}" />
+			</ui:DirectionalFocusRow>
+			<ui:DirectionalFocusRow>
+				<ui:DirectionalFocusCell Control="{Binding #CloseButton}" />
+				<ui:DirectionalFocusCell Control="{Binding #ApplyButton}" IsRowDefault="True" />
+			</ui:DirectionalFocusRow>
+		</ui:DirectionalFocusGrid>
+	</ui:View.DirectionalFocusGrid>
+
 	<!-- ReSharper disable Xaml.MissingGridIndex -->
 
-	<Panel>
+	<Grid RowDefinitions="Auto,*,Auto">
 
 		<TextBlock
 			Classes="view-title"
-			Text="Options" />
+			Text="Options"
+			Grid.Row="0" />
 
 		<!-- Options -->
-		<Border Classes="centered-view-content">
+		<Border Classes="centered-view-content" Grid.Row="1">
 
-			<StackPanel Spacing="2">
+			<ScrollViewer>
+				<StackPanel Spacing="2" Margin="4">
 
-				<!-- Vertical Sync -->
-				<Border Classes="selectable option">
+					<!-- Vertical Sync -->
+					<Border Classes="selectable option">
 
-					<Interaction.Behaviors>
-						<behaviors:FocusWithPointerBehavior Target="{Binding #VSyncCheckBox}" />
-					</Interaction.Behaviors>
+						<Interaction.Behaviors>
+							<behaviors:FocusWithPointerBehavior Target="{Binding #VSyncCheckBox}" />
+						</Interaction.Behaviors>
 
-					<Grid ColumnDefinitions="3*,*,*">
+						<Grid ColumnDefinitions="3*,*,*">
 
-						<TextBlock
-							Classes="label"
-							Text="Vertical Sync" />
+							<TextBlock
+								Classes="label"
+								Text="Vertical Sync" />
 
-						<TextBlock
-							Classes="value-display"
-							Text="{Binding VSync, Converter={StaticResource BooleanToOnOffConverter}}" />
+							<TextBlock
+								Classes="value-display"
+								Text="{Binding VSync, Converter={StaticResource BooleanToOnOffConverter}}" />
 
-						<CheckBox
-							x:Name="VSyncCheckBox"
-							Classes="value"
-							IsChecked="{Binding VSync, Mode=TwoWay}"
-							HorizontalAlignment="Center"
-							Padding="0" />
+							<CheckBox
+								x:Name="VSyncCheckBox"
+								Classes="value"
+								IsChecked="{Binding VSync, Mode=TwoWay}"
+								HorizontalAlignment="Center"
+								Padding="0" />
 
-					</Grid>
+						</Grid>
 
-				</Border>
+					</Border>
 
-				<!-- Show FPS -->
-				<Border Classes="selectable option">
+					<!-- Show FPS -->
+					<Border Classes="selectable option">
 
-					<Interaction.Behaviors>
-						<behaviors:FocusWithPointerBehavior Target="{Binding #ShowFpsCheckBox}" />
-					</Interaction.Behaviors>
+						<Interaction.Behaviors>
+							<behaviors:FocusWithPointerBehavior Target="{Binding #ShowFpsCheckBox}" />
+						</Interaction.Behaviors>
 
-					<Grid ColumnDefinitions="3*,*,*">
+						<Grid ColumnDefinitions="3*,*,*">
 
-						<TextBlock
-							Classes="label"
-							Text="Show FPS" />
+							<TextBlock
+								Classes="label"
+								Text="Show FPS" />
 
-						<TextBlock
-							Classes="value-display"
-							Text="{Binding ShowFps, Converter={StaticResource BooleanToOnOffConverter}}" />
+							<TextBlock
+								Classes="value-display"
+								Text="{Binding ShowFps, Converter={StaticResource BooleanToOnOffConverter}}" />
 
-						<CheckBox
-							x:Name="ShowFpsCheckBox"
-							Classes="value"
-							IsChecked="{Binding ShowFps, Mode=TwoWay}"
-							HorizontalAlignment="Center"
-							Padding="0" />
+							<CheckBox
+								x:Name="ShowFpsCheckBox"
+								Classes="value"
+								IsChecked="{Binding ShowFps, Mode=TwoWay}"
+								HorizontalAlignment="Center"
+								Padding="0" />
 
-					</Grid>
+						</Grid>
 
-				</Border>
+					</Border>
 
-				<!-- UI Scale -->
-				<Border Classes="selectable option">
+					<!-- UI Scale -->
+					<Border Classes="selectable option">
 
-					<Interaction.Behaviors>
-						<behaviors:FocusWithPointerBehavior Target="{Binding #UIScaleSlider}" />
-					</Interaction.Behaviors>
+						<Interaction.Behaviors>
+							<behaviors:FocusWithPointerBehavior Target="{Binding #UIScaleSlider}" />
+						</Interaction.Behaviors>
 
-					<Grid ColumnDefinitions="3*,*,*">
+						<Grid ColumnDefinitions="3*,*,*">
 
-						<TextBlock
-							Classes="label"
-							Text="UI Scale" />
+							<TextBlock
+								Classes="label"
+								Text="UI Scale" />
 
-						<TextBlock
-							Classes="value-display"
-							Text="{Binding UIScale, StringFormat=P0}"  />
+							<TextBlock
+								Classes="value-display"
+								Text="{Binding UIScale, StringFormat=P0}"  />
 
-						<controls:ExtendedSlider
-							x:Name="UIScaleSlider"
-							Classes="value"
-							Value="{Binding UIScale, Mode=TwoWay}"
-							Minimum="0.6"
-							Maximum="2.0"
-							SmallChange="0.1"
-							LargeChange="0.5"
-							TickFrequency="0.1"
-							IsSnapToTickEnabled="True"
-							Margin="16,0" />
+							<controls:ExtendedSlider
+								x:Name="UIScaleSlider"
+								Classes="value"
+								Value="{Binding UIScale, Mode=TwoWay}"
+								Minimum="0.6"
+								Maximum="2.0"
+								SmallChange="0.1"
+								LargeChange="0.5"
+								TickFrequency="0.1"
+								IsSnapToTickEnabled="True"
+								Margin="16,0" />
 
-					</Grid>
+						</Grid>
 
-				</Border>
+					</Border>
 
-			</StackPanel>
+				</StackPanel>
+			</ScrollViewer>
 
 		</Border>
 
@@ -168,21 +189,20 @@
 			VerticalAlignment="Bottom"
 			HorizontalAlignment="Right"
 			Margin="16"
-			Spacing="16">
+			Spacing="16"
+			Grid.Row="2">
 
 			<Button
 				x:Name="CloseButton"
 				Content="&lt; Back"
 				Command="{Binding TryCloseCommand}"
-				IsCancel="True"
-				ui:DirectionalFocus.FocusRight="{Binding #ApplyButton}" />
+				IsCancel="True" />
 
 			<Button
 				x:Name="ApplyButton"
 				Content="Apply ✓"
 				Command="{Binding ApplyCommand}"
-				IsDefault="True"
-				ui:DirectionalFocus.FocusLeft="{Binding #CloseButton}">
+				IsDefault="True">
 
 				<Interaction.Behaviors>
 					<behaviors:FocusWithPointerBehavior />
@@ -193,6 +213,6 @@
 
 		</StackPanel>
 
-	</Panel>
+	</Grid>
 
 </ui:View>

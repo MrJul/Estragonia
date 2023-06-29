@@ -1,17 +1,25 @@
 ﻿using System;
+using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
+using GameMenu.UI.Controls;
 
 namespace GameMenu.UI;
 
-#pragma warning disable CS0618
-
 public abstract class View : UserControl {
 
-	private IInputElement? _lastFocusedChild;
+	private Control? _lastFocusedChild;
+
+	public static readonly StyledProperty<DirectionalFocusGrid?> DirectionalFocusGridProperty =
+		AvaloniaProperty.Register<View, DirectionalFocusGrid?>(nameof(DirectionalFocusGrid));
+
+	public DirectionalFocusGrid? DirectionalFocusGrid {
+		get => GetValue(DirectionalFocusGridProperty);
+		set => SetValue(DirectionalFocusGridProperty, value);
+	}
 
 	protected override void OnLoaded(RoutedEventArgs e) {
 		base.OnLoaded(e);
@@ -21,28 +29,35 @@ public abstract class View : UserControl {
 	}
 
 	protected override void OnGotFocus(GotFocusEventArgs e) {
-		_lastFocusedChild = e.Source as IInputElement;
+		_lastFocusedChild = e.Source as Control;
 		base.OnGotFocus(e);
 	}
 
-	private IInputElement? TryGetFirstFocusableChild()
-		=> VisualChildren is [IInputElement firstChild, ..]
-			? firstChild.Focusable ? firstChild : KeyboardNavigationHandler.GetNext(firstChild, NavigationDirection.Next)
-			: null;
+	private Control? TryGetFirstFocusableChild()
+		=> AdjustFocusTarget(DirectionalFocusGrid?.GetDown(null), forward: true);
 
-	private void FocusDirectional(Func<IInputElement, IInputElement?> findNext) {
+	private void FocusDirectional(Func<Control?, Control?> findNext) {
 		if (TopLevel.GetTopLevel(this)?.FocusManager is not { } focusManager)
 			return;
 
-		var currentElement = focusManager.GetFocusedElement();
+		var current = focusManager.GetFocusedElement() as Control;
 
 		// on a list item, use the list instead
-		if (currentElement is ILogical logical && logical.GetLogicalParent() is ItemsControl itemsControl)
-			currentElement = itemsControl;
+		if (current is ILogical logical && logical.GetLogicalParent() is ItemsControl itemsControl)
+			current = itemsControl;
 
-		var nextElement = currentElement is null ? TryGetFirstFocusableChild() : findNext(currentElement);
-		(nextElement as Control)?.BringIntoView();
-		nextElement?.Focus();
+		var next = current is null ? TryGetFirstFocusableChild() : findNext(current);
+		next?.Focus();
+	}
+
+	private static Control? AdjustFocusTarget(Control? control, bool forward) {
+		// on a list, use a list item instead
+		if (control is ExtendedListBox listBox) {
+			var containers = listBox.GetRealizedContainers();
+			return forward ? containers.FirstOrDefault() : containers.LastOrDefault();
+		}
+
+		return control;
 	}
 
 	protected override void OnKeyDown(KeyEventArgs e) {
@@ -51,42 +66,24 @@ public abstract class View : UserControl {
 		if (e.Handled || e.KeyModifiers != KeyModifiers.None)
 			return;
 
-		// Avalonia doesn't have proper directional navigation (https://github.com/AvaloniaUI/Avalonia/issues/7607)
-		// Let's add a simple one here based on explicitly set controls and defaulting to next/previous otherwise.
 		switch (e.Key) {
 			case Key.Up:
-				FocusDirectional(
-					current => {
-						if (current is Control control && DirectionalFocus.GetFocusUp(control) is { } next) {
-							if (next is SelectingItemsControl { Items.Count: > 0 } selectingItemsControl)
-								next = selectingItemsControl.ContainerFromIndex(selectingItemsControl.Items.Count - 1);
-							return next;
-						}
-						return KeyboardNavigationHandler.GetNext(current, NavigationDirection.Previous);
-					});
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusGrid?.GetUp(current), forward: false));
 				e.Handled = true;
 				break;
 
 			case Key.Down:
-				FocusDirectional(
-					current => {
-						if (current is Control control && DirectionalFocus.GetFocusDown(control) is { } next) {
-							if (next is SelectingItemsControl { Items.Count: > 0 } selectingItemsControl)
-								next = selectingItemsControl.ContainerFromIndex(0);
-							return next;
-						}
-						return KeyboardNavigationHandler.GetNext(current, NavigationDirection.Next);
-					});
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusGrid?.GetDown(current), forward: true));
 				e.Handled = true;
 				break;
 
 			case Key.Left:
-				FocusDirectional(current => current is Control control ? DirectionalFocus.GetFocusLeft(control) : null);
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusGrid?.GetLeft(current), forward: false));
 				e.Handled = true;
 				break;
 
 			case Key.Right:
-				FocusDirectional(current => current is Control control ? DirectionalFocus.GetFocusRight(control) : null);
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusGrid?.GetRight(current), forward: true));
 				e.Handled = true;
 				break;
 		}
