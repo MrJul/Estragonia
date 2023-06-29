@@ -34,7 +34,7 @@ public abstract class View : UserControl {
 	}
 
 	private Control? TryGetFirstFocusableChild()
-		=> AdjustFocusTarget(DirectionalFocusStructure?.GetDown(null), forward: true);
+		=> AdjustFocusTarget(DirectionalFocusStructure?.GetDown(null), ListBoxFocusMode.SelectedItem);
 
 	private void FocusDirectional(Func<Control?, Control?> findNext) {
 		if (TopLevel.GetTopLevel(this)?.FocusManager is not { } focusManager)
@@ -50,11 +50,19 @@ public abstract class View : UserControl {
 		next?.Focus();
 	}
 
-	private static Control? AdjustFocusTarget(Control? control, bool forward) {
+	private static Control? AdjustFocusTarget(Control? control, ListBoxFocusMode listBoxFocusMode) {
 		// on a list, use a list item instead
 		if (control is ExtendedListBox listBox) {
-			var containers = listBox.GetRealizedContainers();
-			return forward ? containers.FirstOrDefault() : containers.LastOrDefault();
+			return listBoxFocusMode switch {
+				ListBoxFocusMode.FirstItem
+					=> listBox.GetRealizedContainers().FirstOrDefault(),
+				ListBoxFocusMode.LastItem
+					=> listBox.GetRealizedContainers().LastOrDefault(),
+				ListBoxFocusMode.SelectedItem
+					=> listBox.ContainerFromIndex(listBox.SelectedIndex) ?? listBox.GetRealizedContainers().FirstOrDefault(),
+				_
+					=> throw new ArgumentOutOfRangeException(nameof(listBoxFocusMode), listBoxFocusMode, null)
+			};
 		}
 
 		return control;
@@ -68,25 +76,31 @@ public abstract class View : UserControl {
 
 		switch (e.Key) {
 			case Key.Up:
-				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetUp(current), forward: false));
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetUp(current), ListBoxFocusMode.LastItem));
 				e.Handled = true;
 				break;
 
 			case Key.Down:
-				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetDown(current), forward: true));
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetDown(current), ListBoxFocusMode.FirstItem));
 				e.Handled = true;
 				break;
 
 			case Key.Left:
-				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetLeft(current), forward: false));
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetLeft(current), ListBoxFocusMode.LastItem));
 				e.Handled = true;
 				break;
 
 			case Key.Right:
-				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetRight(current), forward: true));
+				FocusDirectional(current => AdjustFocusTarget(DirectionalFocusStructure?.GetRight(current), ListBoxFocusMode.FirstItem));
 				e.Handled = true;
 				break;
 		}
+	}
+
+	private enum ListBoxFocusMode {
+		FirstItem,
+		LastItem,
+		SelectedItem
 	}
 
 }
