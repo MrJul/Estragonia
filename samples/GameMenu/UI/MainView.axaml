@@ -46,7 +46,8 @@
 
 	<Panel Classes="fade-in">
 
-		<TransitioningContentControl Content="{Binding CurrentViewModel}">
+		<TransitioningContentControl
+			Content="{Binding CurrentViewModel}">
 			<TransitioningContentControl.PageTransition>
 				<controls:AutoReversePageSlide
 					Duration="0.4"

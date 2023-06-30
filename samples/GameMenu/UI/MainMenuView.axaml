@@ -50,7 +50,7 @@
 
 	</ui:View.Styles>
 
-	<Grid RowDefinitions="5*,Auto,4*">
+	<Grid RowDefinitions="Auto,*,Auto">
 
 		<!-- Title -->
 		<Viewbox
@@ -76,45 +76,46 @@
 		</Viewbox>
 
 		<!-- Menu -->
-		<StackPanel
-			Classes="main-menu"
-			VerticalAlignment="Center"
-			HorizontalAlignment="Center"
-			Grid.Row="1">
+		<ScrollViewer Grid.Row="1" Margin="8">
+			<StackPanel
+				Classes="main-menu"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Center">
 
-			<Button
-				x:Name="StartNewGameButton"
-				Command="{Binding StartNewGameCommand}"
-				controls:AdditionalContent.Geometry="{StaticResource FlagGeometry}"
-				Content="New Game" />
+				<Button
+					x:Name="StartNewGameButton"
+					Command="{Binding StartNewGameCommand}"
+					controls:AdditionalContent.Geometry="{StaticResource FlagGeometry}"
+					Content="New Game" />
 
-			<Button
-				x:Name="LoadExistingGameButton"
-				Content="Load Game"
-				controls:AdditionalContent.Geometry="{StaticResource FolderOpenGeometry}"
-				Command="{Binding LoadExistingGameCommand}" />
+				<Button
+					x:Name="LoadExistingGameButton"
+					Content="Load Game"
+					controls:AdditionalContent.Geometry="{StaticResource FolderOpenGeometry}"
+					Command="{Binding LoadExistingGameCommand}" />
 
-			<Button
-				x:Name="OpenOptionsButton"
-				Content="Options"
-				controls:AdditionalContent.Geometry="{StaticResource CogGeometry}"
-				Command="{Binding OpenOptionsCommand}" />
+				<Button
+					x:Name="OpenOptionsButton"
+					Content="Options"
+					controls:AdditionalContent.Geometry="{StaticResource CogGeometry}"
+					Command="{Binding OpenOptionsCommand}" />
 
-			<Button
-				x:Name="ExitButton"
-				Content="Exit"
-				controls:AdditionalContent.Geometry="{StaticResource ExitGeometry}"
-				Command="{Binding ExitCommand}"
-				IsCancel="True" />
+				<Button
+					x:Name="ExitButton"
+					Content="Exit"
+					controls:AdditionalContent.Geometry="{StaticResource ExitGeometry}"
+					Command="{Binding ExitCommand}"
+					IsCancel="True" />
 
-		</StackPanel>
+			</StackPanel>
+		</ScrollViewer>
 
 		<TextBlock
 			Text="Use mouse, keyboard arrows or controller D-pad to navigate"
 			FontSize="{StaticResource SmallFontSize}"
 			VerticalAlignment="Bottom"
 			HorizontalAlignment="Center"
-			Margin="8,0,8,8"
+			Margin="8"
 			Grid.Row="2" />
 
 	</Grid>
