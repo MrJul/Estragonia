@@ -2,12 +2,16 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Godot;
 
 namespace GameMenu.UI;
 
 public abstract partial class ViewModel : ObservableObject {
 
 	private Task? _loadTask;
+
+	[ObservableProperty]
+	private SceneTree? _sceneTree;
 
 	public event EventHandler? Closed;
 
@@ -30,5 +34,8 @@ public abstract partial class ViewModel : ObservableObject {
 
 	private void OnClosed()
 		=> Closed?.Invoke(this, EventArgs.Empty);
+
+	public virtual void ProcessFrame() {
+	}
 
 }

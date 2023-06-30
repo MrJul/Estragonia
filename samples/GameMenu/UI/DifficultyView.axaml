@@ -17,7 +17,11 @@
 	</Design.DesignStyle>
 
 	<Design.DataContext>
-		<ui:DifficultyViewModel />
+		<ui:DifficultyViewModel>
+			<x:Arguments>
+				<ui:NullNavigator />
+			</x:Arguments>
+		</ui:DifficultyViewModel>
 	</Design.DataContext>
 
 	<ui:View.DirectionalFocusStructure>

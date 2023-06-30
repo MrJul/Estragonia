@@ -21,6 +21,9 @@
 	<SolidColorBrush x:Key="ButtonFocusBackgroundBrush" Color="#B080C1FF" />
 	<SolidColorBrush x:Key="ButtonFocusBorderBrush" Color="#FFFFFFFF" />
 
+	<SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="#A0324780" />
+	<SolidColorBrush x:Key="ProgressBarForegroundBrush" Color="#FF1E90FF" />
+
 	<SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#80808080" />
 	<SolidColorBrush x:Key="DisabledBorderBrush" Color="#FF808080" />
 	<SolidColorBrush x:Key="DisabledForegroundBrush" Color="#FF808080" />

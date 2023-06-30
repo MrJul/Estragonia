@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Layout;
+using Avalonia.Media;
 
 namespace GameMenu.UI;
 
@@ -10,6 +13,7 @@ public sealed class ViewLocator : IDataTemplate {
 	private readonly Dictionary<Type, ViewFactory> _viewFactoryByModelType = new() {
 		[typeof(MainMenuViewModel)] = new(() => new MainMenuView(), cached: true),
 		[typeof(DifficultyViewModel)] = new(() => new DifficultyView()),
+		[typeof(GameLoadingViewModel)] = new(() => new GameLoadingView()),
 		[typeof(OptionsViewModel)] = new(() => new OptionsView())
 	};
 
@@ -17,12 +21,22 @@ public sealed class ViewLocator : IDataTemplate {
 		=> data is ViewModel;
 
 	public Control? Build(object? param) {
-		var viewModelType = param?.GetType();
+		if (param?.GetType() is not { } viewModelType)
+			return null;
 
-		return viewModelType is not null && _viewFactoryByModelType.TryGetValue(viewModelType, out var viewFactory)
+		return _viewFactoryByModelType.TryGetValue(viewModelType, out var viewFactory)
 			? viewFactory.GetOrCreateView()
-			: null;
+			: CreateViewNotFound(viewModelType);
 	}
+
+	private static Control CreateViewNotFound(Type viewModelType)
+		=> new TextBlock {
+			Text = $"No view registered for viewmodel type\n{viewModelType}",
+			HorizontalAlignment = HorizontalAlignment.Center,
+			VerticalAlignment = VerticalAlignment.Center,
+			Margin = new Thickness(8.0),
+			Foreground = Brushes.Red
+		};
 
 	private sealed class ViewFactory {
 

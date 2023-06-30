@@ -11,9 +11,6 @@ public sealed partial class MainViewModel : ViewModel, INavigator {
 	private readonly List<ViewModel> _openViewModels = new();
 
 	[ObservableProperty]
-	private SceneTree? _sceneTree;
-
-	[ObservableProperty]
 	private int _framesPerSecond;
 
 	public UIOptions UIOptions { get; }
@@ -37,6 +34,7 @@ public sealed partial class MainViewModel : ViewModel, INavigator {
 		=> CurrentViewModel is { } viewModel && await viewModel.TryCloseAsync();
 
 	public void NavigateTo(ViewModel viewModel) {
+		viewModel.SceneTree = SceneTree;
 		_ = viewModel.EnsureLoadedAsync();
 
 		_openViewModels.Add(viewModel);
@@ -46,6 +44,7 @@ public sealed partial class MainViewModel : ViewModel, INavigator {
 
 		void OnViewModelClosed(object? sender, EventArgs e) {
 			viewModel.Closed -= OnViewModelClosed;
+			viewModel.SceneTree = null;
 
 			var isCurrent = CurrentViewModel == viewModel;
 			_openViewModels.Remove(viewModel);
@@ -60,8 +59,10 @@ public sealed partial class MainViewModel : ViewModel, INavigator {
 		return Task.CompletedTask;
 	}
 
-	public void ProcessFrame()
-		=> FramesPerSecond = (int) Engine.GetFramesPerSecond();
+	public override void ProcessFrame() {
+		FramesPerSecond = (int) Engine.GetFramesPerSecond();
+		CurrentViewModel?.ProcessFrame();
+	}
 
 	public void Quit()
 		=> SceneTree?.Quit();

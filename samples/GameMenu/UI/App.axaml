@@ -12,6 +12,7 @@
 				<ResourceInclude Source="Theme/CheckBox.axaml" />
 				<ResourceInclude Source="Theme/ListBox.axaml" />
 				<ResourceInclude Source="Theme/ListBoxItem.axaml" />
+				<ResourceInclude Source="Theme/ProgressBar.axaml" />
 				<ResourceInclude Source="Theme/Slider.axaml" />
 				<ResourceInclude Source="Theme/TransitioningContentControl.axaml" />
 			</ResourceDictionary.MergedDictionaries>

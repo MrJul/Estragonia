@@ -1,0 +1,40 @@
+﻿<ui:View
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ui="clr-namespace:GameMenu.UI"
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+	x:Class="GameMenu.UI.GameLoadingView"
+	x:DataType="ui:GameLoadingViewModel">
+
+	<Design.DesignStyle>
+		<Style Selector="ui|GameLoadingView">
+			<Setter Property="Background" Value="Black" />
+		</Style>
+	</Design.DesignStyle>
+
+	<Design.DataContext>
+		<ui:GameLoadingViewModel />
+	</Design.DataContext>
+
+	<Border Classes="centered-view-content" VerticalAlignment="Center">
+		<StackPanel>
+
+			<TextBlock
+				Text="Loading..."
+				TextAlignment="Center"
+				Margin="8,8,8,0" />
+
+			<ProgressBar
+				IsIndeterminate="False"
+				Minimum="0"
+				Maximum="1"
+				Value="{Binding LoadingProgress}"
+				ShowProgressText="True"
+				Margin="8" />
+
+		</StackPanel>
+	</Border>
+
+</ui:View>
