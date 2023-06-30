@@ -28,6 +28,7 @@
 			<Style Selector=":is(TopLevel)">
 				<Setter Property="FontFamily" Value="{StaticResource StandardFontFamily}" />
 				<Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+				<Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
 			</Style>
 
 		</Styles>

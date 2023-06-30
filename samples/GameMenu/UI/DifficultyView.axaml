@@ -56,13 +56,15 @@
 
 			<Button
 				x:Name="CloseButton"
-				Content="&lt; Back"
+				Content="Back"
+				controls:AdditionalContent.Geometry="{StaticResource LeftArrowCircleGeometry}"
 				Command="{Binding TryCloseCommand}"
 				IsCancel="True" />
 
 			<Button
 				x:Name="StartButton"
-				Content="Start &gt;"
+				Content="Start"
+				controls:AdditionalContent.Geometry="{StaticResource FlagGeometry}"
 				Command="{Binding StartGameCommand}"
 				IsDefault="True">
 

@@ -186,13 +186,15 @@
 
 			<Button
 				x:Name="CloseButton"
-				Content="&lt; Back"
+				Content="Back"
+				controls:AdditionalContent.Geometry="{StaticResource LeftArrowCircleGeometry}"
 				Command="{Binding TryCloseCommand}"
 				IsCancel="True" />
 
 			<Button
 				x:Name="ApplyButton"
-				Content="Apply ✓"
+				Content="Apply"
+				controls:AdditionalContent.Geometry="{StaticResource CheckGeometry}"
 				Command="{Binding ApplyCommand}"
 				IsDefault="True">
 

@@ -4,6 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
+	xmlns:controls="clr-namespace:GameMenu.UI.Controls"
 	mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
 	x:Class="GameMenu.UI.MainMenuView"
 	x:DataType="ui:MainMenuViewModel">
@@ -43,7 +44,7 @@
 
 		<Style Selector="StackPanel.main-menu > Button">
 			<Setter Property="Margin" Value="8" />
-			<Setter Property="Padding" Value="32,12" />
+			<Setter Property="Padding" Value="24,12" />
 			<Setter Property="FontWeight" Value="Bold" />
 		</Style>
 
@@ -83,22 +84,26 @@
 
 			<Button
 				x:Name="StartNewGameButton"
-				Content="New Game"
-				Command="{Binding StartNewGameCommand}" />
+				Command="{Binding StartNewGameCommand}"
+				controls:AdditionalContent.Geometry="{StaticResource FlagGeometry}"
+				Content="New Game" />
 
 			<Button
 				x:Name="LoadExistingGameButton"
-				Content="Continue"
+				Content="Load Game"
+				controls:AdditionalContent.Geometry="{StaticResource FolderOpenGeometry}"
 				Command="{Binding LoadExistingGameCommand}" />
 
 			<Button
 				x:Name="OpenOptionsButton"
 				Content="Options"
+				controls:AdditionalContent.Geometry="{StaticResource CogGeometry}"
 				Command="{Binding OpenOptionsCommand}" />
 
 			<Button
 				x:Name="ExitButton"
 				Content="Exit"
+				controls:AdditionalContent.Geometry="{StaticResource ExitGeometry}"
 				Command="{Binding ExitCommand}"
 				IsCancel="True" />
 

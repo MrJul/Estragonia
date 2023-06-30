@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:behaviors="clr-namespace:GameMenu.UI.Behaviors">
+	xmlns:behaviors="clr-namespace:GameMenu.UI.Behaviors"
+	xmlns:controls="clr-namespace:GameMenu.UI.Controls">
 
 	<Design.PreviewWith>
 		<Border Background="Black">
@@ -17,25 +18,45 @@
 		<Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorderBrush}" />
 		<Setter Property="BorderThickness" Value="2" />
 		<Setter Property="Padding" Value="8" />
-		<Setter Property="MinWidth" Value="160"></Setter>
+		<Setter Property="MinWidth" Value="160" />
 		<Setter Property="HorizontalContentAlignment" Value="Center" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 
 		<Setter Property="Template">
 			<ControlTemplate>
 				<Border Background="Transparent">
-					<ContentPresenter
-						x:Name="PART_ContentPresenter"
+					<Border
+						x:Name="Border"
 						Background="{TemplateBinding Background}"
 						BorderBrush="{TemplateBinding BorderBrush}"
 						BorderThickness="{TemplateBinding BorderThickness}"
 						CornerRadius="{TemplateBinding CornerRadius}"
-						Content="{TemplateBinding Content}"
-						ContentTemplate="{TemplateBinding ContentTemplate}"
-						Padding="{TemplateBinding Padding}"
-						RecognizesAccessKey="True"
-						HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-						VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+						Padding="{TemplateBinding Padding}">
+
+						<DockPanel
+							HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+
+							<Path
+								Fill="{TemplateBinding Foreground}"
+								Data="{TemplateBinding (controls:AdditionalContent.Geometry)}"
+								Width="24"
+								Height="24"
+								Margin="0,0,8,0"
+								Stretch="Uniform"
+								VerticalAlignment="Center"
+								DockPanel.Dock="Left"
+								IsVisible="{Binding (controls:AdditionalContent.Geometry), RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+							<ContentPresenter
+								x:Name="PART_ContentPresenter"
+								Content="{TemplateBinding Content}"
+								ContentTemplate="{TemplateBinding ContentTemplate}"
+								RecognizesAccessKey="True" />
+
+						</DockPanel>
+
+					</Border>
 				</Border>
 			</ControlTemplate>
 		</Setter>
@@ -72,14 +93,26 @@
 
 		</Style>
 
-		<Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+		<Style Selector="^ /template/ Border#Border">
+			<Setter Property="Transitions">
+				<Transitions>
+					<TransformOperationsTransition Property="RenderTransform" Duration="0.075" />
+				</Transitions>
+			</Setter>
+		</Style>
+
+		<Style Selector="^:pressed /template/ Border#Border">
 			<Setter Property="RenderTransform" Value="scale(0.95)" />
 		</Style>
 
-		<Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Background" Value="{StaticResource DisabledBackgroundBrush}" />
-			<Setter Property="BorderBrush" Value="{StaticResource DisabledBorderBrush}" />
+		<Style Selector="^:disabled">
 			<Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+
+			<Style Selector="^ /template/ Border#Border">
+				<Setter Property="Background" Value="{StaticResource DisabledBackgroundBrush}" />
+				<Setter Property="BorderBrush" Value="{StaticResource DisabledBorderBrush}" />
+			</Style>
+
 		</Style>
 
 	</ControlTheme>
