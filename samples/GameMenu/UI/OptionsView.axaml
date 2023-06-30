@@ -60,6 +60,7 @@
 		<ui:DirectionalFocusStructure>
 			<ui:DirectionalFocusControl Control="{Binding #VSyncCheckBox}" IsNewRow="True" />
 			<ui:DirectionalFocusControl Control="{Binding #ShowFpsCheckBox}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #FullscreenCheckBox}" IsNewRow="True" />
 			<ui:DirectionalFocusControl Control="{Binding #UIScaleSlider}" IsNewRow="True" />
 			<ui:DirectionalFocusControl Control="{Binding #CloseButton}" IsNewRow="True" />
 			<ui:DirectionalFocusControl Control="{Binding #ApplyButton}" IsRowDefault="True" />
@@ -130,6 +131,34 @@
 								x:Name="ShowFpsCheckBox"
 								Classes="value"
 								IsChecked="{Binding ShowFps, Mode=TwoWay}"
+								HorizontalAlignment="Center"
+								Padding="0" />
+
+						</Grid>
+
+					</Border>
+
+					<!-- Fullscreen -->
+					<Border Classes="selectable option">
+
+						<Interaction.Behaviors>
+							<behaviors:FocusWithPointerBehavior Target="{Binding #FullscreenCheckBox}" />
+						</Interaction.Behaviors>
+
+						<Grid ColumnDefinitions="3*,*,*">
+
+							<TextBlock
+								Classes="label"
+								Text="Fullscreen" />
+
+							<TextBlock
+								Classes="value-display"
+								Text="{Binding Fullscreen, Converter={StaticResource BooleanToOnOffConverter}}" />
+
+							<CheckBox
+								x:Name="FullscreenCheckBox"
+								Classes="value"
+								IsChecked="{Binding Fullscreen, Mode=TwoWay}"
 								HorizontalAlignment="Center"
 								Padding="0" />
 

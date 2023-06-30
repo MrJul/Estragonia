@@ -17,6 +17,9 @@ public sealed partial class OptionsViewModel : ViewModel {
 	private bool _showFps;
 
 	[ObservableProperty]
+	private bool _fullscreen;
+
+	[ObservableProperty]
 	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Name required for correct property generation")]
 	private double _UIScale;
 
@@ -33,6 +36,7 @@ public sealed partial class OptionsViewModel : ViewModel {
 	public OptionsViewModel(UIOptions uiOptions) {
 		_uiOptions = uiOptions;
 		_vSync = uiOptions.VSync;
+		_fullscreen = uiOptions.Fullscreen;
 		_showFps = uiOptions.ShowFps;
 		_UIScale = uiOptions.UIScale;
 	}
@@ -50,6 +54,7 @@ public sealed partial class OptionsViewModel : ViewModel {
 	[RelayCommand(CanExecute = nameof(CanApply))]
 	public void Apply() {
 		_uiOptions.VSync = VSync;
+		_uiOptions.Fullscreen = Fullscreen;
 		_uiOptions.ShowFps = ShowFps;
 		_uiOptions.UIScale = UIScale;
 		CanApply = false;

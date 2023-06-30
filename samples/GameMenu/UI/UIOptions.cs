@@ -12,6 +12,9 @@ public sealed partial class UIOptions : ObservableObject {
 	private bool _showFps = true;
 
 	[ObservableProperty]
+	private bool _fullscreen;
+
+	[ObservableProperty]
 	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Name required for correct property generation")]
 	private double _UIScale;
 
