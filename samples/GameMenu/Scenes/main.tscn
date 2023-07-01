@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://rd2cmut32jks"]
 
-[ext_resource type="Shader" path="res://Shaders/night_sky.gdshader" id="1_1stsx"]
-[ext_resource type="Script" path="res://UI/UserInterface.cs" id="1_55fpk"]
+[ext_resource type="Shader" path="res://shaders/night_sky.gdshader" id="1_k7hg5"]
+[ext_resource type="Script" path="res://UI/UserInterface.cs" id="2_a276p"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sf078"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -17,7 +17,7 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2yo11"]
-shader = ExtResource("1_1stsx")
+shader = ExtResource("1_k7hg5")
 
 [node name="Root" type="Node3D"]
 
@@ -54,4 +54,4 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 2
-script = ExtResource("1_55fpk")
+script = ExtResource("2_a276p")

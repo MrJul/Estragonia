@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using GdArray = Godot.Collections.Array;
 
-namespace GameMenu;
+namespace GameMenu.UI;
 
 public static class AsyncGodotResourceLoader {
 
@@ -18,7 +18,7 @@ public static class AsyncGodotResourceLoader {
 
 		var error = ResourceLoader.LoadThreadedRequest(path, typeHint: typeof(T).Name, cacheMode: cacheMode);
 		if (error != Error.Ok) {
-			tcs.TrySetException(new InvalidOperationException($"Failed to start loading resource {{path}}: {error}"));
+			tcs.TrySetException(new InvalidOperationException($"Failed to start loading resource {path}: {error}"));
 			return tcs.Task;
 		}
 

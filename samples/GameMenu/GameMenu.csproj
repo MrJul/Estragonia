@@ -20,13 +20,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<AvaloniaResource Include="Fonts/*.ttf" />
+		<AvaloniaResource Include="UI/Fonts/*.ttf" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="Properties/launchSettings.json" />
-		<None Include="Shaders/*.gdshader" />
-		<None Include="README.md" />
+		<None Include="shaders/*.gdshader" />
+		<None Include="readme.md" />
 	</ItemGroup>
 
 </Project>

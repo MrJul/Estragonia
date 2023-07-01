@@ -11,8 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global Files", "Global File
 		NuGet.config = NuGet.config
 		global.json = global.json
 		.gitignore = .gitignore
-		LICENSE.txt = LICENSE.txt
-		README.md = README.md
+		license.txt = license.txt
+		readme.md = readme.md
 		.gitattributes = .gitattributes
 	EndProjectSection
 EndProject
