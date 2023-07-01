@@ -8,6 +8,7 @@ public static class AppBuilderExtensions {
 
 	public static AppBuilder UseGodot(this AppBuilder builder)
 		=> builder
+			.UseStandardRuntimePlatformSubsystem()
 			.UseSkia()
 			.UseWindowingSubsystem(GodotPlatform.Initialize)
 			.AfterSetup(_ =>
