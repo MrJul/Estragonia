@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ui="clr-namespace:GameMenu.UI"
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+	mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
 	x:Class="GameMenu.UI.GameLoadingView"
 	x:DataType="ui:GameLoadingViewModel">
 
@@ -15,7 +15,11 @@
 	</Design.DesignStyle>
 
 	<Design.DataContext>
-		<ui:GameLoadingViewModel LoadingProgress="0.65" />
+		<ui:GameLoadingViewModel LoadingProgress="0.65">
+			<x:Arguments>
+				<ui:NullNavigator />
+			</x:Arguments>
+		</ui:GameLoadingViewModel>
 	</Design.DataContext>
 
 	<Border Classes="centered-view-content" VerticalAlignment="Center">

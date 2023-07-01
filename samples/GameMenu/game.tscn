@@ -1,3 +1,9 @@
-[gd_scene format=3 uid="uid://da3muawu74543"]
+[gd_scene load_steps=2 format=3 uid="uid://da3muawu74543"]
 
-[node name="game" type="Node3D"]
+[sub_resource type="SphereMesh" id="SphereMesh_ifewb"]
+
+[node name="GameRoot" type="Node3D"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+
+[node name="Sphere" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ifewb")

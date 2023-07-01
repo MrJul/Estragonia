@@ -22,7 +22,9 @@ public sealed partial class DifficultyViewModel : ViewModel {
 		=> Task.CompletedTask;
 
 	[RelayCommand]
-	public void StartGame()
-		=> _navigator.NavigateTo(new GameLoadingViewModel());
+	public async Task StartGameAsync() {
+		_navigator.NavigateTo(new GameLoadingViewModel(_navigator));
+		await TryCloseAsync();
+	}
 
 }

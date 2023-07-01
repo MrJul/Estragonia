@@ -13,27 +13,35 @@ public sealed partial class GameLoadingViewModel : ViewModel {
 	// and simulate the rest by waiting.
 	private const double RealProgressRatio = 0.1;
 
+	private readonly INavigator _navigator;
+
 	[ObservableProperty]
 	private bool _isLoading = true;
 
 	[ObservableProperty]
 	private double _loadingProgress;
 
+	public GameLoadingViewModel(INavigator navigator)
+		=> _navigator = navigator;
+
 	protected override async Task LoadAsync() {
 		await Task.Delay(TimeSpan.FromSeconds(0.3));
 
-		var packedScene = await AsyncGodotResourceLoader.LoadAsync<PackedScene>(
+		var gameScene = await AsyncGodotResourceLoader.LoadAsync<PackedScene>(
 			"res://game.tscn",
 			ResourceLoader.CacheMode.Ignore,
 			new SceneLoadProgress(this)
 		);
+
+		var gameNode = gameScene.Instantiate();
 
 		await SimulateProgressAsync();
 
 		LoadingProgress = 1.0;
 		await Task.Delay(TimeSpan.FromSeconds(0.1));
 
-		SceneTree?.ChangeSceneToPacked(packedScene);
+		_navigator.NavigateTo(new GameViewModel { GameNode = gameNode });
+		await TryCloseAsync();
 		IsLoading = false;
 	}
 

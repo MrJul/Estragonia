@@ -42,6 +42,8 @@ grow_vertical = 2
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(0.439971, -0.298253, 0.847036, 0, 0.943235, 0.332126, -0.898012, -0.146126, 0.414996, 8.52597, 3.34307, 4.1772)
 
+[node name="Game" type="Node3D" parent="."]
+
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="UserInterface" type="Control" parent="UI"]

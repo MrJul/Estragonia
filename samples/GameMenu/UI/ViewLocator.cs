@@ -14,6 +14,7 @@ public sealed class ViewLocator : IDataTemplate {
 		[typeof(MainMenuViewModel)] = new(() => new MainMenuView(), cached: true),
 		[typeof(DifficultyViewModel)] = new(() => new DifficultyView()),
 		[typeof(GameLoadingViewModel)] = new(() => new GameLoadingView()),
+		[typeof(GameViewModel)] = new(() => new GameView()),
 		[typeof(OptionsViewModel)] = new(() => new OptionsView())
 	};
 

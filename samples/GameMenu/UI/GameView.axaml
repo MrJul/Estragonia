@@ -1,0 +1,47 @@
+﻿<ui:View
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ui="clr-namespace:GameMenu.UI"
+	xmlns:controls="clr-namespace:GameMenu.UI.Controls"
+	mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+	x:Class="GameMenu.UI.GameView"
+	x:DataType="ui:GameViewModel">
+
+	<Design.DesignStyle>
+		<Style Selector="ui|GameView">
+			<Setter Property="Background" Value="Black" />
+		</Style>
+	</Design.DesignStyle>
+
+
+	<ui:View.DirectionalFocusStructure>
+		<ui:DirectionalFocusStructure>
+			<ui:DirectionalFocusControl Control="{Binding #CloseButton}" IsNewRow="True" IsRowDefault="True" />
+		</ui:DirectionalFocusStructure>
+	</ui:View.DirectionalFocusStructure>
+
+	<Panel>
+
+		<Border Classes="centered-view-content" VerticalAlignment="Center">
+			<TextBlock
+				Text="Sorry, there's no game, you'll have to develop that yourself 😎"
+				TextAlignment="Center"
+				TextWrapping="Wrap" />
+		</Border>
+
+		<Button
+			x:Name="CloseButton"
+			Content="Back"
+			controls:AdditionalContent.Geometry="{StaticResource LeftArrowCircleGeometry}"
+			Command="{Binding TryCloseCommand}"
+			IsDefault="True"
+			IsCancel="True"
+			Margin="16"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Bottom" />
+
+	</Panel>
+
+</ui:View>
