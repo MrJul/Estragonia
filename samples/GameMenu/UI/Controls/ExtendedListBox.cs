@@ -28,9 +28,13 @@ public class ExtendedListBox : ListBox {
 				if (TryMoveFocus(NavigationDirection.Down, e.KeyModifiers))
 					e.Handled = true;
 				break;
-			case Key.Enter:
 			case Key.Space:
 				e.Handled = UpdateSelectionFromEventSource(e.Source);
+				break;
+			case Key.Enter:
+				// handle only if we changed the selection, otherwise let Enter bubble up so the user can accept the view
+				var selectedIndex = SelectedIndex;
+				e.Handled = UpdateSelectionFromEventSource(e.Source) && SelectedIndex != selectedIndex;
 				break;
 		}
 	}

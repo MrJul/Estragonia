@@ -15,7 +15,7 @@
 	</Design.DesignStyle>
 
 	<Design.DataContext>
-		<ui:GameLoadingViewModel />
+		<ui:GameLoadingViewModel LoadingProgress="0.65" />
 	</Design.DataContext>
 
 	<Border Classes="centered-view-content" VerticalAlignment="Center">
