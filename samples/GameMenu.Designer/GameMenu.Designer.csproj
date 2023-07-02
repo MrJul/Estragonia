@@ -7,14 +7,15 @@
 		<LangVersion>11.0</LangVersion>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<OutputType>WinExe</OutputType>
+		<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia" Version="[11.0.0-rc2.1]" />
+		<PackageReference Include="Avalonia.Skia" Version="[11.0.0-rc2.1]" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\GameMenu\GameMenu.csproj" />
+		<ProjectReference Include="..\GameMenu\GameMenu.csproj" ExcludeAssets="all" />
 	</ItemGroup>
 
 </Project>

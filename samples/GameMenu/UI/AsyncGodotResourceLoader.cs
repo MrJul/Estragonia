@@ -24,32 +24,41 @@ public static class AsyncGodotResourceLoader {
 
 		var progressHolder = new GdArray();
 
-		SendOrPostCallback? updateStatus = null;
+		Action? updateStatus = null;
 
-		updateStatus = _ => {
+		updateStatus = () => {
 			var status = ResourceLoader.LoadThreadedGetStatus(path, progressHolder);
 
 			switch (status) {
 				case ResourceLoader.ThreadLoadStatus.InvalidResource:
 					tcs.TrySetException(new InvalidOperationException($"Invalid resource {path}"));
 					break;
+
 				case ResourceLoader.ThreadLoadStatus.InProgress:
 					progress?.Report(progressHolder[0].As<double>());
-					Dispatcher.SynchronizationContext.Post(updateStatus!, null);
+					Task.Delay(TimeSpan.FromMilliseconds(50))
+						.ContinueWith(
+							(_, state) => ((Action) state!).Invoke(),
+							updateStatus,
+							TaskScheduler.FromCurrentSynchronizationContext()
+						);
 					break;
+
 				case ResourceLoader.ThreadLoadStatus.Failed:
 					tcs.TrySetException(new InvalidOperationException($"Failed to load resource {path}"));
 					break;
+
 				case ResourceLoader.ThreadLoadStatus.Loaded:
 					progress?.Report(1.0);
 					tcs.TrySetResult((T) ResourceLoader.LoadThreadedGet(path));
 					break;
+
 				default:
 					throw new InvalidOperationException($"Unexpected status {status}");
 			}
 		};
 
-		updateStatus(null);
+		updateStatus();
 
 		return tcs.Task;
 	}
