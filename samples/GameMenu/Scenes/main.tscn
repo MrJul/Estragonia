@@ -1,29 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://rd2cmut32jks"]
+[gd_scene load_steps=5 format=3 uid="uid://rd2cmut32jks"]
 
 [ext_resource type="Shader" path="res://shaders/night_sky.gdshader" id="1_k7hg5"]
-[ext_resource type="Script" path="res://UI/UserInterface.cs" id="2_a276p"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sf078"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-
-[sub_resource type="Sky" id="Sky_h2534"]
-sky_material = SubResource("ProceduralSkyMaterial_sf078")
+[ext_resource type="Script" path="res://scripts/UserInterface.cs" id="2_a276p"]
 
 [sub_resource type="Environment" id="Environment_rffk7"]
 background_mode = 3
-sky = SubResource("Sky_h2534")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
 tonemap_mode = 2
-glow_enabled = true
+glow_blend_mode = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2yo11"]
 shader = ExtResource("1_k7hg5")
 
 [node name="Root" type="Node3D"]
-
-[node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 4.13667, 0)
-shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_rffk7")
@@ -38,9 +28,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(0.439971, -0.298253, 0.847036, 0, 0.943235, 0.332126, -0.898012, -0.146126, 0.414996, 8.52597, 3.34307, 4.1772)
 
 [node name="Game" type="Node3D" parent="."]
 

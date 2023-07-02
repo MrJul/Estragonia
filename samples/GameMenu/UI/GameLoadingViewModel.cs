@@ -25,7 +25,7 @@ public sealed partial class GameLoadingViewModel : ViewModel {
 		=> _navigator = navigator;
 
 	protected override async Task LoadAsync() {
-		await Task.Delay(TimeSpan.FromSeconds(0.3));
+		await Task.Delay(TimeSpan.FromSeconds(0.4));
 
 		var gameScene = await AsyncGodotResourceLoader.LoadAsync<PackedScene>(
 			"res://scenes/game.tscn",

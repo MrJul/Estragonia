@@ -1,8 +1,9 @@
 using System.ComponentModel;
+using GameMenu.UI;
 using Godot;
 using JLeb.Estragonia;
 
-namespace GameMenu.UI;
+namespace GameMenu;
 
 public sealed partial class UserInterface : AvaloniaControl {
 
