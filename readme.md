@@ -11,7 +11,8 @@ Estragonia is a bridge allowing to use the powerful [Avalonia UI](https://github
 3. Initialize the Avalonia application using `UseGodot().SetupWithoutStarting()`.
 4. Create a Godot `Control` node, assign it a script inheriting from `JLeb.Estragonia.AvaloniaControl` and populate its `Control` property with any valid Avalonia view.
 
-For a more detailed guide, see the [step by step instructions](docs/setup.md).
+For a more detailed guide, see the [step by step instructions](docs/setup.md).  
+For a more complete project, see the [GameMenu sample](samples/GameMenu).
 
 ## License
 

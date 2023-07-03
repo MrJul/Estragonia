@@ -8,7 +8,7 @@ After following the steps below, you should have a project structure similar to 
 
 ## Godot setup
 
-1. [Download Godot Engine](https://godotengine.org/download/) version 4.0.3 or later, with .NET support.
+1. [Download Godot Engine](https://downloads.tuxfamily.org/godotengine/4.1/rc2/mono/) version 4.1 RC2 or later, with .NET support.
 2. Create a new Godot project or open an existing one. It must use either the Forward+ or Mobile renderer.
 3. Add a new Godot `Control` node to your scene. In this example, name it `UserInterface`.
 4. In the inspector for the newly created control, under _Focus_, ensure that `Mode` is set to `All`. If you don't, Godot won't pass keyboard input to it.
@@ -26,7 +26,7 @@ After following the steps below, you should have a project structure similar to 
 6. As with a normal Avalonia project, Estragonia needs an `Avalonia.Application`-derived class.   
    Create the `App` type in XAML (or C#), and ensure it has a `FluentTheme` style.
 7. Initialize Avalonia using `AppBuilder.Configure<App>().UseGodot().SetupWithoutStarting()`.  
-   While this can be called inside the `UserInterface._Ready` method, it will only work for a single control: the application must be initialized only once. If you plan to have several `AvaloniaControl` instances, we recommend to use a Godot [autoload script](https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html) or a C# singleton, which is what is done in the sample in the `AvaloniaLoader` class.
+   While this can be called inside the `UserInterface._Ready` method, it will only work for a single control as the application must be initialized only once. If you plan to have several `AvaloniaControl` instances, we recommend to use a Godot [autoload script](https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html) or a C# singleton, which is what is done in the sample in the `AvaloniaLoader` class.
 8. Create a new Avalonia view: it's recommended to inherit from `UserControl`. In this example, name it `HelloWorldView.axaml`.
 9. Populate your view with Avalonia controls as you would do in a standard Avalonia application.  
    In this example, we're using a simple `<TextBlock Text="Welcome to Avalonia in Godot!" />`
@@ -34,6 +34,15 @@ After following the steps below, you should have a project structure similar to 
     Don't forget to call the `base._Ready()` after.
 
 📖 Refer to the official [Avalonia documentation](https://docs.avaloniaui.net/) if needed.
+
+## Designer support
+
+Several Avalonia designers exist, see [this Avalonia documentation page](https://docs.avaloniaui.net/docs/next/get-started/set-up-an-editor).  
+To get your Godot .NET project to be compatible with these designers, it needs a few things:
+1. Add a new class with a `void Main()` and a `AppBuilder BuildAvaloniaApp()` methods. `Main()` won't be called by the designer: it's only used to find the `BuildAvaloniaApp()` method next to it.
+2. In `BuildAvaloniaApp()`, return `AppBuilder.Configure<App>().UseSkia()`. Do NOT call `UseGodot` as the designer doesn't run inside Godot and doesn't have access to its functions. See [Designer.cs](../samples/HelloWorld/Designer.cs) for the final file.  
+3. Set an executable output type for the project, by adding the `<OutputType>WinExe</OutputType>` property to the .csproj file. This is needed to get `Main()` to be recognized as an entry point.
+4. Ensure your XAML files don't use any Godot class directly.
 
 ## Recommendations
 
