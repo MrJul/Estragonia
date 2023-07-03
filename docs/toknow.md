@@ -1,19 +1,22 @@
-# Compatibility
+# Supported versions
 
+Currently, Estragonia targets Avalonia 11.0 RC2 and Godot 4.1 RC2.  
+Both these pre-releases are working pretty well and should have a stable release very soon, in July 2023.
 
+Don't try to use Estragonia with unsupported Avalonia versions. In general, avoid referencing Avalonia directly when possible. Since Estragonia implements a backend for Avalonia, it targets some API that are semi-private and may change in future minor Avalonia releases. 
 
 # Rendering
 
 ## Vulkan
 
-Only the Vulkan renderers from Godot 4 are supported: these are the **Forward+** and **Mobile** renderer.  
+Only the Vulkan renderers from Godot 4 are supported: these are the **Forward+** and **Mobile** renderers.  
 The Compatibility renderer is NOT supported.
 
-## Skia
+## Transparency
 
-Estragonia leverages the Skia backend from Avalonia to render the controls, which outputs an image having a premultiplied alpha channel.
+Estragonia leverages the Skia backend from Avalonia to render the controls, which outputs a texture having a premultiplied alpha channel.
 
-By default, if no material is set on the `AvaloniaControl`, Estragonia automatically creates a `CanvasItemMaterial` with a [`BlendMode`](https://docs.godotengine.org/en/stable/classes/class_canvasitemmaterial.html#enum-canvasitemmaterial-blendmode) sets to `PremultAlpha` so there's nothing special to do. If you need to set a custom material instead, ensure it has the correct blend mode.
+By default, if no material is set on the `AvaloniaControl`, Estragonia automatically creates a `CanvasItemMaterial` with a [`BlendMode`](https://docs.godotengine.org/en/stable/classes/class_canvasitemmaterial.html#enum-canvasitemmaterial-blendmode) sets to `PremultAlpha` so there's nothing special to do. If you need to set a custom material instead, ensure it has the correct blend mode, or semi-transparency won't work correctly.
 
 ## Scaling
 
