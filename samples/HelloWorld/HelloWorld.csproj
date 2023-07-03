@@ -8,6 +8,12 @@
 		<AnalysisMode>Recommended</AnalysisMode>
 	</PropertyGroup>
 
+	<!-- Create an executable for Avalonia designer support -->
+	<PropertyGroup Condition="$(Configuration) == 'Debug'">
+		<OutputType>WinExe</OutputType>
+		<UseAppHost>false</UseAppHost>
+	</PropertyGroup>
+
 	<ItemDefinitionGroup>
 		<PackageReference PrivateAssets="all" />
 	</ItemDefinitionGroup>
