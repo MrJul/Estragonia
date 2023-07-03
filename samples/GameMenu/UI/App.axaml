@@ -8,6 +8,7 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceInclude Source="Theme/_Common.axaml" />
+				<ResourceInclude Source="Theme/AdornerLayer.axaml" />
 				<ResourceInclude Source="Theme/Button.axaml" />
 				<ResourceInclude Source="Theme/CheckBox.axaml" />
 				<ResourceInclude Source="Theme/ListBox.axaml" />
