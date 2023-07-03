@@ -44,7 +44,7 @@ public sealed partial class OptionsViewModel : ViewModel {
 	protected override void OnPropertyChanged(PropertyChangedEventArgs e) {
 		base.OnPropertyChanged(e);
 
-		if (e.PropertyName != nameof(CanApply))
+		if (e.PropertyName is nameof(VSync) or nameof(Fullscreen) or nameof(ShowFps) or nameof(UIScale))
 			CanApply = true;
 	}
 
