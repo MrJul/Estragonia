@@ -278,7 +278,7 @@ public class AvaloniaControl : GdControl {
 				_ => null
 			};
 
-			if ((nextGdControl is null || nextGdControl == this) && currentElement != _topLevel)
+			if ((nextGdControl is null || nextGdControl == this) && (object) currentElement != _topLevel)
 				nextElement = GetNextTabElement(_topLevel, direction);
 		}
 

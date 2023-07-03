@@ -24,15 +24,6 @@
 		</ui:MainMenuViewModel>
 	</Design.DataContext>
 
-	<ui:View.DirectionalFocusStructure>
-		<ui:DirectionalFocusStructure>
-			<ui:DirectionalFocusControl Control="{Binding #StartNewGameButton}" IsNewRow="True" />
-			<ui:DirectionalFocusControl Control="{Binding #LoadExistingGameButton}" IsNewRow="True" />
-			<ui:DirectionalFocusControl Control="{Binding #OpenOptionsButton}" IsNewRow="True" />
-			<ui:DirectionalFocusControl Control="{Binding #ExitButton}" IsNewRow="True" />
-		</ui:DirectionalFocusStructure>
-	</ui:View.DirectionalFocusStructure>
-
 	<ui:View.Styles>
 
 		<Style Selector="Panel.title > TextBlock">
@@ -50,30 +41,33 @@
 
 	</ui:View.Styles>
 
+	<ui:View.DirectionalFocusStructure>
+		<ui:DirectionalFocusStructure>
+			<ui:DirectionalFocusControl Control="{Binding #StartNewGameButton}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #LoadExistingGameButton}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #OpenOptionsButton}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #ExitButton}" IsNewRow="True" />
+		</ui:DirectionalFocusStructure>
+	</ui:View.DirectionalFocusStructure>
+
 	<Grid RowDefinitions="Auto,*,Auto">
 
 		<!-- Title -->
-		<Viewbox
-			Stretch="Uniform"
-			StretchDirection="DownOnly"
+		<Panel
+			Classes="title"
+			Margin="16"
 			VerticalAlignment="Top"
-			HorizontalAlignment="Center"
-			Grid.Row="0">
+			HorizontalAlignment="Center">
 
-			<Panel
-				Classes="title"
-				Margin="16">
+			<TextBlock
+				Foreground="#FF806A1D"
+				Margin="3,3,-3,-3" />
 
-				<TextBlock
-					Foreground="#FF804E15"
-					Margin="3,3,-3,-3" />
+			<TextBlock
+				Foreground="#FFFFBC27"
+				Margin="0" />
 
-				<TextBlock
-					Foreground="#FFFF9B2A"
-					Margin="0" />
-
-			</Panel>
-		</Viewbox>
+		</Panel>
 
 		<!-- Menu -->
 		<ScrollViewer Grid.Row="1" Margin="8">
