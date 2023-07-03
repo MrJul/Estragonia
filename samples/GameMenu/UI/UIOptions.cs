@@ -16,6 +16,6 @@ public sealed partial class UIOptions : ObservableObject {
 
 	[ObservableProperty]
 	[SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Name required for correct property generation")]
-	private double _UIScale;
+	private double _UIScale = 1.0;
 
 }

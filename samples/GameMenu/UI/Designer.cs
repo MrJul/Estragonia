@@ -1,8 +1,7 @@
 ﻿using System;
 using Avalonia;
-using GameMenu.UI;
 
-namespace GameMenu;
+namespace GameMenu.UI;
 
 internal static class Designer {
 
