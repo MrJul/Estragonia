@@ -37,6 +37,7 @@
 	<ItemGroup>
 		<None Include="Properties/launchSettings.json" />
 		<None Include="shaders/*.gdshader" />
+		<None Include="readme.md" />
 	</ItemGroup>
 
 </Project>
