@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://da3muawu74543"]
+
+[ext_resource type="PackedScene" uid="uid://bbbyyy7v6v5m0" path="res://scenes/gdav_sphere.tscn" id="1_xpgo1"]
+
+[node name="GameRoot" type="Node3D"]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.50302, 0.746971, -0.434747, 0, 0.50302, 0.864275, 0.864275, -0.434747, 0.253029, 1.71058, 6.27441, 2.58167)
+shadow_enabled = true
+
+[node name="GdAvSphereRoot" parent="." instance=ExtResource("1_xpgo1")]
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+current = true
