@@ -21,10 +21,6 @@ public sealed partial class MainMenuViewModel : ViewModel {
 		=> _navigator.NavigateTo(new DifficultyViewModel(_navigator));
 
 	[RelayCommand]
-	public void LoadExistingGame() {
-	}
-
-	[RelayCommand]
 	public void OpenOptions()
 		=> _navigator.NavigateTo(new OptionsViewModel(_uiOptions));
 

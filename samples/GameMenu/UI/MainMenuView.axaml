@@ -44,7 +44,7 @@
 	<ui:View.DirectionalFocusStructure>
 		<ui:DirectionalFocusStructure>
 			<ui:DirectionalFocusControl Control="{Binding #StartNewGameButton}" IsNewRow="True" />
-			<ui:DirectionalFocusControl Control="{Binding #LoadExistingGameButton}" IsNewRow="True" />
+			<ui:DirectionalFocusControl Control="{Binding #ContinueGameButton}" IsNewRow="True" />
 			<ui:DirectionalFocusControl Control="{Binding #OpenOptionsButton}" IsNewRow="True" />
 			<ui:DirectionalFocusControl Control="{Binding #ExitButton}" IsNewRow="True" />
 		</ui:DirectionalFocusStructure>
@@ -83,10 +83,10 @@
 					Content="New Game" />
 
 				<Button
-					x:Name="LoadExistingGameButton"
-					Content="Load Game"
+					x:Name="ContinueGameButton"
+					Content="Continue"
 					controls:AdditionalContent.Geometry="{StaticResource FolderOpenGeometry}"
-					Command="{Binding LoadExistingGameCommand}" />
+					IsEnabled="False" />
 
 				<Button
 					x:Name="OpenOptionsButton"
