@@ -1,0 +1,10 @@
+<Project>
+
+	<PropertyGroup>
+		<Authors>Julien Lebosquain</Authors>
+		<Product>Estragonia</Product>
+		<Copyright>Copyright © $(Authors) – 2023</Copyright>
+		<Version>1.0.0-preview1</Version>
+	</PropertyGroup>
+
+</Project>

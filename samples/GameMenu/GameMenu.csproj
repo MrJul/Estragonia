@@ -1,6 +1,7 @@
 <Project Sdk="Godot.NET.Sdk/4.1.0-rc.2">
 
 	<PropertyGroup>
+		<AssemblyTitle>Estragonia GameMenu Sample</AssemblyTitle>
 		<TargetFramework>net6.0</TargetFramework>
 		<EnableDynamicLoading>true</EnableDynamicLoading>
 		<Nullable>enable</Nullable>
