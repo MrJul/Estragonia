@@ -6,6 +6,8 @@ namespace HelloWorld;
 public partial class UserInterface : AvaloniaControl {
 
 	public override void _Ready() {
+		GetWindow().SetImeActive(true);
+
 		Control = new HelloWorldView();
 
 		base._Ready();
