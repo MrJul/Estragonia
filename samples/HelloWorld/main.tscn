@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cy7yp8x3nfiva"]
+[gd_scene load_steps=11 format=3 uid="uid://cy7yp8x3nfiva"]
 
 [ext_resource type="Script" path="res://UserInterface.cs" id="1_intl0"]
+[ext_resource type="Texture2D" uid="uid://vbp54an5411" path="res://icon.svg" id="1_wmsuv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xuun1"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -15,7 +16,13 @@ sky = SubResource("Sky_q6syq")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6jp7y"]
+albedo_texture = ExtResource("1_wmsuv")
+roughness = 0.5
+uv1_scale = Vector3(3, 2, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_qchun"]
+material = SubResource("StandardMaterial3D_6jp7y")
 
 [sub_resource type="Animation" id="Animation_krov7"]
 length = 0.001
