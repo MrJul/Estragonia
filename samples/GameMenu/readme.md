@@ -9,6 +9,7 @@ A sample for [Estragonia](../..) which features a functional game menu UI.
 - The [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) pattern and data binding
 - Navigation between views
 - Keyboard and game controller support
+- UI animations
 - UI scaling
 
 ## License

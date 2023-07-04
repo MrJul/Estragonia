@@ -8,6 +8,7 @@
 		<LangVersion>11.0</LangVersion>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<!-- Create an executable for Avalonia designer support -->

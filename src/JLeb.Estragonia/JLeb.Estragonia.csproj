@@ -8,11 +8,23 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>11.0</LangVersion>
 		<AnalysisMode>Recommended</AnalysisMode>
+		<IsPackable>true</IsPackable>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<PackageReleaseNotes>https://github.com/MrJul/Estragonia/releases</PackageReleaseNotes>
+		<Description>Estragonia is a bridge allowing the use of the Avalonia UI framework in the Godot game engine.</Description>
+		<PackageTags>avalonia;godot;ui;game</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="GodotSharp" Version="4.1.0-rc.2" />
 		<PackageReference Include="Avalonia.Skia" Version="[11.0.0-rc2.2]" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Include="../../readme.md" Pack="True" PackagePath="/" />
 	</ItemGroup>
 
 	<!--

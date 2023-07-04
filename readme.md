@@ -2,7 +2,7 @@
 
 ![Avalonia + Godot](docs/av_plus_gd.png)
 
-Estragonia is a bridge allowing to use the powerful [Avalonia UI](https://github.com/AvaloniaUI/Avalonia/) framework in the no less powerful [Godot](https://github.com/godotengine/godot/) game engine!  
+Estragonia is a bridge allowing the use of the powerful [Avalonia UI](https://github.com/AvaloniaUI/Avalonia/) framework in the no less powerful [Godot](https://github.com/godotengine/godot/) game engine!  
 
 It's GPU accelerated using Vulkan, which is the main renderer used in Godot 4.
 
@@ -21,7 +21,7 @@ For various things to know regarding compatiblity, rendering and input handling,
 
 Samples:
  - [HelloWorld](samples/HelloWorld): a basic Avalonia-into-Godot setup.
- - [GameMenu](samples/GameMenu): a functional game menu UI using the MVVM pattern, with controller support.
+ - [GameMenu](samples/GameMenu): a functional game menu UI using the MVVM pattern, with controller support and UI animations.
 
 ## License
 
