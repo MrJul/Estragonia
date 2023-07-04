@@ -1,6 +1,6 @@
-# Estragonia
+# Estragonia: Avalonia in Godot
 
-![Avalonia + Godot](https://github.com/MrJul/Estragonia/docs/av_plus_gd.png)
+![Avalonia + Godot](https://github.com/MrJul/Estragonia/blob/main/docs/av_plus_gd.png)
 
 Estragonia is a bridge allowing the use of the powerful [Avalonia UI](https://github.com/AvaloniaUI/Avalonia/) framework in the no less powerful [Godot](https://github.com/godotengine/godot/) game engine!  
 
