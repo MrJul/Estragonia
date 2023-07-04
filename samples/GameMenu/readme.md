@@ -9,6 +9,7 @@ A sample for [Estragonia](https://github.com/MrJul/Estragonia) which features a 
 - The [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) pattern and data binding
 - Navigation between views
 - Keyboard and game controller support
+- Custom theme
 - UI animations
 - UI scaling
 

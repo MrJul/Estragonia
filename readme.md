@@ -13,11 +13,11 @@ It's GPU accelerated using Vulkan, which is the main renderer used in Godot 4.
 3. Initialize the Avalonia application using `UseGodot().SetupWithoutStarting()`.
 4. Create a Godot `Control` node, assign it a script inheriting from `JLeb.Estragonia.AvaloniaControl` and populate its `Control` property with any valid Avalonia view.
 
-For a more detailed guide, see the [step by step instructions](https: docs/setup.md).
+For a more detailed guide, see the [step by step instructions](https://github.com/MrJul/Estragonia/blob/main/docs/setup.md).
 
 ## Resources
 
-For various things to know regarding compatibility, rendering and input handling, see [this document](https://github.com/MrJul/Estragonia/docs/toknow.md).
+For various things to know regarding compatibility, rendering and input handling, see [this document](https://github.com/MrJul/Estragonia/blob/main/docs/toknow.md).
 
 Samples:
  - [HelloWorld](https://github.com/MrJul/Estragonia/tree/main/samples/HelloWorld): a basic Avalonia-into-Godot setup.
@@ -25,7 +25,7 @@ Samples:
 
 ## License
 
-The whole Estragonia project source code is under the [MIT License](license.txt).  
+The whole Estragonia project source code is under the [MIT License](https://github.com/MrJul/Estragonia/blob/main/license.txt).  
 Some specific licenses may apply to some assets used in the samples. See each sample for more information.
 
 ## Screenshots
