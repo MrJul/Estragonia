@@ -22,7 +22,7 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
-		<PackageReference Include="JLeb.Estragonia" Version="1.0.0-preview1" Condition="$(SolutionName) != 'JLeb.Estragonia'" />
+		<PackageReference Include="JLeb.Estragonia" Version="1.0.0-preview2" Condition="$(SolutionName) != 'JLeb.Estragonia'" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="[11.0.0-rc2.2]" />
 	</ItemGroup>
 
