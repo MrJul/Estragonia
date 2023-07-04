@@ -22,11 +22,12 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
+		<PackageReference Include="JLeb.Estragonia" Version="1.0.0-preview1" Condition="$(SolutionName) != 'JLeb.Estragonia'" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="[11.0.0-rc2.2]" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="../../src/JLeb.Estragonia/JLeb.Estragonia.csproj" />
+		<ProjectReference Include="../../src/JLeb.Estragonia/JLeb.Estragonia.csproj" Condition="$(SolutionName) == 'JLeb.Estragonia'" />
 	</ItemGroup>
 
 	<ItemGroup>
