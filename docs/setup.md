@@ -41,7 +41,7 @@ Several Avalonia designers exist, see [this Avalonia documentation page](https:/
 To get your Godot .NET project to be compatible with these designers, it needs a few things:
 1. Add a new class with a `void Main()` and a `AppBuilder BuildAvaloniaApp()` methods. `Main()` won't be called by the designer: it's only used to find the `BuildAvaloniaApp()` method next to it.
 2. In `BuildAvaloniaApp()`, return `AppBuilder.Configure<App>().UseSkia()`. Do NOT call `UseGodot` as the designer doesn't run inside Godot and doesn't have access to its functions. See [Designer.cs](../samples/HelloWorld/Designer.cs) for the final file.  
-3. Set an executable output type for the project, by adding the `<OutputType>WinExe</OutputType>` property to the .csproj file. This is needed to get `Main()` to be recognized as an entry point.
+3. Set an executable output type for the project, by adding the `<OutputType>Exe</OutputType>` property to the .csproj file. This is needed to get `Main()` to be recognized as an entry point.
 4. Ensure your XAML files don't use any Godot class directly.
 
 ## Recommendations
