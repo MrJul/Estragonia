@@ -12,6 +12,7 @@
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<PackageProjectUrl>https://github.com/MrJul/Estragonia</PackageProjectUrl>
 		<PackageReleaseNotes>https://github.com/MrJul/Estragonia/releases</PackageReleaseNotes>
 		<Description>Estragonia is a bridge allowing the use of the Avalonia UI framework in the Godot game engine.</Description>
 		<PackageTags>avalonia;godot;ui;game</PackageTags>
