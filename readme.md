@@ -20,16 +20,18 @@ For a more detailed guide, see the [step by step instructions](https: docs/setup
 For various things to know regarding compatibility, rendering and input handling, see [this document](https://github.com/MrJul/Estragonia/docs/toknow.md).
 
 Samples:
- - [HelloWorld](https://github.com/MrJul/Estragonia/samples/HelloWorld): a basic Avalonia-into-Godot setup.
- - [GameMenu](https://github.com/MrJul/Estragonia/samples/GameMenu): a functional game menu UI using the MVVM pattern, with controller support, UI animations and scaling.
+ - [HelloWorld](https://github.com/MrJul/Estragonia/tree/main/samples/HelloWorld): a basic Avalonia-into-Godot setup.
+ - [GameMenu](https://github.com/MrJul/Estragonia/tree/main/samples/GameMenu): a functional game menu UI using the MVVM pattern, with controller support, UI animations and scaling.
 
 ## License
 
 The whole Estragonia project source code is under the [MIT License](license.txt).  
 Some specific licenses may apply to some assets used in the samples. See each sample for more information.
 
-## Screenshot
+## Screenshots
 
-![GameMenu](https://github.com/MrJul/Estragonia/assets/1623034/4eeb5f36-1964-479c-b8d7-fedc12fc10fd)
+![Main Menu](https://github.com/MrJul/Estragonia/assets/1623034/4eeb5f36-1964-479c-b8d7-fedc12fc10fd)
 
-From the [GameMenu sample](https://github.com/MrJul/Estragonia/samples/GameMenu)
+![Options View](https://github.com/MrJul/Estragonia/assets/1623034/03af87ef-b649-4dca-83dd-3e6e30962edb)
+
+From the [GameMenu sample](https://github.com/MrJul/Estragonia/tree/main/samples/GameMenu)
