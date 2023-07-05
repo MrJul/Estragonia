@@ -22,9 +22,9 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
-		<PackageReference Include="JLeb.Estragonia" Version="1.0.0-preview2" Condition="$(SolutionName) != 'JLeb.Estragonia'" />
-		<PackageReference Include="Avalonia.Themes.Simple" Version="[11.0.0-rc2.2]" />
-		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="[11.0.0-rc1.1]" />
+		<PackageReference Include="JLeb.Estragonia" Version="1.*" Condition="$(SolutionName) != 'JLeb.Estragonia'" />
+		<PackageReference Include="Avalonia.Themes.Simple" Version="[11.0.0]" />
+		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="[11.0.0]" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 	</ItemGroup>
 
