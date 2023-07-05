@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if DEBUG
+
+using System;
 using Avalonia;
 
 namespace HelloWorld;
@@ -15,3 +17,5 @@ internal static class Designer {
 			.UseSkia();
 
 }
+
+#endif
