@@ -119,7 +119,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 			_surface = CreateSurface();
 		}
 
-		// currently the surface isn't correctly refreshed, see https://github.com/AvaloniaUI/Avalonia/pull/11741
 		if (hasScalingChanged) {
 			if (_surface != null)
 				_surface.RenderScaling = RenderScaling;
