@@ -25,7 +25,7 @@ To scale your UI, change the `RenderScaling` property of the `AvaloniaControl`.
 
 ## Texture access
 
-If you need to access the texture containing the rendered Avalonia UI, for example to use it as a material's texture, call `AvaloniaControl.GetTexture()`. To make sure the texture is up-do-date, please read Godot's documentation for [ViewportTexture.GetTexture()](https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-get-texture): the same constraints apply here. 
+If you need to access the texture containing the rendered Avalonia UI, for example to use it as a material's texture, call `AvaloniaControl.GetTexture()`. To make sure the texture is up-do-date, please read Godot's documentation for [Viewport.GetTexture](https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-get-texture): the same constraints apply here. 
 
 # Input
 
