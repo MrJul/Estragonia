@@ -30,8 +30,8 @@ Some specific licenses may apply to some assets used in the samples. See each sa
 
 ## Screenshots
 
-![Main Menu](https://github.com/MrJul/Estragonia/assets/1623034/4eeb5f36-1964-479c-b8d7-fedc12fc10fd)
+![Main Menu](https://github.com/MrJul/Estragonia/blob/main/docs/screenshots/gamemenu_main.png)
 
-![Options View](https://github.com/MrJul/Estragonia/assets/1623034/03af87ef-b649-4dca-83dd-3e6e30962edb)
+![Options View](https://github.com/MrJul/Estragonia/blob/main/docs/screenshots/gamemenu_options.png)
 
 From the [GameMenu sample](https://github.com/MrJul/Estragonia/tree/main/samples/GameMenu)
