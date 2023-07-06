@@ -19,7 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GodotSharp" Version="4.1.0-rc.3" />
+		<PackageReference Include="GodotSharp" Version="4.1.0" />
 		<PackageReference Include="Avalonia.Skia" Version="[11.0.0]" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
 	</ItemGroup>

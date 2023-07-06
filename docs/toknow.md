@@ -1,9 +1,10 @@
 # Supported versions
 
-Currently, Estragonia targets Avalonia 11.0 and Godot 4.1 RC3.  
-Godot 4.1 should have a stable release very soon, in July 2023.
+Currently, Estragonia targets Avalonia 11.0 and Godot 4.1.  
 
 Don't try to use Estragonia with unsupported Avalonia versions. In general, avoid referencing Avalonia directly when possible. Since Estragonia implements a backend for Avalonia, it targets some API that are semi-private and may change in future minor Avalonia releases. 
+
+For Godot, you should be fine referencing the latest bug fix release, e.g. Godot 4.1.x. For major updates (e.g. Godot 4.2), you'll probably need to wait for a compatible Estragonia version to be released.
 
 # Rendering
 
@@ -20,8 +21,11 @@ By default, if no material is set on the `AvaloniaControl`, Estragonia automatic
 
 ## Scaling
 
-To scale your UI, change the `RenderScaling` property of the `JLeb.Estragonia.AvaloniaControl`.
+To scale your UI, change the `RenderScaling` property of the `AvaloniaControl`.
 
+## Texture access
+
+If you need to access the texture containing the rendered Avalonia UI, for example to use it as a material's texture, call `AvaloniaControl.GetTexture()`. To make sure the texture is up-do-date, please read Godot's documentation for [ViewportTexture.GetTexture()](https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-get-texture): the same constraints apply here. 
 
 # Input
 
@@ -56,4 +60,4 @@ Implement proper keyboard handling and you should have controller UI support for
 
 This is the technique used in the [GameMenu sample](../samples/GameMenu).
 
-If you prefer to disable this behavior and handle everything manually instead, set `AutoConvertUIActionToKeyDown` to `false` in the `JLeb.Estragonia.AvaloniaControl`.
+If you prefer to disable this behavior and handle everything manually instead, set `AutoConvertUIActionToKeyDown` to `false` in the `AvaloniaControl`.
