@@ -2,7 +2,7 @@
 
 ![Avalonia + Godot](https://github.com/MrJul/Estragonia/blob/main/docs/av_plus_gd.png)
 
-Estragonia is a bridge allowing the use of the powerful [Avalonia UI](https://github.com/AvaloniaUI/Avalonia/) framework in the no less powerful [Godot](https://github.com/godotengine/godot/) game engine!  
+Estragonia is a bridge allowing the use of the powerful [Avalonia UI](https://github.com/AvaloniaUI/Avalonia/) framework in the no less powerful [Godot](https://github.com/godotengine/godot/) game engine!
 
 It's GPU accelerated using Vulkan, which is the main renderer used in Godot 4.
 
@@ -20,18 +20,16 @@ For a more detailed guide, see the [step by step instructions](https://github.co
 For various things to know regarding compatibility, rendering and input handling, see [this document](https://github.com/MrJul/Estragonia/blob/main/docs/toknow.md).
 
 Samples:
- - [HelloWorld](https://github.com/MrJul/Estragonia/tree/main/samples/HelloWorld): a basic Avalonia-into-Godot setup.
- - [GameMenu](https://github.com/MrJul/Estragonia/tree/main/samples/GameMenu): a functional game menu UI using the MVVM pattern, with controller support, UI animations and scaling.
+- [HelloWorld](https://github.com/MrJul/Estragonia/tree/main/samples/HelloWorld): a basic Avalonia-into-Godot setup.
+- [GameMenu](https://github.com/MrJul/Estragonia/tree/main/samples/GameMenu): a functional game menu UI using the MVVM pattern, with controller support, UI animations and scaling.
 
 ## License
 
 The whole Estragonia project source code is under the [MIT License](https://github.com/MrJul/Estragonia/blob/main/license.txt).  
 Some specific licenses may apply to some assets used in the samples. See each sample for more information.
 
-## Screenshots
+## Video
 
-![Main Menu](https://github.com/MrJul/Estragonia/blob/main/docs/screenshots/gamemenu_main.png)
-
-![Options View](https://github.com/MrJul/Estragonia/blob/main/docs/screenshots/gamemenu_options.png)
+https://github.com/MrJul/Estragonia/assets/1623034/7bcb12e4-0f0a-41c4-8dd8-71d8c80ede0b
 
 From the [GameMenu sample](https://github.com/MrJul/Estragonia/tree/main/samples/GameMenu)

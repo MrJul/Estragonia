@@ -25,3 +25,7 @@ However, some assets used in this sample are under a different license:
 ![Main Menu](https://github.com/MrJul/Estragonia/blob/main/docs/screenshots/gamemenu_main.png)
 
 ![Options View](https://github.com/MrJul/Estragonia/blob/main/docs/screenshots/gamemenu_options.png)
+
+## Video
+
+https://github.com/MrJul/Estragonia/assets/1623034/7bcb12e4-0f0a-41c4-8dd8-71d8c80ede0b
