@@ -2,12 +2,16 @@
 
 	<PropertyGroup>
 		<AssemblyTitle>Estragonia</AssemblyTitle>
+
+		<!-- Framework/Language -->
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>10.0</LangVersion>
 		<AnalysisMode>Recommended</AnalysisMode>
+
+		<!-- Package -->
 		<IsPackable>true</IsPackable>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -16,6 +20,12 @@
 		<PackageReleaseNotes>https://github.com/MrJul/Estragonia/releases</PackageReleaseNotes>
 		<Description>Estragonia is a bridge allowing the use of the Avalonia UI framework in the Godot game engine.</Description>
 		<PackageTags>avalonia;godot;ui;game</PackageTags>
+
+		<!-- Source Link -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
 	</PropertyGroup>
 
 	<ItemGroup>
