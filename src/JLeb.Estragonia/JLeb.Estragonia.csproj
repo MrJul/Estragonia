@@ -6,7 +6,7 @@
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<LangVersion>11.0</LangVersion>
+		<LangVersion>10.0</LangVersion>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<IsPackable>true</IsPackable>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>

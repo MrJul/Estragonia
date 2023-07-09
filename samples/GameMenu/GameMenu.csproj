@@ -5,7 +5,6 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<EnableDynamicLoading>true</EnableDynamicLoading>
 		<Nullable>enable</Nullable>
-		<LangVersion>11.0</LangVersion>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 		<IsPackable>false</IsPackable>
