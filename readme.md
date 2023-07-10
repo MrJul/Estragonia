@@ -1,10 +1,10 @@
 # Estragonia: Avalonia in Godot
 
-![Avalonia + Godot](https://github.com/MrJul/Estragonia/blob/main/docs/av_plus_gd.png)
+[![Avalonia + Godot](https://github.com/MrJul/Estragonia/blob/main/docs/av_plus_gd.png)](#)
 
-![NuGet](https://img.shields.io/nuget/v/JLeb.Estragonia)
+[![NuGet](https://img.shields.io/nuget/v/JLeb.Estragonia)](https://www.nuget.org/packages/JLeb.Estragonia)
 
-Estragonia is a bridge allowing the use of the powerful [Avalonia UI](https://github.com/AvaloniaUI/Avalonia/) framework in the no less powerful [Godot](https://github.com/godotengine/godot/) game engine!
+Estragonia is a bridge allowing the use of the powerful [Avalonia UI](https://github.com/AvaloniaUI/Avalonia) framework in the no less powerful [Godot](https://github.com/godotengine/godot) game engine!
 
 It's GPU accelerated using Vulkan, which is the main renderer used in Godot 4.
 
