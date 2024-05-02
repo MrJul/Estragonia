@@ -35,7 +35,7 @@ internal sealed class JoypadDevice : IJoypadDevice {
 			return;
 
 		var element = rawArgs.Root.FocusManager?.GetFocusedElement() ?? rawArgs.Root;
-		var args = new JoypadButtonEventArgs(routedEvent, element, this, rawArgs.Button, rawArgs.Pressure);
+		var args = new JoypadButtonEventArgs(routedEvent, element, this, rawArgs.Button);
 		element.RaiseEvent(args);
 		rawArgs.Handled = args.Handled;
 	}

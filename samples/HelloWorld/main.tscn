@@ -76,10 +76,10 @@ mesh = SubResource("BoxMesh_qchun")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Cube")
-autoplay = "cube_rotation"
 libraries = {
 "": SubResource("AnimationLibrary_jucv5")
 }
+autoplay = "cube_rotation"
 
 [node name="UserInterface" type="Control" parent="."]
 layout_mode = 3

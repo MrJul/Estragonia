@@ -9,7 +9,6 @@ using Godot;
 using Godot.NativeInterop;
 using JLeb.Estragonia.Input;
 using AvControl = Avalonia.Controls.Control;
-using AvDispatcher = Avalonia.Threading.Dispatcher;
 using GdControl = Godot.Control;
 using GdInput = Godot.Input;
 using GdKey = Godot.Key;

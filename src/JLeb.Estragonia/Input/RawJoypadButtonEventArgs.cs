@@ -17,22 +17,14 @@ public class RawJoypadButtonEventArgs : RawInputEventArgs {
 	/// <summary>Gets the button that was pressed or released.</summary>
 	public JoyButton Button { get; }
 
-	/// <summary>
-	/// Gets the pressure the user puts on the button with their finger, if the controller supports it.
-	/// Ranges from 0 to 1.
-	/// </summary>
-	public float Pressure { get; }
-
 	public RawJoypadButtonEventArgs(
 		IJoypadDevice device,
 		ulong timestamp,
 		IInputRoot root,
 		RawJoypadButtonEventType type,
-		JoyButton button,
-		float pressure
+		JoyButton button
 	) : base(device, timestamp, root) {
 		Button = button;
-		Pressure = pressure;
 		Type = type;
 	}
 

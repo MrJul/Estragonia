@@ -10,7 +10,6 @@ using Avalonia.Platform;
 using Avalonia.Rendering.Composition;
 using Godot;
 using JLeb.Estragonia.Input;
-using AvDispatcher = Avalonia.Threading.Dispatcher;
 using AvKey = Avalonia.Input.Key;
 using GdCursorShape = Godot.Control.CursorShape;
 using GdMouseButton = Godot.MouseButton;
@@ -260,8 +259,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 		var keyCode = inputEvent.Keycode;
 		var pressed = inputEvent.Pressed;
-
 		var key = keyCode.ToAvaloniaKey();
+
 		if (key != AvKey.None) {
 			var args = new RawKeyEventArgs(
 				GodotDevices.Keyboard,
@@ -269,7 +268,9 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 				_inputRoot,
 				pressed ? RawKeyEventType.KeyDown : RawKeyEventType.KeyUp,
 				key,
-				inputEvent.GetRawInputModifiers()
+				inputEvent.GetRawInputModifiers(),
+				inputEvent.PhysicalKeycode.ToAvaloniaPhysicalKey(),
+				OS.GetKeycodeString(inputEvent.KeyLabel)
 			);
 
 			input(args);
@@ -300,8 +301,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 			timestamp,
 			_inputRoot,
 			inputEvent.IsPressed() ? RawJoypadButtonEventType.ButtonDown : RawJoypadButtonEventType.ButtonUp,
-			inputEvent.ButtonIndex,
-			inputEvent.Pressure
+			inputEvent.ButtonIndex
 		);
 
 		input(args);
