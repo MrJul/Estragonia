@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using Avalonia.Platform;
 
 namespace JLeb.Estragonia;
 
 /// <summary>Godot Vulkan-based <see cref="IPlatformGraphics"/> implementation.</summary>
-[SuppressMessage(
-	"Design",
-	"CA1001:Types that own disposable fields should be disposable",
-	Justification = "This type has equivalent to a static lifetime"
-)]
-internal sealed class GodotVkPlatformGraphics : IPlatformGraphics {
+internal sealed class GodotVkPlatformGraphics : IPlatformGraphics, IDisposable {
 
 	private GodotVkSkiaGpu? _context;
+	private int _refCount;
 
 	bool IPlatformGraphics.UsesSharedContext
 		=> true;
 
 	public GodotVkSkiaGpu GetSharedContext() {
+		if (Volatile.Read(ref _refCount) == 0)
+			ThrowDisposed();
+
 		if (_context is null || _context.IsLost) {
 			_context?.Dispose();
 			_context = null;
@@ -27,10 +28,30 @@ internal sealed class GodotVkPlatformGraphics : IPlatformGraphics {
 		return _context;
 	}
 
+	[DoesNotReturn]
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static void ThrowDisposed()
+		=> throw new ObjectDisposedException(nameof(GodotVkPlatformGraphics));
+
 	IPlatformGraphicsContext IPlatformGraphics.CreateContext()
 		=> throw new NotSupportedException();
 
 	IPlatformGraphicsContext IPlatformGraphics.GetSharedContext()
 		=> GetSharedContext();
 
+	public void AddRef()
+		=> Interlocked.Increment(ref _refCount);
+
+	public void Release() {
+		if (Interlocked.Decrement(ref _refCount) == 0)
+			Dispose();
+	}
+
+
+	public void Dispose() {
+		if (_context is not null) {
+			_context.Dispose();
+			_context = null;
+		}
+	}
 }

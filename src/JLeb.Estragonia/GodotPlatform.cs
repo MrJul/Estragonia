@@ -5,21 +5,21 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Platform;
 using Avalonia.Rendering;
-using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Godot;
 using JLeb.Estragonia.Input;
+using AvCompositor = Avalonia.Rendering.Composition.Compositor;
 
 namespace JLeb.Estragonia;
 
 /// <summary>Contains Godot to Avalonia platform initialization.</summary>
 internal static class GodotPlatform {
 
-	private static Compositor? s_compositor;
+	private static AvCompositor? s_compositor;
 	private static ManualRenderTimer? s_renderTimer;
 	private static ulong s_lastProcessFrame = UInt64.MaxValue;
 
-	public static Compositor Compositor
+	public static AvCompositor Compositor
 		=> s_compositor ?? throw new InvalidOperationException($"{nameof(GodotPlatform)} hasn't been initialized");
 
 	public static void Initialize() {
@@ -41,7 +41,7 @@ internal static class GodotPlatform {
 			.Bind<PlatformHotkeyConfiguration>().ToConstant(CreatePlatformHotKeyConfiguration());
 
 		s_renderTimer = renderTimer;
-		s_compositor = new Compositor(platformGraphics);
+		s_compositor = new AvCompositor(platformGraphics);
 	}
 
 	private static PlatformHotkeyConfiguration CreatePlatformHotKeyConfiguration()

@@ -7,9 +7,9 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Input.Raw;
 using Avalonia.Platform;
-using Avalonia.Rendering.Composition;
 using Godot;
 using JLeb.Estragonia.Input;
+using AvCompositor = Avalonia.Rendering.Composition.Compositor;
 using AvKey = Avalonia.Input.Key;
 using GdCursorShape = Godot.Control.CursorShape;
 using GdMouseButton = Godot.MouseButton;
@@ -33,7 +33,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public double RenderScaling { get; private set; } = 1.0;
 
-	public Compositor Compositor { get; }
+	public AvCompositor Compositor { get; }
 
 	public Size ClientSize { get; private set; }
 
@@ -73,10 +73,12 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 	Size? ITopLevelImpl.FrameSize
 		=> null;
 
-	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics, IClipboard clipboard, Compositor compositor) {
+	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics, IClipboard clipboard, AvCompositor compositor) {
 		_platformGraphics = platformGraphics;
 		_clipboard = clipboard;
 		Compositor = compositor;
+
+		platformGraphics.AddRef();
 	}
 
 	private GodotSkiaSurface CreateSurface() {
@@ -399,6 +401,8 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		}
 
 		Closed?.Invoke();
+
+		_platformGraphics.Release();
 	}
 
 }

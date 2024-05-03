@@ -21,14 +21,13 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
-		<PackageReference Include="JLeb.Estragonia" Version="1.*" Condition="$(SolutionName) != 'JLeb.Estragonia'" />
 		<PackageReference Include="Avalonia.Themes.Simple" Version="[11.0.10]" />
 		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="[11.0.10.9]" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="../../src/JLeb.Estragonia/JLeb.Estragonia.csproj" Condition="$(SolutionName) == 'JLeb.Estragonia'" />
+		<ProjectReference Include="../../src/JLeb.Estragonia/JLeb.Estragonia.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

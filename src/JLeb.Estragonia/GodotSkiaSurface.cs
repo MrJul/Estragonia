@@ -2,6 +2,7 @@
 using Avalonia.Skia;
 using Godot;
 using SkiaSharp;
+using static JLeb.Estragonia.VkInterop;
 
 namespace JLeb.Estragonia;
 
@@ -10,9 +11,11 @@ internal sealed class GodotSkiaSurface : ISkiaSurface {
 
 	public SKSurface SkSurface { get; }
 
-	public Texture2D GdTexture { get; }
+	public Texture2Drd GdTexture { get; }
 
-	public GodotObject GdTextureOwner { get; }
+	public VkImage VkImage { get; }
+
+	public RenderingDevice RenderingDevice { get; }
 
 	public double RenderScaling { get; set; }
 
@@ -24,10 +27,17 @@ internal sealed class GodotSkiaSurface : ISkiaSurface {
 	bool ISkiaSurface.CanBlit
 		=> false;
 
-	public GodotSkiaSurface(SKSurface skSurface, Texture2D gdTexture, GodotObject gdTextureOwner, double renderScaling) {
+	public GodotSkiaSurface(
+		SKSurface skSurface,
+		Texture2Drd gdTexture,
+		VkImage vkImage,
+		RenderingDevice renderingDevice,
+		double renderScaling
+	) {
 		SkSurface = skSurface;
 		GdTexture = gdTexture;
-		GdTextureOwner = gdTextureOwner;
+		VkImage = vkImage;
+		RenderingDevice = renderingDevice;
 		RenderScaling = renderScaling;
 		IsDisposed = false;
 	}
@@ -41,9 +51,8 @@ internal sealed class GodotSkiaSurface : ISkiaSurface {
 
 		IsDisposed = true;
 		SkSurface.Dispose();
+		RenderingDevice.FreeRid(GdTexture.TextureRdRid);
 		GdTexture.Dispose();
-		GdTextureOwner.Free();
-		GdTextureOwner.Dispose();
 	}
 
 }
