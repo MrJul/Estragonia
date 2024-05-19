@@ -21,6 +21,7 @@ internal sealed unsafe class VkDeviceApi {
 	private readonly delegate* unmanaged[Stdcall]<VkDevice, uint, VkFence*, uint, ulong, VkResult> _vkWaitForFences;
 	private readonly delegate* unmanaged[Stdcall]<VkDevice, VkFence, VkResult> _vkGetFenceStatus;
 	private readonly delegate* unmanaged[Stdcall]<VkDevice, VkFence, IntPtr, void> _vkDestroyFence;
+	private readonly delegate* unmanaged[Stdcall]<VkQueue, VkResult> _vkQueueWaitIdle;
 
 	public VkDeviceApi(VkDevice vkDevice, delegate* unmanaged[Stdcall]<VkDevice, byte*, IntPtr> vkGetDeviceProcAddr) {
 		_vkCreateCommandPool =
@@ -74,6 +75,10 @@ internal sealed unsafe class VkDeviceApi {
 		_vkDestroyFence =
 			(delegate* unmanaged[Stdcall]<VkDevice, VkFence, IntPtr, void>)
 			GetVkProcAddress("vkDestroyFence");
+
+		_vkQueueWaitIdle =
+			(delegate* unmanaged[Stdcall]<VkQueue, VkResult>)
+			GetVkProcAddress("vkQueueWaitIdle");
 
 		IntPtr GetVkProcAddress(string name) {
 			Span<byte> utf8Name = stackalloc byte[128];
@@ -172,5 +177,8 @@ internal sealed unsafe class VkDeviceApi {
 
 	public void DestroyFence(VkDevice device, VkFence fence, IntPtr pAllocator)
 		=> _vkDestroyFence(device, fence, pAllocator);
+
+	public void QueueWaitIdle(VkQueue queue)
+		=> _vkQueueWaitIdle(queue).VerifySuccess(nameof(QueueWaitIdle));
 
 }

@@ -67,7 +67,7 @@ public class AvaloniaControl : GdControl {
 	/// <returns>A texture.</returns>
 	/// <exception cref="InvalidOperationException">Thrown if the control isn't ready or has been disposed.</exception>
 	public Texture2D GetTexture()
-		=> GetTopLevel().Impl.GetTexture();
+		=> GetTopLevel().Impl.GetOrCreateSurface().GdTexture;
 
 	protected override bool InvokeGodotClassMethod(in godot_string_name method, NativeVariantPtrArgs args, out godot_variant ret) {
 		if (method == Node.MethodName._Ready && args.Count == 0) {
@@ -186,7 +186,9 @@ public class AvaloniaControl : GdControl {
 			return;
 
 		_topLevel.Impl.OnDraw(new Rect(Size.ToAvaloniaSize()));
-		DrawTexture(_topLevel.Impl.GetTexture(), Vector2.Zero);
+		var surface = _topLevel.Impl.GetOrCreateSurface();
+
+		DrawTexture(surface.GdTexture, Vector2.Zero);
 	}
 
 	public override void _GuiInput(InputEvent @event) {

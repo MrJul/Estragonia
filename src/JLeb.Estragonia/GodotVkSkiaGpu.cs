@@ -129,7 +129,7 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 			CurrentQueueFamily = _queueFamilyIndex,
 			Format = vkFormat,
 			Image = vkImage.Handle,
-			ImageLayout = (uint) VkImageLayout.UNDEFINED,
+			ImageLayout = (uint) VkImageLayout.COLOR_ATTACHMENT_OPTIMAL,
 			ImageTiling = (uint) VkImageTiling.OPTIMAL,
 			ImageUsageFlags = (uint) (
 				VkImageUsageFlags.SAMPLED_BIT |
@@ -158,16 +158,18 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 			TextureRdRid = gdRdTexture
 		};
 
-		// Transition to SHADER_READ_ONLY_OPTIMAL as that's what Godot normally leaves the texture in.
-		// This avoids special casing the first render in GodotSkiaGpuRenderSession.
-		_barrierHelper.TransitionImageLayout(
+		var surface = new GodotSkiaSurface(
+			skSurface,
+			gdTexture,
 			vkImage,
 			VkImageLayout.UNDEFINED,
-			0,
-			VkImageLayout.SHADER_READ_ONLY_OPTIMAL,
-			VkAccessFlags.SHADER_READ_BIT);
+			_renderingDevice,
+			renderScaling,
+			_barrierHelper);
 
-		return new GodotSkiaSurface(skSurface, gdTexture, vkImage, _renderingDevice, renderScaling);
+		surface.TransitionLayoutTo(VkImageLayout.COLOR_ATTACHMENT_OPTIMAL);
+
+		return surface;
 	}
 
 	ISkiaSurface? ISkiaGpu.TryCreateSurface(PixelSize size, ISkiaGpuRenderSession? session)

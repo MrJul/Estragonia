@@ -1,4 +1,5 @@
 ﻿using Avalonia.Skia;
+using Godot;
 using SkiaSharp;
 using static JLeb.Estragonia.VkInterop;
 
@@ -26,27 +27,24 @@ internal sealed class GodotSkiaGpuRenderSession : ISkiaGpuRenderSession {
 		Surface = surface;
 		GrContext = grContext;
 		BarrierHelper = barrierHelper;
+
+		// Clear the texture on first draw. This is already done by Avalonia, but Godot doesn't know that.
+		// We need it to avoid texture corruption on first draw on AMD GPUs. It will result in a few transparent frames after resizing.
+		// TODO: find a better solution.
+		if (Surface.DrawCount == 0)
+			Surface.RenderingDevice.TextureClear(Surface.GdTexture.TextureRdRid, new Color(0u), 0, 1, 0, 1);
+
+		// Godot leaves the image in SHADER_READ_ONLY_OPTIMAL but Skia expects it in COLOR_ATTACHMENT_OPTIMAL
+		Surface.TransitionLayoutTo(VkImageLayout.COLOR_ATTACHMENT_OPTIMAL);
 	}
 
 	public void Dispose() {
-		// Godot leaves the image in SHADER_READ_ONLY_OPTIMAL but Skia expects it in COLOR_ATTACHMENT_OPTIMAL
-		BarrierHelper.TransitionImageLayout(
-			Surface.VkImage,
-			VkImageLayout.SHADER_READ_ONLY_OPTIMAL,
-			VkAccessFlags.SHADER_READ_BIT,
-			VkImageLayout.COLOR_ATTACHMENT_OPTIMAL,
-			VkAccessFlags.COLOR_ATTACHMENT_WRITE_BIT);
-
-		// Render Skia
-		Surface.SkSurface.Flush();
+		Surface.SkSurface.Flush(true);
 
 		// Switch back to SHADER_READ_ONLY_OPTIMAL for Godot
-		BarrierHelper.TransitionImageLayout(
-			Surface.VkImage,
-			VkImageLayout.COLOR_ATTACHMENT_OPTIMAL,
-			VkAccessFlags.COLOR_ATTACHMENT_WRITE_BIT,
-			VkImageLayout.SHADER_READ_ONLY_OPTIMAL,
-			VkAccessFlags.SHADER_READ_BIT);
+		Surface.TransitionLayoutTo(VkImageLayout.SHADER_READ_ONLY_OPTIMAL);
+
+		Surface.DrawCount++;
 	}
 
 }

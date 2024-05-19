@@ -152,6 +152,7 @@ internal static class VkInterop {
 	}
 
 	// Provided by VK_VERSION_1_0
+	[Flags]
 	internal enum VkAccessFlags {
 		// Provided by VK_VERSION_1_0
 		INDIRECT_COMMAND_READ_BIT = 0x00000001,
@@ -212,6 +213,7 @@ internal static class VkInterop {
 	}
 
 	// Provided by VK_VERSION_1_0
+	[Flags]
 	internal enum VkImageAspectFlags {
 		// Provided by VK_VERSION_1_0
 		COLOR_BIT = 0x00000001,
@@ -242,6 +244,7 @@ internal static class VkInterop {
 		NONE_KHR = NONE
 	}
 
+	[Flags]
 	internal enum VkPipelineStageFlags {
 		// Provided by VK_VERSION_1_0
 	    TOP_OF_PIPE_BIT = 0x00000001,
@@ -305,6 +308,7 @@ internal static class VkInterop {
 		NONE_KHR = NONE
 	}
 
+	[Flags]
 	internal enum VkDependencyFlags {
 		// Provided by VK_VERSION_1_0
 		BY_REGION_BIT = 0x00000001,
@@ -329,6 +333,7 @@ internal static class VkInterop {
 		SECONDARY = 1
 	}
 
+	[Flags]
 	internal enum VkCommandPoolCreateFlags {
 		// Provided by VK_VERSION_1_0
 		TRANSIENT_BIT = 0x00000001,
@@ -338,6 +343,7 @@ internal static class VkInterop {
 		PROTECTED_BIT = 0x00000004
 	}
 
+	[Flags]
 	internal enum VkCommandBufferUsageFlags {
 		// Provided by VK_VERSION_1_0
 		ONE_TIME_SUBMIT_BIT = 0x00000001,
@@ -345,6 +351,7 @@ internal static class VkInterop {
 		SIMULTANEOUS_USE_BIT = 0x00000004
 	}
 
+	[Flags]
 	internal enum VkFenceCreateFlags {
 		// Provided by VK_VERSION_1_0
 		SIGNALED_BIT = 0x00000001

@@ -88,7 +88,7 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		return _platformGraphics.GetSharedContext().CreateSurface(_renderSize, RenderScaling);
 	}
 
-	private GodotSkiaSurface GetOrCreateSurface()
+	public GodotSkiaSurface GetOrCreateSurface()
 		=> _surface ??= CreateSurface();
 
 	private IEnumerable<object> GetOrCreateSurfaces()
@@ -129,9 +129,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		if (oldClientSize != ClientSize)
 			Resized?.Invoke(ClientSize, hasScalingChanged ? WindowResizeReason.DpiChange : WindowResizeReason.Unspecified);
 	}
-
-	public Texture2D GetTexture()
-		=> GetOrCreateSurface().GdTexture;
 
 	public void OnDraw(Rect rect)
 		=> Paint?.Invoke(rect);
