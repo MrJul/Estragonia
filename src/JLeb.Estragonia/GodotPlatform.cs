@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using Avalonia;
+using Avalonia.Controls.Platform;
+using Avalonia.Dialogs;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Platform;
@@ -38,7 +40,9 @@ internal static class GodotPlatform {
 			.Bind<IPlatformSettings>().ToConstant(new GodotPlatformSettings())
 			.Bind<IRenderTimer>().ToConstant(renderTimer)
 			.Bind<IWindowingPlatform>().ToConstant(new GodotWindowingPlatform())
-			.Bind<PlatformHotkeyConfiguration>().ToConstant(CreatePlatformHotKeyConfiguration());
+			.Bind<IStorageProviderFactory>().ToConstant(new GodotStorageProviderFactory())
+			.Bind<PlatformHotkeyConfiguration>().ToConstant(CreatePlatformHotKeyConfiguration())
+			.Bind<ManagedFileDialogOptions>().ToConstant(new ManagedFileDialogOptions { AllowDirectorySelection = true });
 
 		s_renderTimer = renderTimer;
 		s_compositor = new AvCompositor(platformGraphics);
