@@ -3,8 +3,8 @@
 	<PropertyGroup>
 		<Authors>Julien Lebosquain</Authors>
 		<Product>Estragonia</Product>
-		<Copyright>Copyright © $(Authors) – 2023</Copyright>
-		<Version>1.0.2</Version>
+		<Copyright>Copyright © $(Authors) – 2023-$([System.DateTime]::Now.ToString('yyyy'))</Copyright>
+		<Version>1.1.0</Version>
 	</PropertyGroup>
 
 </Project>

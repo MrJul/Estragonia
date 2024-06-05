@@ -8,7 +8,7 @@ After following the steps below, you should have a project structure similar to 
 
 ## Godot setup
 
-1. [Download Godot Engine](https://godotengine.org/download/) version 4.1.3 or later, with .NET support.
+1. [Download Godot Engine](https://godotengine.org/download/) version 4.2.2 or later, with .NET support.
 2. Create a new Godot project or open an existing one. It must use either the Forward+ or Mobile renderer.
 3. Add a new Godot `Control` node to your scene. In this example, name it `UserInterface`.
 4. In the inspector for the newly created control, under _Focus_, ensure that `Mode` is set to `All`. If you don't, Godot won't pass keyboard input to it.

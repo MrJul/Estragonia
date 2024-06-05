@@ -1,10 +1,10 @@
 # Supported versions
 
-Currently, Estragonia targets Avalonia 11.0.5 and Godot 4.1.3.  
+Currently, Estragonia targets Avalonia 11.0.10 and Godot 4.2.2.  
 
 Don't try to use Estragonia with unsupported Avalonia versions. In general, avoid referencing Avalonia directly when possible. Since Estragonia implements a backend for Avalonia, it targets some API that are semi-private and may change in future minor Avalonia releases. 
 
-For Godot, you should be fine referencing the latest bug fix release, e.g. Godot 4.1.x. For major updates (e.g. Godot 4.2), you'll probably need to wait for a compatible Estragonia version to be released.
+For Godot, you should be fine referencing the latest bug fix release, e.g. Godot 4.2.x. For major updates (e.g. Godot 4.3), you'll probably need to wait for a compatible Estragonia version to be released.
 
 # Rendering
 
