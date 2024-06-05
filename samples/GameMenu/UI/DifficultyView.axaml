@@ -45,7 +45,8 @@
 				x:Name="DifficultiesListBox"
 				ItemsSource="{Binding Difficulties}"
 				SelectedItem="{Binding SelectedDifficulty}"
-				Background="Transparent" />
+				Background="Transparent"
+				ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
 
 		</Border>
 
