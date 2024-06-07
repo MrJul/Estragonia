@@ -4,7 +4,7 @@
 		<Authors>Julien Lebosquain</Authors>
 		<Product>Estragonia</Product>
 		<Copyright>Copyright © $(Authors) – 2023-$([System.DateTime]::Now.ToString('yyyy'))</Copyright>
-		<Version>1.1.0</Version>
+		<Version>1.1.1</Version>
 	</PropertyGroup>
 
 </Project>
