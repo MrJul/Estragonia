@@ -145,17 +145,31 @@ public class AvaloniaControl : GdControl {
 			OnFocusEntered();
 	}
 
-	public override void _Process(double delta)
-		=> GodotPlatform.TriggerRenderTick();
+	public override void _Process(double delta) {
+		GodotPlatform.TriggerRenderTick();
+
+		// We might have cleared the texture after resize to prevent corruption on AMD GPU (see GodotSkiaGpuRenderSession),
+		// force a re-render.
+		if (_topLevel?.Impl.TryGetSurface()?.DrawCount <= 2)
+			RenderAvalonia();
+	}
 
 	private PixelSize GetFrameSize()
 		=> PixelSize.FromSize(Size.ToAvaloniaSize(), 1.0);
 
+	private void RenderAvalonia()
+		=> _topLevel!.Impl.OnDraw(new Rect(Size.ToAvaloniaSize()));
+
 	private void OnAvaloniaCursorChanged(CursorShape cursor)
 		=> MouseDefaultCursorShape = cursor;
 
-	private void OnResized()
-		=> _topLevel?.Impl.SetRenderSize(GetFrameSize(), RenderScaling);
+	private void OnResized() {
+		if (_topLevel is null)
+			return;
+
+		_topLevel.Impl.SetRenderSize(GetFrameSize(), RenderScaling);
+		RenderAvalonia();
+	}
 
 	private void OnFocusEntered() {
 		if (_topLevel is null)
@@ -185,7 +199,7 @@ public class AvaloniaControl : GdControl {
 		if (_topLevel is null)
 			return;
 
-		_topLevel.Impl.OnDraw(new Rect(Size.ToAvaloniaSize()));
+
 		var surface = _topLevel.Impl.GetOrCreateSurface();
 
 		DrawTexture(surface.GdTexture, Vector2.Zero);

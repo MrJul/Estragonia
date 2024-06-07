@@ -88,6 +88,9 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 		return _platformGraphics.GetSharedContext().CreateSurface(_renderSize, RenderScaling);
 	}
 
+	public GodotSkiaSurface? TryGetSurface()
+		=> _surface;
+
 	public GodotSkiaSurface GetOrCreateSurface()
 		=> _surface ??= CreateSurface();
 
