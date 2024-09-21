@@ -94,6 +94,11 @@ public class AvaloniaControl : GdControl {
 			return true;
 		}
 
+		if (method == MethodName._HasPoint && args.Count == 1) {
+			ret = VariantUtils.CreateFrom(_HasPoint(VariantUtils.ConvertTo<Vector2>(args[0])));
+			return true;
+		}
+
 		return base.InvokeGodotClassMethod(method, args, out ret);
 	}
 
@@ -102,6 +107,7 @@ public class AvaloniaControl : GdControl {
 			|| method == Node.MethodName._Process
 			|| method == CanvasItem.MethodName._Draw
 			|| method == MethodName._GuiInput
+			|| method == MethodName._HasPoint
 			|| base.HasGodotClassMethod(method);
 
 	public override void _Ready() {
@@ -324,6 +330,9 @@ public class AvaloniaControl : GdControl {
 
 	private void OnMouseExited()
 		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
+
+	public override bool _HasPoint(Vector2 point)
+		=> Control?.InputHitTest(point.ToAvaloniaPoint(), false) is not null;
 
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {
