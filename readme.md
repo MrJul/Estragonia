@@ -10,7 +10,7 @@ It's GPU accelerated using Vulkan, which is the main renderer used in Godot 4.
 
 ## Quick Start
 
-1. Have Godot 4.2.2 with .NET support installed.
+1. Have Godot 4.3.0 with .NET support installed.
 2. Install the `JLeb.Estragonia` NuGet package inside your Godot C# project.
 3. Initialize the Avalonia application using `UseGodot().SetupWithoutStarting()`.
 4. Add a Godot `Control` node to your scene, assign it a script inheriting from `JLeb.Estragonia.AvaloniaControl` and populate its `Control` property with any valid Avalonia view.

@@ -39,11 +39,11 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 			return result;
 		}
 
-		var vkInstance = new VkInstance(GetIntPtrDriverResource(RenderingDevice.DriverResource.Instance));
+		var vkInstance = new VkInstance(GetIntPtrDriverResource(RenderingDevice.DriverResource.TopmostObject));
 		var vkPhysicalDevice = new VkPhysicalDevice(GetIntPtrDriverResource(RenderingDevice.DriverResource.PhysicalDevice));
-		var vkDevice = new VkDevice(GetIntPtrDriverResource(RenderingDevice.DriverResource.Device));
-		var vkQueue = new VkQueue(GetIntPtrDriverResource(RenderingDevice.DriverResource.Queue));
-		var vkQueueFamilyIndex = (uint) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.QueueFamilyIndex, default, 0UL);
+		var vkDevice = new VkDevice(GetIntPtrDriverResource(RenderingDevice.DriverResource.LogicalDevice));
+		var vkQueue = new VkQueue(GetIntPtrDriverResource(RenderingDevice.DriverResource.CommandQueue));
+		var vkQueueFamilyIndex = (uint) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.QueueFamily, default, 0UL);
 
 		var vkLibrary = NativeLibrary.Load(OperatingSystem.IsWindows() ? "vulkan-1" : "libvulkan", typeof(GodotVkSkiaGpu).Assembly, null);
 		var vkGetInstanceProcAddr =
@@ -117,11 +117,11 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 
 		var gdRdTexture = _renderingDevice.TextureCreate(gdRdTextureFormat, new RDTextureView());
 
-		var vkImage = new VkImage(_renderingDevice.GetDriverResource(RenderingDevice.DriverResource.Image, gdRdTexture, 0UL));
+		var vkImage = new VkImage(_renderingDevice.GetDriverResource(RenderingDevice.DriverResource.Texture, gdRdTexture, 0UL));
 		if (vkImage.Handle == 0UL)
 			throw new InvalidOperationException("Couldn't get Vulkan image from Godot texture");
 
-		var vkFormat = (uint) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.ImageNativeTextureFormat, gdRdTexture, 0UL);
+		var vkFormat = (uint) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.TextureDataFormat, gdRdTexture, 0UL);
 		if (vkFormat == 0U)
 			throw new InvalidOperationException("Couldn't get Vulkan format from Godot texture");
 
@@ -165,7 +165,8 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 			VkImageLayout.UNDEFINED,
 			_renderingDevice,
 			renderScaling,
-			_barrierHelper);
+			_barrierHelper
+		);
 
 		surface.TransitionLayoutTo(VkImageLayout.COLOR_ATTACHMENT_OPTIMAL);
 
