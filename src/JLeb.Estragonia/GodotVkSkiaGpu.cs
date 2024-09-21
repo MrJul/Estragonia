@@ -10,6 +10,7 @@ using Avalonia.Skia;
 using Godot;
 using SkiaSharp;
 using static JLeb.Estragonia.VkInterop;
+using Environment = System.Environment;
 
 namespace JLeb.Estragonia;
 
@@ -45,7 +46,9 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		var vkQueue = new VkQueue(GetIntPtrDriverResource(RenderingDevice.DriverResource.CommandQueue));
 		var vkQueueFamilyIndex = (uint) _renderingDevice.GetDriverResource(RenderingDevice.DriverResource.QueueFamily, default, 0UL);
 
-		var vkLibrary = NativeLibrary.Load(OperatingSystem.IsWindows() ? "vulkan-1" : "libvulkan", typeof(GodotVkSkiaGpu).Assembly, null);
+		if (!TryLoadVulkanLibrary(out var vkLibrary))
+			throw new DllNotFoundException("Couldn't find Vulkan loader library");
+
 		var vkGetInstanceProcAddr =
 			(delegate* unmanaged[Stdcall]<VkInstance, byte*, IntPtr>) NativeLibrary.GetExport(vkLibrary, "vkGetInstanceProcAddr");
 		var vkGetDeviceProcAddr =
@@ -84,6 +87,33 @@ internal sealed class GodotVkSkiaGpu : ISkiaGpu {
 		_grContext = grContext;
 		_queueFamilyIndex = vkQueueFamilyIndex;
 		_barrierHelper = new VkBarrierHelper(vkDevice, vkQueue, deviceApi, vkQueueFamilyIndex);
+	}
+
+	// Logic should match volk:
+	// https://github.com/godotengine/godot/blob/e4e024ab88efe74677769395886bc1b09eccbac7/thirdparty/volk/volk.c#L71-L115
+	private static bool TryLoadVulkanLibrary(out IntPtr handle) {
+		if (OperatingSystem.IsWindows())
+			return TryLoadByName("vulkan-1.dll", out handle);
+
+		if (OperatingSystem.IsMacOS() || OperatingSystem.IsIOS()) {
+			return TryLoadByName("libvulkan.dylib", out handle)
+				|| TryLoadByName("libvulkan.1.dylib", out handle)
+				|| TryLoadByName("libMoltenVK.dylib", out handle)
+				|| TryLoadByPath("vulkan.framework/vulkan", out handle)
+				|| TryLoadByPath("MoltenVK.framework/MoltenVK", out handle)
+				|| (Environment.GetEnvironmentVariable("DYLD_FALLBACK_LIBRARY_PATH") is null
+					&& TryLoadByPath("/usr/local/lib/libvulkan.dylib", out handle)
+				);
+		}
+
+		return TryLoadByName("libvulkan.so.1", out handle)
+			|| TryLoadByName("libvulkan.so", out handle);
+
+		static bool TryLoadByName(string libraryName, out IntPtr handle)
+			=> NativeLibrary.TryLoad(libraryName, typeof(GodotVkSkiaGpu).Assembly, null, out handle);
+
+		static bool TryLoadByPath(string libraryPath, out IntPtr handle)
+			=> NativeLibrary.TryLoad(libraryPath, out handle);
 	}
 
 	object? IOptionalFeatureProvider.TryGetFeature(Type featureType)
