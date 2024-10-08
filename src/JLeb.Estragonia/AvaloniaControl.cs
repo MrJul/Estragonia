@@ -332,7 +332,7 @@ public class AvaloniaControl : GdControl {
 		=> _topLevel?.Impl.OnMouseExited(Time.GetTicksMsec());
 
 	public override bool _HasPoint(Vector2 point)
-		=> Control?.InputHitTest(point.ToAvaloniaPoint(), false) is not null;
+		=> _topLevel?.InputHitTest(point.ToAvaloniaPoint() / _topLevel.RenderScaling, false) is not null;
 
 	protected override void Dispose(bool disposing) {
 		if (disposing && _topLevel is not null) {
