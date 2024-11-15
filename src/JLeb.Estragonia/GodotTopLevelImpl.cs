@@ -33,6 +33,12 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	public double RenderScaling { get; private set; } = 1.0;
 
+	double ITopLevelImpl.DesktopScaling
+		=> 1.0;
+
+	IPlatformHandle? ITopLevelImpl.Handle
+		=> null;
+
 	public AvCompositor Compositor { get; }
 
 	public Size ClientSize { get; private set; }
@@ -69,9 +75,6 @@ internal sealed class GodotTopLevelImpl : ITopLevelImpl {
 
 	AcrylicPlatformCompensationLevels ITopLevelImpl.AcrylicCompensationLevels
 		=> new(1.0, 1.0, 1.0);
-
-	Size? ITopLevelImpl.FrameSize
-		=> null;
 
 	public GodotTopLevelImpl(GodotVkPlatformGraphics platformGraphics, IClipboard clipboard, AvCompositor compositor) {
 		_platformGraphics = platformGraphics;

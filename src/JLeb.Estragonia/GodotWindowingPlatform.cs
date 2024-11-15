@@ -6,10 +6,16 @@ namespace JLeb.Estragonia;
 internal sealed class GodotWindowingPlatform : IWindowingPlatform {
 
 	public IWindowImpl CreateWindow()
-		=> throw new NotImplementedException("Sub windows aren't implemented yet");
+		=> throw CreateNotImplementedException();
 
 	public IWindowImpl CreateEmbeddableWindow()
-		=> throw new NotImplementedException("Sub windows aren't implemented yet");
+		=> throw CreateNotImplementedException();
+
+	public ITopLevelImpl CreateEmbeddableTopLevel()
+		=> throw CreateNotImplementedException();
+
+	private static NotImplementedException CreateNotImplementedException()
+		=> new("Sub windows aren't implemented yet");
 
 	public ITrayIconImpl? CreateTrayIcon()
 		=> null;
