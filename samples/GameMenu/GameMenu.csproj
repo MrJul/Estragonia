@@ -21,9 +21,9 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Themes.Simple" Version="[11.2.1]" />
-		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="[11.2.0]" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="Avalonia.Themes.Simple" Version="[11.2.3]" />
+		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="[11.2.0.1]" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -30,7 +30,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="GodotSharp" Version="4.3.0" />
-		<PackageReference Include="Avalonia.Skia" Version="[11.2.1]" />
+		<PackageReference Include="Avalonia.Skia" Version="[11.2.3]" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
 	</ItemGroup>
 

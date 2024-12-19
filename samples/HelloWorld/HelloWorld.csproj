@@ -21,7 +21,7 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Themes.Fluent" Version="[11.2.1]" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="[11.2.3]" />
 	</ItemGroup>
 
 	<ItemGroup>
